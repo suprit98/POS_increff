@@ -25,6 +25,7 @@
 		<hibernate.version>5.4.0.Final</hibernate.version>
 		<mysql.version>8.0.17</mysql.version>
 		<junit.version>4.12</junit.version>
+		<log4j.version>1.2.17</log4j.version>
 		<h2.version>1.4.200</h2.version>
 		<javax.servlet.version>3.1.0</javax.servlet.version>
 		<commons-dbcp.version>1.4</commons-dbcp.version>
@@ -32,7 +33,7 @@
 		<!-- Jetty configuration -->
 		<jetty.version>9.4.21.v20190926</jetty.version>
 		<jetty.http.port>9000</jetty.http.port>
-		<jetty.context>/employee</jetty.context>
+		<jetty.context>/pos</jetty.context>
 		<failOnMissingWebXml>false</failOnMissingWebXml>
 
 
@@ -53,6 +54,19 @@
 			<artifactId>spring-tx</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-web -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>4.2.13.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>4.2.13.RELEASE</version>
+		</dependency>
+
 
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-orm -->
 		<dependency>
@@ -99,7 +113,7 @@
 			<version>${thymeleaf.version}</version>
 		</dependency>
 
-		<!-- Databse related stuff -->
+		<!-- Database related stuff -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
@@ -117,6 +131,20 @@
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
 			<version>1.4</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.6</version>
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/log4j/log4j -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
 		</dependency>
 
 		<!-- Test -->
@@ -177,7 +205,55 @@
 					</webApp>
 				</configuration>
 			</plugin>
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.7.1</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.5</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<!-- attached to Maven test phase -->
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
+
+
 	</build>
+
+
+	<reporting>
+		<plugins>
+			<!-- SureFire Report plugin as part of site generation -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>3.0.0-M4</version>
+				<configuration>
+				</configuration>
+			</plugin>
+
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-jxr-plugin</artifactId> 
+				<version>3.0.0</version> </plugin> -->
+		</plugins>
+	</reporting>
 
 </project>

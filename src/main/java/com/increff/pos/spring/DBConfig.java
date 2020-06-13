@@ -14,8 +14,8 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@Configuration
 @EnableTransactionManagement
+@Configuration
 public class DBConfig {
 	
 public static final String PACKAGE_POJO = "com.increff.pos.pojo";
@@ -78,5 +78,5 @@ public static final String PACKAGE_POJO = "com.increff.pos.pojo";
 		bean.setEntityManagerFactory(emf.getObject());
 		return bean;
 	}
-
 }
+
