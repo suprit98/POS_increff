@@ -20,7 +20,7 @@
 		<!-- Project dependencies -->
 		<spring.version>4.3.6.RELEASE</spring.version>
 		<swagger.version>2.4.0</swagger.version>
-		<jackson.version>2.9.8</jackson.version>
+		<jackson.version>2.9.10.4</jackson.version>
 		<thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
 		<hibernate.version>5.4.0.Final</hibernate.version>
 		<mysql.version>8.0.17</mysql.version>
@@ -140,12 +140,13 @@
 		</dependency>
 
 
-		<!-- https://mvnrepository.com/artifact/log4j/log4j -->
+		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>${log4j.version}</version>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.13.3</version>
 		</dependency>
+
 
 		<!-- Test -->
 		<dependency>
