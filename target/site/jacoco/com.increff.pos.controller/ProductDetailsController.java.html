@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductDetailsController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.controller</a> &gt; <span class="el_source">ProductDetailsController.java</span></div><h1>ProductDetailsController.java</h1><pre class="source lang-java linenums">package com.increff.pos.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.increff.pos.model.ProductDetailsData;
+import com.increff.pos.model.ProductDetailsForm;
+import com.increff.pos.pojo.ProductDetailsPojo;
+import com.increff.pos.service.ApiException;
+import com.increff.pos.service.BrandService;
+import com.increff.pos.service.ProductDetailsService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api
+@RestController
+<span class="nc" id="L25">public class ProductDetailsController {</span>
+
+	@Autowired
+	private ProductDetailsService product_details_service;
+
+	@Autowired
+	private BrandService brand_service;
+
+	@ApiOperation(value = &quot;Adds ProductDetails&quot;)
+	@RequestMapping(path = &quot;/api/product_details&quot;, method = RequestMethod.POST)
+	public void add(@RequestBody ProductDetailsForm userform) throws ApiException {
+<span class="nc" id="L36">		ProductDetailsPojo p = convert(userform);</span>
+<span class="nc" id="L37">		product_details_service.add(p);</span>
+<span class="nc" id="L38">	}</span>
+
+	@ApiOperation(value = &quot;Deletes a ProductDetails record&quot;)
+	@RequestMapping(path = &quot;/api/product_details/{id}&quot;, method = RequestMethod.DELETE)
+	public void delete(@PathVariable int id) {
+<span class="nc" id="L43">		product_details_service.delete(id);</span>
+<span class="nc" id="L44">	}</span>
+
+	@ApiOperation(value = &quot;Gets a ProductDetails record by id&quot;)
+	@RequestMapping(path = &quot;/api/product_details/{id}&quot;, method = RequestMethod.GET)
+	public ProductDetailsData get(@PathVariable int id) throws ApiException {
+<span class="nc" id="L49">		ProductDetailsPojo p = product_details_service.get(id);</span>
+<span class="nc" id="L50">		return convert(p);</span>
+	}
+
+	@ApiOperation(value = &quot;Gets list of Products&quot;)
+	@RequestMapping(path = &quot;/api/product_details&quot;, method = RequestMethod.GET)
+	public List&lt;ProductDetailsData&gt; getAll() {
+<span class="nc" id="L56">		List&lt;ProductDetailsPojo&gt; list = product_details_service.getAll();</span>
+<span class="nc" id="L57">		List&lt;ProductDetailsData&gt; list2 = new ArrayList&lt;ProductDetailsData&gt;();</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">		for (ProductDetailsPojo p : list) {</span>
+<span class="nc" id="L59">			list2.add(convert(p));</span>
+<span class="nc" id="L60">		}</span>
+<span class="nc" id="L61">		return list2;</span>
+	}
+
+	@ApiOperation(value = &quot;Updates a ProductDetails record&quot;)
+	@RequestMapping(path = &quot;/api/product_details/{id}&quot;, method = RequestMethod.PUT)
+	public void update(@PathVariable int id, @RequestBody ProductDetailsForm f) throws ApiException {
+<span class="nc" id="L67">		ProductDetailsPojo p = convert(f);</span>
+<span class="nc" id="L68">		product_details_service.update(id, p);</span>
+<span class="nc" id="L69">	}</span>
+
+	private ProductDetailsPojo convert(ProductDetailsForm f) throws ApiException {
+<span class="nc" id="L72">		ProductDetailsPojo p = new ProductDetailsPojo();</span>
+<span class="nc" id="L73">		p.setName(f.getName());</span>
+<span class="nc" id="L74">		p.setMrp(f.getMrp());</span>
+<span class="nc" id="L75">		int brand_id = brand_service.getId(f.getBrand(), f.getCategory());</span>
+<span class="nc" id="L76">		p.setBrandPojo(brand_service.get(brand_id));</span>
+<span class="nc" id="L77">		return p;</span>
+	}
+
+	private ProductDetailsData convert(ProductDetailsPojo p) {
+<span class="nc" id="L81">		ProductDetailsData d = new ProductDetailsData();</span>
+<span class="nc" id="L82">		d.setId(p.getId());</span>
+<span class="nc" id="L83">		d.setBrand(p.getBrandPojo().getBrand());</span>
+<span class="nc" id="L84">		d.setCategory(p.getBrandPojo().getCategory());</span>
+<span class="nc" id="L85">		d.setMrp(p.getMrp());</span>
+<span class="nc" id="L86">		d.setName(p.getName());</span>
+<span class="nc" id="L87">		return d;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

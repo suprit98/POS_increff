@@ -56,6 +56,22 @@ public class BrandService {
 		return p;
 	}
 	
+	@Transactional
+	public int getId(String brand, String category) throws ApiException {
+		List<BrandPojo> lis = getAll();
+		int id=-1;
+		for(BrandPojo p: lis) {
+			if(brand.contentEquals(p.getBrand()) && category.contentEquals(p.getCategory())) {
+				id=p.getId();
+				break;
+			}
+		}
+		if(id==-1) {
+			throw new ApiException("The brand name and category given does not exist " + brand + " " + category);
+		}
+		return id;
+	}
+	
 	protected static void normalize(BrandPojo p) {
 		p.setBrand(p.getBrand().toLowerCase().trim());
 		p.setCategory(p.getCategory().toLowerCase().trim());		
