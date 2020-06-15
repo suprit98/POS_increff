@@ -2,8 +2,8 @@ package com.increff.pos.model;
 
 public class BrandForm{
 	
-	String brand;
-	String category;
+	private String brand;
+	private String category;
 	public String getBrand() {
 		return brand;
 	}

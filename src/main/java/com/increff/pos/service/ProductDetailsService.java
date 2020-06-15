@@ -35,6 +35,12 @@ public class ProductDetailsService {
 	}
 	
 	@Transactional
+	public ProductDetailsPojo get(String barcode) throws ApiException {
+		ProductDetailsPojo p = checkIfExists(barcode);
+		return p;
+	}
+	
+	@Transactional
 	public List<ProductDetailsPojo> getAll() {
 		return productdetails_dao.selectAll();
 	}
@@ -55,6 +61,15 @@ public class ProductDetailsService {
 		ProductDetailsPojo p = productdetails_dao.select(id);
 		if(p == null) {
 			throw new ApiException("ProductDetails with given ID does not exist, id: " + id);
+		}
+		return p;
+	}
+	
+	@Transactional(rollbackFor = ApiException.class)
+	public ProductDetailsPojo checkIfExists(String barcode) throws ApiException {
+		ProductDetailsPojo p = productdetails_dao.select(barcode);
+		if(p == null) {
+			throw new ApiException("ProductDetails with given barcode does not exist, barcode: " + barcode);
 		}
 		return p;
 	}

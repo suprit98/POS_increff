@@ -17,32 +17,41 @@ import com.increff.pos.pojo.ProductDetailsPojo;
 	EntityManager em;
 	
 <span class="nc" id="L19">	private static String select_all = &quot;select p from ProductDetailsPojo p&quot;;</span>
+<span class="nc" id="L20">	private static String select_barcode = &quot;select p from ProductDetailsPojo p where barcode=:barcode&quot;;</span>
 	
 	public void insert(ProductDetailsPojo p) {
-<span class="nc" id="L22">		em.persist(p);</span>
-<span class="nc" id="L23">	}</span>
+<span class="nc" id="L23">		em.persist(p);</span>
+<span class="nc" id="L24">	}</span>
 	
 	public void delete(int id) {
-<span class="nc" id="L26">		ProductDetailsPojo p = em.find(ProductDetailsPojo.class, id);</span>
-<span class="nc" id="L27">		em.remove(p);</span>
-<span class="nc" id="L28">	}</span>
+<span class="nc" id="L27">		ProductDetailsPojo p = em.find(ProductDetailsPojo.class, id);</span>
+<span class="nc" id="L28">		em.remove(p);</span>
+<span class="nc" id="L29">	}</span>
 	
 	public ProductDetailsPojo select(int id) {
-<span class="nc" id="L31">		return em.find(ProductDetailsPojo.class, id);</span>
+<span class="nc" id="L32">		return em.find(ProductDetailsPojo.class, id);</span>
+	}
+	
+	public ProductDetailsPojo select(String barcode) {
+<span class="nc" id="L36">		TypedQuery&lt;ProductDetailsPojo&gt; query = getQuery(select_barcode);</span>
+<span class="nc" id="L37">		query.setParameter(&quot;barcode&quot;, barcode);</span>
+<span class="nc" id="L38">		List&lt;ProductDetailsPojo&gt; lis = query.getResultList();</span>
+<span class="nc" id="L39">		ProductDetailsPojo p = lis.get(0);</span>
+<span class="nc" id="L40">		return p;</span>
 	}
 	
 	public List&lt;ProductDetailsPojo&gt; selectAll() {
-<span class="nc" id="L35">		TypedQuery&lt;ProductDetailsPojo&gt; query = getQuery(select_all);</span>
-<span class="nc" id="L36">		List&lt;ProductDetailsPojo&gt; results = query.getResultList();</span>
-<span class="nc" id="L37">		return results;	</span>
+<span class="nc" id="L44">		TypedQuery&lt;ProductDetailsPojo&gt; query = getQuery(select_all);</span>
+<span class="nc" id="L45">		List&lt;ProductDetailsPojo&gt; results = query.getResultList();</span>
+<span class="nc" id="L46">		return results;	</span>
 	}
 	
 	public void update(ProductDetailsPojo p) {
 		
-<span class="nc" id="L42">	}</span>
+<span class="nc" id="L51">	}</span>
 	
 	TypedQuery&lt;ProductDetailsPojo&gt; getQuery(String jpql) {
-<span class="nc" id="L45">		return em.createQuery(jpql,ProductDetailsPojo.class);</span>
+<span class="nc" id="L54">		return em.createQuery(jpql,ProductDetailsPojo.class);</span>
 	}
 
 }

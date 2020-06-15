@@ -17,6 +17,7 @@ public class ProductDetailsDao {
 	EntityManager em;
 	
 	private static String select_all = "select p from ProductDetailsPojo p";
+	private static String select_barcode = "select p from ProductDetailsPojo p where barcode=:barcode";
 	
 	public void insert(ProductDetailsPojo p) {
 		em.persist(p);
@@ -29,6 +30,19 @@ public class ProductDetailsDao {
 	
 	public ProductDetailsPojo select(int id) {
 		return em.find(ProductDetailsPojo.class, id);
+	}
+	
+	public ProductDetailsPojo select(String barcode) {
+		TypedQuery<ProductDetailsPojo> query = getQuery(select_barcode);
+		query.setParameter("barcode", barcode);
+		List<ProductDetailsPojo> lis = query.getResultList();
+		if(lis.size()>0) {
+			ProductDetailsPojo p = lis.get(0);
+			return p;
+		}
+		else {
+			return null;
+		}
 	}
 	
 	public List<ProductDetailsPojo> selectAll() {
