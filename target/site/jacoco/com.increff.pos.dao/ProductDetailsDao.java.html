@@ -36,22 +36,27 @@ import com.increff.pos.pojo.ProductDetailsPojo;
 <span class="nc" id="L36">		TypedQuery&lt;ProductDetailsPojo&gt; query = getQuery(select_barcode);</span>
 <span class="nc" id="L37">		query.setParameter(&quot;barcode&quot;, barcode);</span>
 <span class="nc" id="L38">		List&lt;ProductDetailsPojo&gt; lis = query.getResultList();</span>
-<span class="nc" id="L39">		ProductDetailsPojo p = lis.get(0);</span>
-<span class="nc" id="L40">		return p;</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">		if(lis.size()&gt;0) {</span>
+<span class="nc" id="L40">			ProductDetailsPojo p = lis.get(0);</span>
+<span class="nc" id="L41">			return p;</span>
+		}
+		else {
+<span class="nc" id="L44">			return null;</span>
+		}
 	}
 	
 	public List&lt;ProductDetailsPojo&gt; selectAll() {
-<span class="nc" id="L44">		TypedQuery&lt;ProductDetailsPojo&gt; query = getQuery(select_all);</span>
-<span class="nc" id="L45">		List&lt;ProductDetailsPojo&gt; results = query.getResultList();</span>
-<span class="nc" id="L46">		return results;	</span>
+<span class="nc" id="L49">		TypedQuery&lt;ProductDetailsPojo&gt; query = getQuery(select_all);</span>
+<span class="nc" id="L50">		List&lt;ProductDetailsPojo&gt; results = query.getResultList();</span>
+<span class="nc" id="L51">		return results;	</span>
 	}
 	
 	public void update(ProductDetailsPojo p) {
 		
-<span class="nc" id="L51">	}</span>
+<span class="nc" id="L56">	}</span>
 	
 	TypedQuery&lt;ProductDetailsPojo&gt; getQuery(String jpql) {
-<span class="nc" id="L54">		return em.createQuery(jpql,ProductDetailsPojo.class);</span>
+<span class="nc" id="L59">		return em.createQuery(jpql,ProductDetailsPojo.class);</span>
 	}
 
 }

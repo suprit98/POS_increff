@@ -32,6 +32,17 @@ public class InventoryService {
 	}
 	
 	@Transactional
+	public InventoryPojo getByProductId(int product_id) throws ApiException {
+		List<InventoryPojo> lis = getAll();
+		for(InventoryPojo ip:lis) {
+			if(ip.getProductPojo().getId() == product_id) {
+				return ip;
+			}
+		}
+		return null;
+	}
+	
+	@Transactional
 	public List<InventoryPojo> getAll() {
 		return inventory_dao.selectAll();
 	}
