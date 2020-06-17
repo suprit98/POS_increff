@@ -38,7 +38,7 @@ import com.increff.pos.pojo.OrderPojo;
 	private void updateInventory(OrderItemPojo p) throws ApiException {
 <span class="nc" id="L39">		int quantity = p.getQuantity();</span>
 		
-<span class="nc" id="L41">		int quantityInInventory = inventory_service.get(p.getProductPojo().getId()).getQuantity();</span>
+<span class="nc" id="L41">		int quantityInInventory = inventory_service.getByProductId(p.getProductPojo().getId()).getQuantity();</span>
 		
 <span class="nc bnc" id="L43" title="All 2 branches missed.">		if(quantity&gt;quantityInInventory) {</span>
 <span class="nc" id="L44">			throw new ApiException(&quot;Inventory does not contain this much quantity of product. Existing quantity in inventory: &quot;+ quantityInInventory);</span>
@@ -46,7 +46,7 @@ import com.increff.pos.pojo.OrderPojo;
 		else {
 <span class="nc" id="L47">			InventoryPojo new_ip = new InventoryPojo();</span>
 <span class="nc" id="L48">			new_ip.setQuantity(quantityInInventory-quantity);</span>
-<span class="nc" id="L49">			inventory_service.update(inventory_service.get(p.getProductPojo().getId()).getId(), new_ip);</span>
+<span class="nc" id="L49">			inventory_service.update(inventory_service.getByProductId(p.getProductPojo().getId()).getId(), new_ip);</span>
 		}
 		
 <span class="nc" id="L52">	}</span>

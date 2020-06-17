@@ -84,6 +84,7 @@ public class ProductDetailsController {
 		d.setCategory(p.getBrandPojo().getCategory());
 		d.setMrp(p.getMrp());
 		d.setName(p.getName());
+		d.setBarcode(p.getBarcode());
 		return d;
 	}
 

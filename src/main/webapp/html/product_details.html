@@ -1,0 +1,87 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+
+<head th:replace="snippets.html :: name_head"></head>
+
+<body>
+
+<nav th:replace="snippets.html :: name_navbar"></nav>
+
+
+<div class="container">
+
+<!-- Top row with form-->
+ <div class="row">
+	 <div class="col-12">
+			<form class="form-inline" id="productdetails-form">
+			  <div class="form-group">
+			    <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" name="brand" id="inputBrand" placeholder="enter brand">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" name="category" id="inputCategory" placeholder="enter category">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" name="name" id="inputName" placeholder="enter name">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="inputMrp" class="col-sm-2 col-form-label">Mrp</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" name="mrp" id="inputMrp" placeholder="enter mrp">
+			    </div>
+			  </div>
+			  <button type="button" class="btn btn-primary" id="add-productdetails">Add</button>
+			  &nbsp;
+			  <button type="button" class="btn btn-primary" id="refresh-data-productdetails">Refresh</button>
+			</form>
+	 </div>	
+</div> 
+
+<!-- Blank Row -->
+<div class="row">
+	&nbsp;
+</div>
+<div class="row">
+
+ <!-- Table -->
+ <div class="col-12">
+	<table class="table table-striped" id="productdetails-table">
+	  <thead>
+	    <tr>
+	      <th scope="col">ID</th>
+	      <th scope="col">Barcode</th>
+	      <th scope="col">Brand Category</th>
+	      <th scope="col">Name</th>
+	      <th scope="col">MRP</th>
+	      <th scope="col">Actions</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	  </tbody>
+	</table>
+
+</div>
+</div>
+
+</div> <!-- Container end-->
+
+<div th:replace="snippets.html :: name_footer"></div>
+
+
+
+
+
+</body>	
+
+</html>
