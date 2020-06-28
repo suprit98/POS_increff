@@ -31,6 +31,30 @@ function addBrand(event){
 }
 
 function updateBrand(event){
+	$('#edit-brand-modal').modal('toggle');
+	//Get the ID
+	var id = $("#brand-edit-form input[name=id]").val();	
+	var url = getBrandUrl() + "/" + id;
+
+	
+	var $form = $("#brand-edit-form");
+	var json = toJson($form);
+
+	$.ajax({
+	   url: url,
+	   type: 'PUT',
+	   data: json,
+	   headers: {
+       	'Content-Type': 'application/json'
+       },	   
+	   success: function(response) {
+	   		getBrandList();   
+	   },
+	   error: function(){
+	   		alert("An error has occurred");
+	   }
+	});
+	return false;
 	
 }
 
@@ -76,6 +100,7 @@ function displayBrandList(data){
 	for(var i in data){
 		var e = data[i];
 		var buttonHtml = '<button onclick="deleteBrand(' + e.id + ')">delete</button>'
+		buttonHtml += ' <button onclick="displayEditBrand(' + e.id + ')">edit</button>'
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.brand + '</td>'
@@ -87,8 +112,25 @@ function displayBrandList(data){
 }
 
 
+function displayEditBrand(id){
+	var url = getBrandUrl() + "/" + id;
+	$.ajax({
+	   url: url,
+	   type: 'GET',
+	   success: function(data) {
+	   		displayBrand(data);   
+	   },
+	   error: function(){
+	   		alert("An error has occurred");
+	   }
+	});	
+}
+
 function displayBrand(data){
-	
+	$("#brand-edit-form input[name=brand]").val(data.brand);	
+	$("#brand-edit-form input[name=category]").val(data.category);	
+	$("#brand-edit-form input[name=id]").val(data.id);	
+	$('#edit-brand-modal').modal('toggle');
 }
 
 
@@ -110,6 +152,7 @@ function toJson($form){
 //INITIALIZATION CODE
 function init(){
 	$('#add-brand').click(addBrand);
+	$('#update-brand').click(updateBrand);
 	$('#refresh-data').click(getBrandList);
 }
 

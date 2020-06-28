@@ -17,9 +17,9 @@ function addProductDetails(event){
 	   data: json,
 	   headers: {
        	'Content-Type': 'application/json'
-       },	   
+       },
 	   success: function(response) {
-	   		console.log("ProductDetails created");	
+	   		console.log("ProductDetails created");
 	   		getProductDetailsList();     //...
 	   },
 	   error: function(){
@@ -31,7 +31,31 @@ function addProductDetails(event){
 }
 
 function updateProductDetails(event){
-	
+	$('#edit-productdetails-modal').modal('toggle');
+	//Get the ID
+	var id = $("#productdetails-edit-form input[name=id]").val();
+	var url = getProductDetailsUrl() + "/" + id;
+
+
+	var $form = $("#productdetails-edit-form");
+	var json = toJson($form);
+
+	$.ajax({
+	   url: url,
+	   type: 'PUT',
+	   data: json,
+	   headers: {
+       	'Content-Type': 'application/json'
+       },
+	   success: function(response) {
+	   		getProductDetailsList();
+	   },
+	   error: function(){
+	   		alert("An error has occurred");
+	   }
+	});
+	return false;
+
 }
 
 
@@ -42,7 +66,7 @@ function getProductDetailsList(){
 	   type: 'GET',
 	   success: function(data) {
 	   		console.log("ProductDetails data fetched");
-	   		console.log(data);	
+	   		console.log(data);
 	   		displayProductDetailsList(data);     //...
 	   },
 	   error: function(){
@@ -75,22 +99,44 @@ function displayProductDetailsList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button onclick="deleteProductDetails(' + e.id + ')">delete</button>'
+		var buttonHtml = '<button onclick="deleteProductDetails(' + e.id + ')">delete</button>';
+		buttonHtml += ' <button onclick="displayEditProductDetails(' + e.id + ')">edit</button>';
+		console.log('brand');
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.barcode + '</td>'
 		+ '<td>'  + e.brand + '</td>'
+		+ '<td>'  + e.category + '</td>'
 		+ '<td>'  + e.name + '</td>'
 		+ '<td>'  + e.mrp + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
-        $tbody.append(row);
+    $tbody.append(row);
 	}
 }
 
 
+function displayEditProductDetails(id){
+	var url = getProductDetailsUrl() + "/" + id;
+	$.ajax({
+	   url: url,
+	   type: 'GET',
+	   success: function(data) {
+	   		displayProductDetails(data);
+	   },
+	   error: function(){
+	   		alert("An error has occurred");
+	   }
+	});
+}
+
 function displayProductDetails(data){
-	
+	$("#productdetails-edit-form input[name=brand]").val(data.brand);
+	$("#productdetails-edit-form input[name=category]").val(data.category);
+	$("#productdetails-edit-form input[name=name]").val(data.name);
+	$("#productdetails-edit-form input[name=mrp]").val(data.mrp);
+	$("#productdetails-edit-form input[name=id]").val(data.id);
+	$('#edit-productdetails-modal').modal('toggle');
 }
 
 
@@ -112,6 +158,7 @@ function toJson($form){
 //INITIALIZATION CODE
 function init(){
 	$('#add-productdetails').click(addProductDetails);
+	$('#update-productdetails').click(updateProductDetails);
 	$('#refresh-data-productdetails').click(getProductDetailsList);
 }
 
