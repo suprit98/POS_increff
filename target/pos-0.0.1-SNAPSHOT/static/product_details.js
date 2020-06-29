@@ -100,6 +100,7 @@ function displayProductDetailsList(data){
 	for(var i in data){
 		var e = data[i];
 		var buttonHtml = '<button onclick="deleteProductDetails(' + e.id + ')">delete</button>';
+		buttonHtml += ' <button onclick="displayEditProductDetails(' + e.id + ')">edit</button>';
 		console.log('brand');
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
@@ -133,7 +134,7 @@ function displayProductDetails(data){
 	$("#productdetails-edit-form input[name=brand]").val(data.brand);
 	$("#productdetails-edit-form input[name=category]").val(data.category);
 	$("#productdetails-edit-form input[name=name]").val(data.name);
-	$("#productdetails-edit-form input[name=mrp]").val(data.mrp);	
+	$("#productdetails-edit-form input[name=mrp]").val(data.mrp);
 	$("#productdetails-edit-form input[name=id]").val(data.id);
 	$('#edit-productdetails-modal').modal('toggle');
 }
@@ -157,6 +158,7 @@ function toJson($form){
 //INITIALIZATION CODE
 function init(){
 	$('#add-productdetails').click(addProductDetails);
+	$('#update-productdetails').click(updateProductDetails);
 	$('#refresh-data-productdetails').click(getProductDetailsList);
 }
 

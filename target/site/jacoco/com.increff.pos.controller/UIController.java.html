@@ -7,35 +7,45 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 <span class="nc" id="L9">public class UIController {</span>
-	
+
 	@Value(&quot;${app.baseUrl}&quot;)
 	private String baseUrl;
-	
+
 	@RequestMapping(value = &quot;&quot;)
 	public ModelAndView index() {
 <span class="nc" id="L16">		return mav(&quot;index.html&quot;);</span>
 	}
-	
+
 	@RequestMapping(value = &quot;/ui/home&quot;)
 	public ModelAndView home() {
 <span class="nc" id="L21">		return mav(&quot;home.html&quot;);</span>
 	}
-	
+
 	@RequestMapping(value = &quot;/ui/brand&quot;)
 	public ModelAndView brand() {
 <span class="nc" id="L26">		return mav(&quot;brand.html&quot;);</span>
 	}
-	
+
 	@RequestMapping(value = &quot;/ui/product_details&quot;)
 	public ModelAndView product_details() {
 <span class="nc" id="L31">		return mav(&quot;product_details.html&quot;);</span>
 	}
-	
+
+	@RequestMapping(value = &quot;/ui/inventory&quot;)
+	public ModelAndView inventory() {
+<span class="nc" id="L36">		return mav(&quot;inventory.html&quot;);</span>
+	}
+
+	@RequestMapping(value = &quot;/ui/order&quot;)
+	public ModelAndView order() {
+<span class="nc" id="L41">		return mav(&quot;order.html&quot;);</span>
+	}
+
 	private ModelAndView mav(String page) {
-<span class="nc" id="L35">		ModelAndView mav = new ModelAndView(page);</span>
-<span class="nc" id="L36">		mav.addObject(&quot;baseUrl&quot;,baseUrl);</span>
-<span class="nc" id="L37">		return mav;</span>
-		
+<span class="nc" id="L45">		ModelAndView mav = new ModelAndView(page);</span>
+<span class="nc" id="L46">		mav.addObject(&quot;baseUrl&quot;, baseUrl);</span>
+<span class="nc" id="L47">		return mav;</span>
+
 	}
 
 }

@@ -25,6 +25,9 @@
       <li class="nav-item">
         <a class="nav-link" th:href="@{/ui/product_details}">Add Products</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/ui/inventory}">Add Inventory</a>
+      </li>
     </ul>
   </div>
 </nav>
@@ -32,6 +35,9 @@
 <div class="row" th:fragment="name_footer">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"  crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<script th:src="@{/static/papaparse.min.js}"></script>
+	<script th:src="@{/static/file.js}"></script>
 	<script th:src="@{/static/brand.js}"></script>
 	<script th:src="@{/static/product_details.js}"></script>
+	<script th:src="@{/static/inventory.js}"></script>
 </div>

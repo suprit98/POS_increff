@@ -17,9 +17,9 @@ function addBrand(event){
 	   data: json,
 	   headers: {
        	'Content-Type': 'application/json'
-       },	   
+       },
 	   success: function(response) {
-	   		console.log("Brand created");	
+	   		console.log("Brand created");
 	   		getBrandList();     //...
 	   },
 	   error: function(){
@@ -33,10 +33,10 @@ function addBrand(event){
 function updateBrand(event){
 	$('#edit-brand-modal').modal('toggle');
 	//Get the ID
-	var id = $("#brand-edit-form input[name=id]").val();	
+	var id = $("#brand-edit-form input[name=id]").val();
 	var url = getBrandUrl() + "/" + id;
 
-	
+
 	var $form = $("#brand-edit-form");
 	var json = toJson($form);
 
@@ -46,16 +46,16 @@ function updateBrand(event){
 	   data: json,
 	   headers: {
        	'Content-Type': 'application/json'
-       },	   
+       },
 	   success: function(response) {
-	   		getBrandList();   
+	   		getBrandList();
 	   },
 	   error: function(){
 	   		alert("An error has occurred");
 	   }
 	});
 	return false;
-	
+
 }
 
 
@@ -66,7 +66,7 @@ function getBrandList(){
 	   type: 'GET',
 	   success: function(data) {
 	   		console.log("Brand data fetched");
-	   		console.log(data);	
+	   		console.log(data);
 	   		displayBrandList(data);     //...
 	   },
 	   error: function(){
@@ -118,19 +118,79 @@ function displayEditBrand(id){
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
-	   		displayBrand(data);   
+	   		displayBrand(data);
 	   },
 	   error: function(){
 	   		alert("An error has occurred");
 	   }
-	});	
+	});
 }
 
 function displayBrand(data){
-	$("#brand-edit-form input[name=brand]").val(data.brand);	
-	$("#brand-edit-form input[name=category]").val(data.category);	
-	$("#brand-edit-form input[name=id]").val(data.id);	
+	$("#brand-edit-form input[name=brand]").val(data.brand);
+	$("#brand-edit-form input[name=category]").val(data.category);
+	$("#brand-edit-form input[name=id]").val(data.id);
 	$('#edit-brand-modal').modal('toggle');
+}
+
+//FILE METHODS
+
+var fileData = [];
+var rowsProcessed = 0;
+
+function processData(){
+	var file = $('#brandFile')[0].files[0];
+	readFileData(file, readFileDataCallback);
+}
+
+function readFileDataCallback(results){
+	fileData = results.data;
+	uploadRows();
+}
+
+function uploadRows(){
+
+	//If everything processed then return
+	if(rowsProcessed==fileData.length){
+		getBrandList();
+		return;
+	}
+
+	//Process next row
+	var row = fileData[rowsProcessed];
+	console.log(row);
+	rowsProcessed++;
+
+	var json = JSON.stringify(row);
+
+	var url = getBrandUrl();
+
+	//Make ajax call
+	$.ajax({
+	   url: url,
+	   type: 'POST',
+	   data: json,
+	   headers: {
+       	'Content-Type': 'application/json'
+       },
+	   success: function(response) {
+	   		uploadRows();
+	   },
+	   error: function(response){
+	   		uploadRows();
+	   }
+	});
+
+}
+
+function displayUploadData(){
+	$('#upload-brand-modal').modal('toggle');
+}
+
+function updateFileName(){
+	var $file = $('#brandFile');
+	var fileName = $file.val();
+	$('#brandFileName').html(fileName);
 }
 
 
@@ -154,6 +214,9 @@ function init(){
 	$('#add-brand').click(addBrand);
 	$('#update-brand').click(updateBrand);
 	$('#refresh-data').click(getBrandList);
+	$('#upload-data').click(displayUploadData);
+	$('#process-data').click(processData);
+	$('#brandFile').on('change', updateFileName);
 }
 
 $(document).ready(init);
