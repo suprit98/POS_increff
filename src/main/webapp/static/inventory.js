@@ -17,13 +17,13 @@ function addInventory(event){
 	   data: json,
 	   headers: {
        	'Content-Type': 'application/json'
-       },	   
+       },
 	   success: function(response) {
-	   		console.log("Inventory created");	
+	   		console.log("Inventory created");
 	   		getInventoryList();     //...
 	   },
-	   error: function(){
-	   		alert("An error has occurred");
+	   error: function(response){
+	   		handleAjaxError(response);
 	   }
 	});
 
@@ -38,11 +38,11 @@ function getInventoryList(){
 	   type: 'GET',
 	   success: function(data) {
 	   		console.log("Inventory data fetched");
-	   		console.log(data);	
+	   		console.log(data);
 	   		displayInventoryList(data);     //...
 	   },
-	   error: function(){
-	   		alert("An error has occurred");
+	   error: function(response){
+	   		handleAjaxError(response);
 	   }
 	});
 }
@@ -57,8 +57,8 @@ function deleteInventory(id){
 	   		console.log("Inventory deleted");
 	   		getInventoryList();     //...
 	   },
-	   error: function(){
-	   		alert("An error has occurred");
+	   error: function(response){
+	   		handleAjaxError(response);
 	   }
 	});
 }

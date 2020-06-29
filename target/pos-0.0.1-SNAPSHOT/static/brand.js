@@ -22,8 +22,8 @@ function addBrand(event){
 	   		console.log("Brand created");
 	   		getBrandList();     //...
 	   },
-	   error: function(){
-	   		alert("An error has occurred");
+	   error: function(response){
+	   		handleAjaxError(response);
 	   }
 	});
 
@@ -50,8 +50,8 @@ function updateBrand(event){
 	   success: function(response) {
 	   		getBrandList();
 	   },
-	   error: function(){
-	   		alert("An error has occurred");
+	   error: function(response){
+	   		handleAjaxError(response);
 	   }
 	});
 	return false;
@@ -69,8 +69,8 @@ function getBrandList(){
 	   		console.log(data);
 	   		displayBrandList(data);     //...
 	   },
-	   error: function(){
-	   		alert("An error has occurred");
+	   error: function(response){
+	   		handleAjaxError(response);
 	   }
 	});
 }
@@ -85,8 +85,8 @@ function deleteBrand(id){
 	   		console.log("Brand deleted");
 	   		getBrandList();     //...
 	   },
-	   error: function(){
-	   		alert("An error has occurred");
+	   error: function(response){
+	   		handleAjaxError(response);
 	   }
 	});
 }
@@ -120,8 +120,8 @@ function displayEditBrand(id){
 	   success: function(data) {
 	   		displayBrand(data);
 	   },
-	   error: function(){
-	   		alert("An error has occurred");
+	   error: function(response){
+	   		handleAjaxError(response);
 	   }
 	});
 }
@@ -177,6 +177,7 @@ function uploadRows(){
 	   		uploadRows();
 	   },
 	   error: function(response){
+			 //TODO error handling
 	   		uploadRows();
 	   }
 	});

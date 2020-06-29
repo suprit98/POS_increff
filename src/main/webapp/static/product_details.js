@@ -22,8 +22,8 @@ function addProductDetails(event){
 	   		console.log("ProductDetails created");
 	   		getProductDetailsList();     //...
 	   },
-	   error: function(){
-	   		alert("An error has occurred");
+	   error: function(response){
+	   		handleAjaxError(response);
 	   }
 	});
 
@@ -51,7 +51,7 @@ function updateProductDetails(event){
 	   		getProductDetailsList();
 	   },
 	   error: function(){
-	   		alert("An error has occurred");
+	   		handleAjaxError();
 	   }
 	});
 	return false;
@@ -70,7 +70,7 @@ function getProductDetailsList(){
 	   		displayProductDetailsList(data);     //...
 	   },
 	   error: function(){
-	   		alert("An error has occurred");
+	   		handleAjaxError();
 	   }
 	});
 }
@@ -86,7 +86,7 @@ function deleteProductDetails(id){
 	   		getProductDetailsList();     //...
 	   },
 	   error: function(){
-	   		alert("An error has occurred");
+	   		handleAjaxError();
 	   }
 	});
 }
@@ -125,7 +125,7 @@ function displayEditProductDetails(id){
 	   		displayProductDetails(data);
 	   },
 	   error: function(){
-	   		alert("An error has occurred");
+	   		handleAjaxError();
 	   }
 	});
 }
