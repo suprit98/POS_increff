@@ -139,6 +139,67 @@ function displayProductDetails(data){
 	$('#edit-productdetails-modal').modal('toggle');
 }
 
+//FILE METHODS
+
+var fileData = [];
+var rowsProcessed = 0;
+
+function processDataProductDetails(){
+	var file = $('#productdetailsFile')[0].files[0];
+	readFileData(file, readFileDataCallback);
+}
+
+function readFileDataCallback(results){
+	fileData = results.data;
+	uploadRowsProductDetails();
+}
+
+function uploadRowsProductDetails(){
+
+	//If everything processed then return
+	if(rowsProcessed==fileData.length){
+		getProductDetailsList();
+		return;
+	}
+
+	//Process next row
+	var row = fileData[rowsProcessed];
+	console.log(row);
+	rowsProcessed++;
+
+	var json = JSON.stringify(row);
+
+	var url = getProductDetailsUrl();
+
+	//Make ajax call
+	$.ajax({
+	   url: url,
+	   type: 'POST',
+	   data: json,
+	   headers: {
+       	'Content-Type': 'application/json'
+       },
+	   success: function(response) {
+	   		uploadRowsProductDetails();
+	   },
+	   error: function(response){
+			 	handleAjaxError(response);
+	   		uploadRowsProductDetails();
+	   }
+	});
+
+}
+
+function displayUploadDataProductDetails(){
+	$('#upload-productdetails-modal').modal('toggle');
+}
+
+function updateFileNameProductDetails(){
+	var $file = $('#productdetailsFile');
+	var fileName = $file.val();
+	$('#productdetailsFileName').html(fileName);
+}
+
 
 //HELPER METHOD
 function toJson($form){
@@ -160,6 +221,9 @@ function init(){
 	$('#add-productdetails').click(addProductDetails);
 	$('#update-productdetails').click(updateProductDetails);
 	$('#refresh-data-productdetails').click(getProductDetailsList);
+	$('#upload-data-productdetails').click(displayUploadDataProductDetails);
+	$('#process-data-productdetails').click(processDataProductDetails);
+	$('#productdetailsFile').on('change', updateFileNameProductDetails);
 }
 
 $(document).ready(init);

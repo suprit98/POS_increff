@@ -25,7 +25,7 @@ public class OrderService {
 	@Autowired
 	private InventoryService inventory_service;
 	
-	@Transactional
+	@Transactional(rollbackFor = ApiException.class)
 	public void add(List<OrderItemPojo> lis, OrderPojo o) throws ApiException {
 		int order_id = order_dao.insert(o);
 		for(OrderItemPojo p:lis) {

@@ -44,6 +44,8 @@
 			  <button type="button" class="btn btn-primary" id="add-productdetails">Add</button>
 			  &nbsp;
 			  <button type="button" class="btn btn-primary" id="refresh-data-productdetails">Refresh</button>
+        &nbsp;
+			  <button type="button" class="btn btn-primary" id="upload-data-productdetails">Upload</button>
 			</form>
 	 </div>
 </div>
@@ -116,6 +118,33 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-primary" id="update-productdetails">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="upload-productdetails-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Upload Product Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+      	<div class="productdetails-file">
+		  <input type="file" class="custom-file-input" id="productdetailsFile">
+		  <label class="custom-file-label" for="productdetailsFile" id="productdetailsFileName">Choose file</label>
+		</div>
+		<br>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="process-data-productdetails">Upload</button>
       </div>
     </div>
   </div>
