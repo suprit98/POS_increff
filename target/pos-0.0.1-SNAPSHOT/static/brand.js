@@ -107,7 +107,7 @@ function displayBrandList(data){
 		+ '<td>'  + e.category + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
-        $tbody.append(row);
+    $tbody.append(row);
 	}
 }
 

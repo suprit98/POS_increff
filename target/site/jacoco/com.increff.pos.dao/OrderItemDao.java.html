@@ -17,33 +17,41 @@ import com.increff.pos.pojo.OrderItemPojo;
 	EntityManager em;
 	
 <span class="nc" id="L19">	private static String select_all = &quot;select p from OrderItemPojo p&quot;;</span>
+<span class="nc" id="L20">	private static String select_order = &quot;select p from OrderItemPojo p where orderId=:orderId&quot;;</span>
 	
 	public void insert(OrderItemPojo p) {
-<span class="nc" id="L22">		em.persist(p);</span>
-<span class="nc" id="L23">	}</span>
+<span class="nc" id="L23">		em.persist(p);</span>
+<span class="nc" id="L24">	}</span>
 	
 	public void delete(int id) {
-<span class="nc" id="L26">		OrderItemPojo p = em.find(OrderItemPojo.class, id);</span>
-<span class="nc" id="L27">		em.remove(p);</span>
-<span class="nc" id="L28">	}</span>
+<span class="nc" id="L27">		OrderItemPojo p = em.find(OrderItemPojo.class, id);</span>
+<span class="nc" id="L28">		em.remove(p);</span>
+<span class="nc" id="L29">	}</span>
 	
 	public OrderItemPojo select(int id) {
-<span class="nc" id="L31">		return em.find(OrderItemPojo.class, id);</span>
+<span class="nc" id="L32">		return em.find(OrderItemPojo.class, id);</span>
 	}
 	
 	
 	public List&lt;OrderItemPojo&gt; selectAll() {
-<span class="nc" id="L36">		TypedQuery&lt;OrderItemPojo&gt; query = getQuery(select_all);</span>
-<span class="nc" id="L37">		List&lt;OrderItemPojo&gt; results = query.getResultList();</span>
-<span class="nc" id="L38">		return results;	</span>
+<span class="nc" id="L37">		TypedQuery&lt;OrderItemPojo&gt; query = getQuery(select_all);</span>
+<span class="nc" id="L38">		List&lt;OrderItemPojo&gt; results = query.getResultList();</span>
+<span class="nc" id="L39">		return results;	</span>
+	}
+	
+	public List&lt;OrderItemPojo&gt; selectOrder(int orderId) {
+<span class="nc" id="L43">		TypedQuery&lt;OrderItemPojo&gt; query = getQuery(select_order);</span>
+<span class="nc" id="L44">		query.setParameter(&quot;orderId&quot;, orderId);</span>
+<span class="nc" id="L45">		List&lt;OrderItemPojo&gt; results = query.getResultList();</span>
+<span class="nc" id="L46">		return results;	</span>
 	}
 	
 	public void update(OrderItemPojo p) {
 		
-<span class="nc" id="L43">	}</span>
+<span class="nc" id="L51">	}</span>
 	
 	TypedQuery&lt;OrderItemPojo&gt; getQuery(String jpql) {
-<span class="nc" id="L46">		return em.createQuery(jpql,OrderItemPojo.class);</span>
+<span class="nc" id="L54">		return em.createQuery(jpql,OrderItemPojo.class);</span>
 	}
 
 }

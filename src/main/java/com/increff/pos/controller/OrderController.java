@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.OrderPojo;
@@ -43,6 +45,37 @@ public class OrderController {
 		OrderPojo op = new OrderPojo();
 		op.setDatetime(LocalDateTime.now());
 		order_service.add(lis,op);
+	}
+	
+	@ApiOperation(value = "Gets a OrderItem details record by id")
+	@RequestMapping(path="/api/order/{id}", method = RequestMethod.GET)
+	public OrderItemData get(@PathVariable int id) throws ApiException {
+		OrderItemPojo p = order_service.get(id);
+		return ConversionUtil.convert(p);
+	}
+	
+	@ApiOperation(value = "Gets list of Order Items")
+	@RequestMapping(path="/api/order", method = RequestMethod.GET)
+	public List<OrderItemData> getAll() {
+		List<OrderItemPojo> list = order_service.getAll();
+		List<OrderItemData> list2 = new ArrayList<OrderItemData>();
+		for(OrderItemPojo p : list) {
+			list2.add(ConversionUtil.convert(p));
+		}
+		return list2;
+	}
+	
+	@ApiOperation(value = "Deletes Order Item record")
+	@RequestMapping(path="/api/order/{id}", method = RequestMethod.DELETE)
+	public void delete(@PathVariable int id) {
+		order_service.delete(id);
+	}
+	
+	@ApiOperation(value = "Updates a OrderItem record")
+	@RequestMapping(path="/api/order/{id}", method = RequestMethod.PUT)
+	public void update(@PathVariable int id,@RequestBody OrderItemForm f) throws ApiException {
+		OrderItemPojo p = ConversionUtil.convert(product_service,f);
+		order_service.update(id, p);
 	}
 
 

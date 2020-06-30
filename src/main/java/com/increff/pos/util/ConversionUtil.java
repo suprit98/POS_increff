@@ -4,6 +4,7 @@ import com.increff.pos.model.BrandData;
 import com.increff.pos.model.BrandForm;
 import com.increff.pos.model.InventoryData;
 import com.increff.pos.model.InventoryForm;
+import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.model.ProductDetailsData;
 import com.increff.pos.model.ProductDetailsForm;
@@ -73,6 +74,15 @@ public class ConversionUtil {
 		p.setQuantity(f.getQuantity());
 		p.setSellingPrice(product_service.get(f.getBarcode()).getMrp());
 		return p;
+	}
+
+	public static OrderItemData convert(OrderItemPojo p) {
+		OrderItemData d = new OrderItemData();
+		d.setId(p.getId());
+		d.setBarcode(p.getProductPojo().getBarcode());
+		d.setQuantity(p.getQuantity());
+		d.setOrderId(p.getOrderPojo().getId());
+		return d;
 	}
 
 }

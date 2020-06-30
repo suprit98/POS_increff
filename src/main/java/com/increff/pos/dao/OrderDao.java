@@ -34,6 +34,7 @@ public class OrderDao {
 		return em.find(OrderPojo.class, id);
 	}
 	
+	
 	public List<OrderPojo> selectAll() {
 		TypedQuery<OrderPojo> query = getQuery(select_all);
 		List<OrderPojo> results = query.getResultList();
@@ -47,5 +48,6 @@ public class OrderDao {
 	TypedQuery<OrderPojo> getQuery(String jpql) {
 		return em.createQuery(jpql,OrderPojo.class);
 	}
+
 
 }

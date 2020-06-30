@@ -34,19 +34,21 @@ import com.increff.pos.pojo.OrderPojo;
 <span class="nc" id="L34">		return em.find(OrderPojo.class, id);</span>
 	}
 	
+	
 	public List&lt;OrderPojo&gt; selectAll() {
-<span class="nc" id="L38">		TypedQuery&lt;OrderPojo&gt; query = getQuery(select_all);</span>
-<span class="nc" id="L39">		List&lt;OrderPojo&gt; results = query.getResultList();</span>
-<span class="nc" id="L40">		return results;	</span>
+<span class="nc" id="L39">		TypedQuery&lt;OrderPojo&gt; query = getQuery(select_all);</span>
+<span class="nc" id="L40">		List&lt;OrderPojo&gt; results = query.getResultList();</span>
+<span class="nc" id="L41">		return results;	</span>
 	}
 	
 	public void update(OrderPojo p) {
 		
-<span class="nc" id="L45">	}</span>
+<span class="nc" id="L46">	}</span>
 	
 	TypedQuery&lt;OrderPojo&gt; getQuery(String jpql) {
-<span class="nc" id="L48">		return em.createQuery(jpql,OrderPojo.class);</span>
+<span class="nc" id="L49">		return em.createQuery(jpql,OrderPojo.class);</span>
 	}
+
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

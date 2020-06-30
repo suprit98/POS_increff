@@ -17,6 +17,7 @@ public class OrderItemDao {
 	EntityManager em;
 	
 	private static String select_all = "select p from OrderItemPojo p";
+	private static String select_order = "select p from OrderItemPojo p where orderId=:orderId";
 	
 	public void insert(OrderItemPojo p) {
 		em.persist(p);
@@ -34,6 +35,13 @@ public class OrderItemDao {
 	
 	public List<OrderItemPojo> selectAll() {
 		TypedQuery<OrderItemPojo> query = getQuery(select_all);
+		List<OrderItemPojo> results = query.getResultList();
+		return results;	
+	}
+	
+	public List<OrderItemPojo> selectOrder(int orderId) {
+		TypedQuery<OrderItemPojo> query = getQuery(select_order);
+		query.setParameter("orderId", orderId);
 		List<OrderItemPojo> results = query.getResultList();
 		return results;	
 	}

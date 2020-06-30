@@ -4,6 +4,7 @@ import com.increff.pos.model.BrandData;
 import com.increff.pos.model.BrandForm;
 import com.increff.pos.model.InventoryData;
 import com.increff.pos.model.InventoryForm;
+import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.model.ProductDetailsData;
 import com.increff.pos.model.ProductDetailsForm;
@@ -15,64 +16,73 @@ import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandService;
 import com.increff.pos.service.ProductDetailsService;
 
-<span class="nc" id="L18">public class ConversionUtil {</span>
+<span class="nc" id="L19">public class ConversionUtil {</span>
 
 	public static BrandPojo convert(BrandForm d) {
-<span class="nc" id="L21">		BrandPojo p = new BrandPojo();</span>
-<span class="nc" id="L22">		p.setBrand(d.getBrand());</span>
-<span class="nc" id="L23">		p.setCategory(d.getCategory());</span>
-<span class="nc" id="L24">		return p;</span>
+<span class="nc" id="L22">		BrandPojo p = new BrandPojo();</span>
+<span class="nc" id="L23">		p.setBrand(d.getBrand());</span>
+<span class="nc" id="L24">		p.setCategory(d.getCategory());</span>
+<span class="nc" id="L25">		return p;</span>
 	}
 
 	public static BrandData convert(BrandPojo p) {
-<span class="nc" id="L28">		BrandData d = new BrandData();</span>
-<span class="nc" id="L29">		d.setBrand(p.getBrand());</span>
-<span class="nc" id="L30">		d.setCategory(p.getCategory());</span>
-<span class="nc" id="L31">		d.setId(p.getId());</span>
-<span class="nc" id="L32">		return d;</span>
+<span class="nc" id="L29">		BrandData d = new BrandData();</span>
+<span class="nc" id="L30">		d.setBrand(p.getBrand());</span>
+<span class="nc" id="L31">		d.setCategory(p.getCategory());</span>
+<span class="nc" id="L32">		d.setId(p.getId());</span>
+<span class="nc" id="L33">		return d;</span>
 	}
 
 	public static ProductDetailsPojo convert(BrandService brand_service, ProductDetailsForm f) throws ApiException {
-<span class="nc" id="L36">		ProductDetailsPojo p = new ProductDetailsPojo();</span>
-<span class="nc" id="L37">		p.setName(f.getName());</span>
-<span class="nc" id="L38">		p.setMrp(f.getMrp());</span>
-<span class="nc" id="L39">		int brand_id = brand_service.getId(f.getBrand(), f.getCategory());</span>
-<span class="nc" id="L40">		p.setBrandPojo(brand_service.get(brand_id));</span>
-<span class="nc" id="L41">		return p;</span>
+<span class="nc" id="L37">		ProductDetailsPojo p = new ProductDetailsPojo();</span>
+<span class="nc" id="L38">		p.setName(f.getName());</span>
+<span class="nc" id="L39">		p.setMrp(f.getMrp());</span>
+<span class="nc" id="L40">		int brand_id = brand_service.getId(f.getBrand(), f.getCategory());</span>
+<span class="nc" id="L41">		p.setBrandPojo(brand_service.get(brand_id));</span>
+<span class="nc" id="L42">		return p;</span>
 	}
 
 	public static ProductDetailsData convert(ProductDetailsPojo p) {
-<span class="nc" id="L45">		ProductDetailsData d = new ProductDetailsData();</span>
-<span class="nc" id="L46">		d.setId(p.getId());</span>
-<span class="nc" id="L47">		d.setBrand(p.getBrandPojo().getBrand());</span>
-<span class="nc" id="L48">		d.setCategory(p.getBrandPojo().getCategory());</span>
-<span class="nc" id="L49">		d.setMrp(p.getMrp());</span>
-<span class="nc" id="L50">		d.setName(p.getName());</span>
-<span class="nc" id="L51">		d.setBarcode(p.getBarcode());</span>
-<span class="nc" id="L52">		return d;</span>
+<span class="nc" id="L46">		ProductDetailsData d = new ProductDetailsData();</span>
+<span class="nc" id="L47">		d.setId(p.getId());</span>
+<span class="nc" id="L48">		d.setBrand(p.getBrandPojo().getBrand());</span>
+<span class="nc" id="L49">		d.setCategory(p.getBrandPojo().getCategory());</span>
+<span class="nc" id="L50">		d.setMrp(p.getMrp());</span>
+<span class="nc" id="L51">		d.setName(p.getName());</span>
+<span class="nc" id="L52">		d.setBarcode(p.getBarcode());</span>
+<span class="nc" id="L53">		return d;</span>
 	}
 	
 	public static InventoryPojo convert(InventoryForm f, ProductDetailsPojo product_pojo) throws ApiException {
-<span class="nc" id="L56">		InventoryPojo p = new InventoryPojo();</span>
-<span class="nc" id="L57">		p.setProductPojo(product_pojo);</span>
-<span class="nc" id="L58">		p.setQuantity(f.getQuantity());</span>
-<span class="nc" id="L59">		return p;</span>
+<span class="nc" id="L57">		InventoryPojo p = new InventoryPojo();</span>
+<span class="nc" id="L58">		p.setProductPojo(product_pojo);</span>
+<span class="nc" id="L59">		p.setQuantity(f.getQuantity());</span>
+<span class="nc" id="L60">		return p;</span>
 	}
 
 	public static InventoryData convert(InventoryPojo p) {
-<span class="nc" id="L63">		InventoryData d = new InventoryData();</span>
-<span class="nc" id="L64">		d.setId(p.getId());</span>
-<span class="nc" id="L65">		d.setBarcode(p.getProductPojo().getBarcode());</span>
-<span class="nc" id="L66">		d.setQuantity(p.getQuantity());</span>
-<span class="nc" id="L67">		return d;</span>
+<span class="nc" id="L64">		InventoryData d = new InventoryData();</span>
+<span class="nc" id="L65">		d.setId(p.getId());</span>
+<span class="nc" id="L66">		d.setBarcode(p.getProductPojo().getBarcode());</span>
+<span class="nc" id="L67">		d.setQuantity(p.getQuantity());</span>
+<span class="nc" id="L68">		return d;</span>
 	}
 	
 	public static OrderItemPojo convert(ProductDetailsService product_service, OrderItemForm f) throws ApiException {
-<span class="nc" id="L71">		OrderItemPojo p = new OrderItemPojo();</span>
-<span class="nc" id="L72">		p.setProductPojo(product_service.get(f.getBarcode()));</span>
-<span class="nc" id="L73">		p.setQuantity(f.getQuantity());</span>
-<span class="nc" id="L74">		p.setSellingPrice(product_service.get(f.getBarcode()).getMrp());</span>
-<span class="nc" id="L75">		return p;</span>
+<span class="nc" id="L72">		OrderItemPojo p = new OrderItemPojo();</span>
+<span class="nc" id="L73">		p.setProductPojo(product_service.get(f.getBarcode()));</span>
+<span class="nc" id="L74">		p.setQuantity(f.getQuantity());</span>
+<span class="nc" id="L75">		p.setSellingPrice(product_service.get(f.getBarcode()).getMrp());</span>
+<span class="nc" id="L76">		return p;</span>
+	}
+
+	public static OrderItemData convert(OrderItemPojo p) {
+<span class="nc" id="L80">		OrderItemData d = new OrderItemData();</span>
+<span class="nc" id="L81">		d.setId(p.getId());</span>
+<span class="nc" id="L82">		d.setBarcode(p.getProductPojo().getBarcode());</span>
+<span class="nc" id="L83">		d.setQuantity(p.getQuantity());</span>
+<span class="nc" id="L84">		d.setOrderId(p.getOrderPojo().getId());</span>
+<span class="nc" id="L85">		return d;</span>
 	}
 
 }
