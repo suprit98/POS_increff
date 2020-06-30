@@ -32,7 +32,7 @@ function addOrder(event){
        	'Content-Type': 'application/json'
        },
 	   success: function(response) {
-	   		console.log("Order created");
+	   		alert("Order created");
 	   		getBrandList();     //...
 	   },
 	   error: function(response){
@@ -59,7 +59,7 @@ function displayOrderItemList(data){
 		var e = data[i];
 		var buttonHtml = '<button onclick="deleteOrderItem(' + i + ')">delete</button>'
 		var row = '<tr>'
-		+ '<td>' + (i+1) + '</td>'
+		+ '<td>' + (i) + '</td>'
 		+ '<td>' + e.barcode + '</td>'
 		+ '<td>'  + e.quantity + '</td>'
 		+ '<td>' + buttonHtml + '</td>'

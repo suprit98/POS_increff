@@ -16,6 +16,7 @@ import com.increff.pos.pojo.ProductDetailsPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandService;
 import com.increff.pos.service.ProductDetailsService;
+import com.increff.pos.util.ConversionUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,7 +34,7 @@ public class ProductDetailsController {
 	@ApiOperation(value = "Adds ProductDetails")
 	@RequestMapping(path = "/api/product_details", method = RequestMethod.POST)
 	public void add(@RequestBody ProductDetailsForm userform) throws ApiException {
-		ProductDetailsPojo p = convert(userform);
+		ProductDetailsPojo p = ConversionUtil.convert(brand_service,userform);
 		product_details_service.add(p);
 	}
 
@@ -47,7 +48,7 @@ public class ProductDetailsController {
 	@RequestMapping(path = "/api/product_details/{id}", method = RequestMethod.GET)
 	public ProductDetailsData get(@PathVariable int id) throws ApiException {
 		ProductDetailsPojo p = product_details_service.get(id);
-		return convert(p);
+		return ConversionUtil.convert(p);
 	}
 
 	@ApiOperation(value = "Gets list of Products")
@@ -56,7 +57,7 @@ public class ProductDetailsController {
 		List<ProductDetailsPojo> list = product_details_service.getAll();
 		List<ProductDetailsData> list2 = new ArrayList<ProductDetailsData>();
 		for (ProductDetailsPojo p : list) {
-			list2.add(convert(p));
+			list2.add(ConversionUtil.convert(p));
 		}
 		return list2;
 	}
@@ -64,28 +65,10 @@ public class ProductDetailsController {
 	@ApiOperation(value = "Updates a ProductDetails record")
 	@RequestMapping(path = "/api/product_details/{id}", method = RequestMethod.PUT)
 	public void update(@PathVariable int id, @RequestBody ProductDetailsForm f) throws ApiException {
-		ProductDetailsPojo p = convert(f);
+		ProductDetailsPojo p = ConversionUtil.convert(brand_service,f);
 		product_details_service.update(id, p);
 	}
 
-	private ProductDetailsPojo convert(ProductDetailsForm f) throws ApiException {
-		ProductDetailsPojo p = new ProductDetailsPojo();
-		p.setName(f.getName());
-		p.setMrp(f.getMrp());
-		int brand_id = brand_service.getId(f.getBrand(), f.getCategory());
-		p.setBrandPojo(brand_service.get(brand_id));
-		return p;
-	}
-
-	private ProductDetailsData convert(ProductDetailsPojo p) {
-		ProductDetailsData d = new ProductDetailsData();
-		d.setId(p.getId());
-		d.setBrand(p.getBrandPojo().getBrand());
-		d.setCategory(p.getBrandPojo().getCategory());
-		d.setMrp(p.getMrp());
-		d.setName(p.getName());
-		d.setBarcode(p.getBarcode());
-		return d;
-	}
+	
 
 }

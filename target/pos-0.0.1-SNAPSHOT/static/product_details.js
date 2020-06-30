@@ -23,7 +23,8 @@ function addProductDetails(event){
 	   		getProductDetailsList();     //...
 	   },
 	   error: function(response){
-	   		handleAjaxError(response);
+	   		//handleAjaxError(response);
+	   		alert("error");
 	   }
 	});
 

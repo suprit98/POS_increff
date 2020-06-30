@@ -16,6 +16,7 @@ import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.OrderService;
 import com.increff.pos.service.ProductDetailsService;
+import com.increff.pos.util.ConversionUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,19 +38,12 @@ public class OrderController {
 	public void add(@RequestBody OrderItemForm[] forms) throws ApiException {
 		List<OrderItemPojo> lis = new ArrayList<OrderItemPojo>();
 		for(OrderItemForm f:forms) {
-			lis.add(convert(f));
+			lis.add(ConversionUtil.convert(product_service,f));
 		}
 		OrderPojo op = new OrderPojo();
 		op.setDatetime(LocalDateTime.now());
 		order_service.add(lis,op);
 	}
 
-	private OrderItemPojo convert(OrderItemForm f) throws ApiException {
-		OrderItemPojo p = new OrderItemPojo();
-		p.setProductPojo(product_service.get(f.getBarcode()));
-		p.setQuantity(f.getQuantity());
-		p.setSellingPrice(product_service.get(f.getBarcode()).getMrp());
-		return p;
-	}
 
 }

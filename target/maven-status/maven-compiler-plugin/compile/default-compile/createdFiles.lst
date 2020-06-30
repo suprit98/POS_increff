@@ -32,5 +32,6 @@ com/increff/pos/service/ApiException.class
 com/increff/pos/spring/ControllerConfig.class
 com/increff/pos/model/ProductDetailsForm.class
 com/increff/pos/service/InventoryService.class
+com/increff/pos/util/ConversionUtil.class
 com/increff/pos/pojo/BrandPojo.class
 com/increff/pos/dao/OrderDao.class

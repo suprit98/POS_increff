@@ -177,7 +177,7 @@ function uploadRows(){
 	   		uploadRows();
 	   },
 	   error: function(response){
-			 //TODO error handling
+			 	handleAjaxError(response);
 	   		uploadRows();
 	   }
 	});
