@@ -10,22 +10,7 @@ function addInventory(event){
 	var $form = $("#inventory-form");
 	var json = toJson($form);
 	var url = getInventoryUrl();
-
-	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },
-	   success: function(response) {
-	   		console.log("Inventory created");
-	   		getInventoryList();     //...
-	   },
-	   error: function(response){
-	   		handleAjaxError(response);
-	   }
-	});
+	ajaxQuery(url,'POST',json,getInventoryList);
 
 	return false;
 }
@@ -39,55 +24,19 @@ function updateInventory(event){
 
 	var $form = $("#inventory-edit-form");
 	var json = toJson($form);
-
-	$.ajax({
-	   url: url,
-	   type: 'PUT',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },
-	   success: function(response) {
-	   		getInventoryList();
-	   },
-	   error: function(response){
-	   		handleAjaxError(response);
-	   }
-	});
+	ajaxQuery(url,'PUT',json,getInventoryList);
 	return false;
 
 }
 
 function getInventoryList(){
 	var url = getInventoryUrl();
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   		console.log("Inventory data fetched");
-	   		console.log(data);
-	   		displayInventoryList(data);     //...
-	   },
-	   error: function(response){
-	   		handleAjaxError(response);
-	   }
-	});
+	ajaxQuery(url,'GET','',displayInventoryList);
 }
 
 function deleteInventory(id){
 	var url = getInventoryUrl() + "/" + id;
-
-	$.ajax({
-	   url: url,
-	   type: 'DELETE',
-	   success: function(data) {
-	   		console.log("Inventory deleted");
-	   		getInventoryList();     //...
-	   },
-	   error: function(response){
-	   		handleAjaxError(response);
-	   }
-	});
+	ajaxQuery(url,'DELETE','',getInventoryList);
 }
 
 
@@ -114,16 +63,7 @@ function displayInventoryList(data){
 
 function displayEditInventory(id){
 	var url = getInventoryUrl() + "/" + id;
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   		displayInventory(data);
-	   },
-	   error: function(response){
-	   		handleAjaxError(response);
-	   }
-	});
+	ajaxQuery(url,'GET','',displayInventory);
 }
 
 function displayInventory(data){
@@ -134,19 +74,6 @@ function displayInventory(data){
 }
 
 
-//HELPER METHOD
-function toJson($form){
-    var serialized = $form.serializeArray();
-    console.log(serialized);
-    var s = '';
-    var data = {};
-    for(s in serialized){
-        data[serialized[s]['name']] = serialized[s]['value']
-    }
-    var json = JSON.stringify(data);
-    console.log(json);
-    return json;
-}
 
 
 //INITIALIZATION CODE

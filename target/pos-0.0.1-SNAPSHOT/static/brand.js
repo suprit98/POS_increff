@@ -11,21 +11,7 @@ function addBrand(event){
 	var json = toJson($form);
 	var url = getBrandUrl();
 
-	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },
-	   success: function(response) {
-	   		console.log("Brand created");
-	   		getBrandList();     //...
-	   },
-	   error: function(response){
-	   		handleAjaxError(response);
-	   }
-	});
+	ajaxQuery(url,'POST',json,getBrandList);
 
 	return false;
 }
@@ -40,20 +26,7 @@ function updateBrand(event){
 	var $form = $("#brand-edit-form");
 	var json = toJson($form);
 
-	$.ajax({
-	   url: url,
-	   type: 'PUT',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },
-	   success: function(response) {
-	   		getBrandList();
-	   },
-	   error: function(response){
-	   		handleAjaxError(response);
-	   }
-	});
+	ajaxQuery(url,'PUT',json,getBrandList);
 	return false;
 
 }
@@ -61,34 +34,12 @@ function updateBrand(event){
 
 function getBrandList(){
 	var url = getBrandUrl();
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   		console.log("Brand data fetched");
-	   		console.log(data);
-	   		displayBrandList(data);     //...
-	   },
-	   error: function(response){
-	   		handleAjaxError(response);
-	   }
-	});
+	ajaxQuery(url,'GET','',displayBrandList);
 }
 
 function deleteBrand(id){
 	var url = getBrandUrl() + "/" + id;
-
-	$.ajax({
-	   url: url,
-	   type: 'DELETE',
-	   success: function(data) {
-	   		console.log("Brand deleted");
-	   		getBrandList();     //...
-	   },
-	   error: function(response){
-	   		handleAjaxError(response);
-	   }
-	});
+	ajaxQuery(url,'DELETE','',getBrandList);
 }
 
 //UI DISPLAY METHODS
@@ -114,16 +65,7 @@ function displayBrandList(data){
 
 function displayEditBrand(id){
 	var url = getBrandUrl() + "/" + id;
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   		displayBrand(data);
-	   },
-	   error: function(response){
-	   		handleAjaxError(response);
-	   }
-	});
+	ajaxQuery(url,'GET','',displayBrand);
 }
 
 function displayBrand(data){
@@ -195,19 +137,7 @@ function updateFileName(){
 }
 
 
-//HELPER METHOD
-function toJson($form){
-    var serialized = $form.serializeArray();
-    console.log(serialized);
-    var s = '';
-    var data = {};
-    for(s in serialized){
-        data[serialized[s]['name']] = serialized[s]['value']
-    }
-    var json = JSON.stringify(data);
-    console.log(json);
-    return json;
-}
+
 
 
 //INITIALIZATION CODE

@@ -60,38 +60,15 @@ function updateOrder(event){
 	var $form = $("#orderitem-edit-form");
 	var json = toJson($form);
 
-	$.ajax({
-	   url: url,
-	   type: 'PUT',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },
-	   success: function(response) {
-	   		getPreviousOrders();
-	   },
-	   error: function(response){
-	   		handleAjaxError(response);
-	   }
-	});
+	ajaxQuery(url,'PUT',json,getPreviousOrders);
+
 	return false;
 
 }
 
 function deleteOrderItemFromOrderList(id) {
 	var url = getOrderUrl() + "/" + id;
-
-	$.ajax({
-	   url: url,
-	   type: 'DELETE',
-	   success: function(data) {
-	   		console.log("Order Item deleted");
-	   		getPreviousOrders();     //...
-	   },
-	   error: function(response){
-	   		handleAjaxError(response);
-	   }
-	});
+	ajaxQuery(url,'DELETE','',getPreviousOrders);
 }
 
 function deleteOrderItem(id) {
@@ -101,17 +78,7 @@ function deleteOrderItem(id) {
 
 function getPreviousOrders() {
 	var url = getOrderUrl();
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   		console.log(data);
-	   		displayOrderList(data);     //...
-	   },
-	   error: function(response){
-	   		handleAjaxError(response);
-	   }
-	});
+	ajaxQuery(url,'GET','',displayOrderList);
 }
 
 
@@ -160,8 +127,7 @@ function displayOrderList(data){
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
 
-		console.log("Prev: " + prev);
-		console.log("orderId: "+ parseInt(e.orderId));
+
 
 		if(parseInt(prev) != parseInt(e.orderId) && parseInt(prev)!=0){
 
@@ -175,16 +141,7 @@ function displayOrderList(data){
 
 function displayEditOrderItem(id){
 	var url = getOrderUrl() + "/" + id;
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   		displayOrderItem(data);
-	   },
-	   error: function(response){
-	   		handleAjaxError(response);
-	   }
-	});
+	ajaxQuery(url,'GET','',displayOrderItem);
 }
 
 function displayOrderItem(data){
@@ -192,20 +149,6 @@ function displayOrderItem(data){
 	$("#orderitem-edit-form input[name=quantity]").val(data.quantity);
 	$("#orderitem-edit-form input[name=id]").val(data.id);
 	$('#edit-orderitem-modal').modal('toggle');
-}
-
-//HELPER METHOD
-function toJson($form){
-    var serialized = $form.serializeArray();
-    console.log(serialized);
-    var s = '';
-    var data = {};
-    for(s in serialized){
-        data[serialized[s]['name']] = serialized[s]['value']
-    }
-    var json = JSON.stringify(data);
-    console.log(json);
-    return json;
 }
 
 

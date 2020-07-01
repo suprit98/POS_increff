@@ -10,23 +10,7 @@ function addProductDetails(event){
 	var $form = $("#productdetails-form");
 	var json = toJson($form);
 	var url = getProductDetailsUrl();
-
-	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },
-	   success: function(response) {
-	   		console.log("ProductDetails created");
-	   		getProductDetailsList();     //...
-	   },
-	   error: function(response){
-	   		//handleAjaxError(response);
-	   		alert("error");
-	   }
-	});
+	ajaxQuery(url,'POST',json,getProductDetailsList);
 
 	return false;
 }
@@ -41,20 +25,7 @@ function updateProductDetails(event){
 	var $form = $("#productdetails-edit-form");
 	var json = toJson($form);
 
-	$.ajax({
-	   url: url,
-	   type: 'PUT',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },
-	   success: function(response) {
-	   		getProductDetailsList();
-	   },
-	   error: function(){
-	   		handleAjaxError();
-	   }
-	});
+	ajaxQuery(url,'PUT',json,getProductDetailsList);
 	return false;
 
 }
@@ -62,34 +33,12 @@ function updateProductDetails(event){
 
 function getProductDetailsList(){
 	var url = getProductDetailsUrl();
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   		console.log("ProductDetails data fetched");
-	   		console.log(data);
-	   		displayProductDetailsList(data);     //...
-	   },
-	   error: function(){
-	   		handleAjaxError();
-	   }
-	});
+	ajaxQuery(url,'GET','',displayProductDetailsList);
 }
 
 function deleteProductDetails(id){
 	var url = getProductDetailsUrl() + "/" + id;
-
-	$.ajax({
-	   url: url,
-	   type: 'DELETE',
-	   success: function(data) {
-	   		console.log("ProductDetails deleted");
-	   		getProductDetailsList();     //...
-	   },
-	   error: function(){
-	   		handleAjaxError();
-	   }
-	});
+	ajaxQuery(url,'DELETE','',getProductDetailsList);
 }
 
 //UI DISPLAY METHODS
@@ -119,16 +68,7 @@ function displayProductDetailsList(data){
 
 function displayEditProductDetails(id){
 	var url = getProductDetailsUrl() + "/" + id;
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   		displayProductDetails(data);
-	   },
-	   error: function(){
-	   		handleAjaxError();
-	   }
-	});
+	ajaxQuery(url,'GET','',displayProductDetails);
 }
 
 function displayProductDetails(data){
@@ -201,20 +141,6 @@ function updateFileNameProductDetails(){
 	$('#productdetailsFileName').html(fileName);
 }
 
-
-//HELPER METHOD
-function toJson($form){
-    var serialized = $form.serializeArray();
-    console.log(serialized);
-    var s = '';
-    var data = {};
-    for(s in serialized){
-        data[serialized[s]['name']] = serialized[s]['value']
-    }
-    var json = JSON.stringify(data);
-    console.log(json);
-    return json;
-}
 
 
 //INITIALIZATION CODE
