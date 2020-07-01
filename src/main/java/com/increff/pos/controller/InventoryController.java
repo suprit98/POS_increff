@@ -1,6 +1,5 @@
 package com.increff.pos.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,10 +56,7 @@ public class InventoryController {
 	@RequestMapping(path = "/api/inventory", method = RequestMethod.GET)
 	public List<InventoryData> getAll() {
 		List<InventoryPojo> list = inventory_service.getAll();
-		List<InventoryData> list2 = new ArrayList<InventoryData>();
-		for (InventoryPojo p : list) {
-			list2.add(ConversionUtil.convert(p));
-		}
+		List<InventoryData> list2 = ConversionUtil.convertInventoryList(list);
 		return list2;
 	}
 

@@ -1,6 +1,5 @@
 package com.increff.pos.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,10 +54,7 @@ public class ProductDetailsController {
 	@RequestMapping(path = "/api/product_details", method = RequestMethod.GET)
 	public List<ProductDetailsData> getAll() {
 		List<ProductDetailsPojo> list = product_details_service.getAll();
-		List<ProductDetailsData> list2 = new ArrayList<ProductDetailsData>();
-		for (ProductDetailsPojo p : list) {
-			list2.add(ConversionUtil.convert(p));
-		}
+		List<ProductDetailsData> list2 = ConversionUtil.convertProductList(list);
 		return list2;
 	}
 

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PdfResponseUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.util</a> &gt; <span class="el_source">PdfResponseUtil.java</span></div><h1>PdfResponseUtil.java</h1><pre class="source lang-java linenums">package com.increff.pos.util;
+
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
+import com.increff.pos.model.InvoiceData;
+import com.increff.pos.model.InvoiceDataList;
+import com.increff.pos.pojo.OrderItemPojo;
+import com.increff.pos.service.ProductDetailsService;
+
+<span class="nc" id="L13">public class PdfResponseUtil {</span>
+	
+	public static void generatePdfResponse(ProductDetailsService product_service, List&lt;OrderItemPojo&gt; lis, HttpServletResponse response) throws Exception {
+		
+<span class="nc" id="L17">		List&lt;InvoiceData&gt; invoiceLis = ConversionUtil.convert(product_service,lis);</span>
+<span class="nc" id="L18">		InvoiceDataList idl = new InvoiceDataList();</span>
+<span class="nc" id="L19">		idl.setInvoiceLis(invoiceLis);</span>
+<span class="nc" id="L20">		idl.setOrder_id(lis.get(0).getOrderPojo().getId());</span>
+		
+<span class="nc" id="L22">		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd HH:mm&quot;);</span>
+<span class="nc" id="L23">		idl.setDatetime(lis.get(0).getOrderPojo().getDatetime().format(formatter));</span>
+<span class="nc" id="L24">		XmlUtil.generateXML(idl);</span>
+<span class="nc" id="L25">		byte[] bytes = XmlUtil.generatePDF();</span>
+		
+<span class="nc" id="L27">		response.setContentType(&quot;application/pdf&quot;);</span>
+<span class="nc" id="L28">	    response.setContentLength(bytes.length);</span>
+	    
+<span class="nc" id="L30">	    response.getOutputStream().write(bytes);</span>
+<span class="nc" id="L31">	    response.getOutputStream().flush();</span>
+		
+<span class="nc" id="L33">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

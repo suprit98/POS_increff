@@ -101,5 +101,45 @@ public class ConversionUtil {
 		}
 		return invoiceLis;
 	}
+	
+	public static List<BrandData> convert(List<BrandPojo> list) {
+		List<BrandData> list2 = new ArrayList<BrandData>();
+		for(BrandPojo p : list) {
+			list2.add(convert(p));
+		}
+		return list2;
+	}
+	
+	public static List<ProductDetailsData> convertProductList(List<ProductDetailsPojo> list) {
+		List<ProductDetailsData> list2 = new ArrayList<ProductDetailsData>();
+		for(ProductDetailsPojo p : list) {
+			list2.add(convert(p));
+		}
+		return list2;
+	}
+	
+	public static List<InventoryData> convertInventoryList(List<InventoryPojo> list) {
+		List<InventoryData> list2 = new ArrayList<InventoryData>();
+		for(InventoryPojo p : list) {
+			list2.add(convert(p));
+		}
+		return list2;
+	}
+	
+	public static List<OrderItemData> convertOrderItemList(List<OrderItemPojo> list) {
+		List<OrderItemData> list2 = new ArrayList<OrderItemData>();
+		for(OrderItemPojo p : list) {
+			list2.add(convert(p));
+		}
+		return list2;
+	}
+	
+	public static List<OrderItemPojo> convertOrderItemForms(ProductDetailsService product_service, OrderItemForm[] forms) throws ApiException {
+		List<OrderItemPojo> list2 = new ArrayList<OrderItemPojo>();
+		for(OrderItemForm f : forms) {
+			list2.add(convert(product_service,f));
+		}
+		return list2;
+	}
 
 }

@@ -101,6 +101,46 @@ import com.increff.pos.service.ProductDetailsService;
 <span class="nc" id="L101">		}</span>
 <span class="nc" id="L102">		return invoiceLis;</span>
 	}
+	
+	public static List&lt;BrandData&gt; convert(List&lt;BrandPojo&gt; list) {
+<span class="nc" id="L106">		List&lt;BrandData&gt; list2 = new ArrayList&lt;BrandData&gt;();</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">		for(BrandPojo p : list) {</span>
+<span class="nc" id="L108">			list2.add(convert(p));</span>
+<span class="nc" id="L109">		}</span>
+<span class="nc" id="L110">		return list2;</span>
+	}
+	
+	public static List&lt;ProductDetailsData&gt; convertProductList(List&lt;ProductDetailsPojo&gt; list) {
+<span class="nc" id="L114">		List&lt;ProductDetailsData&gt; list2 = new ArrayList&lt;ProductDetailsData&gt;();</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		for(ProductDetailsPojo p : list) {</span>
+<span class="nc" id="L116">			list2.add(convert(p));</span>
+<span class="nc" id="L117">		}</span>
+<span class="nc" id="L118">		return list2;</span>
+	}
+	
+	public static List&lt;InventoryData&gt; convertInventoryList(List&lt;InventoryPojo&gt; list) {
+<span class="nc" id="L122">		List&lt;InventoryData&gt; list2 = new ArrayList&lt;InventoryData&gt;();</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">		for(InventoryPojo p : list) {</span>
+<span class="nc" id="L124">			list2.add(convert(p));</span>
+<span class="nc" id="L125">		}</span>
+<span class="nc" id="L126">		return list2;</span>
+	}
+	
+	public static List&lt;OrderItemData&gt; convertOrderItemList(List&lt;OrderItemPojo&gt; list) {
+<span class="nc" id="L130">		List&lt;OrderItemData&gt; list2 = new ArrayList&lt;OrderItemData&gt;();</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">		for(OrderItemPojo p : list) {</span>
+<span class="nc" id="L132">			list2.add(convert(p));</span>
+<span class="nc" id="L133">		}</span>
+<span class="nc" id="L134">		return list2;</span>
+	}
+	
+	public static List&lt;OrderItemPojo&gt; convertOrderItemForms(ProductDetailsService product_service, OrderItemForm[] forms) throws ApiException {
+<span class="nc" id="L138">		List&lt;OrderItemPojo&gt; list2 = new ArrayList&lt;OrderItemPojo&gt;();</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">		for(OrderItemForm f : forms) {</span>
+<span class="nc" id="L140">			list2.add(convert(product_service,f));</span>
+		}
+<span class="nc" id="L142">		return list2;</span>
+	}
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

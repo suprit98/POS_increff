@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BrandController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.controller</a> &gt; <span class="el_source">BrandController.java</span></div><h1>BrandController.java</h1><pre class="source lang-java linenums">package com.increff.pos.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ import io.swagger.annotations.ApiOperation;
 
 @Api
 @RestController
-<span class="nc" id="L25">public class BrandController {</span>
+<span class="nc" id="L24">public class BrandController {</span>
 	
 	@Autowired
 	private BrandService brand_service;
@@ -30,22 +29,22 @@ import io.swagger.annotations.ApiOperation;
 	@ApiOperation(value = &quot;Adds Brand Details&quot;)
 	@RequestMapping(path=&quot;/api/brand&quot;, method = RequestMethod.POST)
 	public void add(@RequestBody BrandForm userform) {
-<span class="nc" id="L33">		BrandPojo p = ConversionUtil.convert(userform);</span>
-<span class="nc" id="L34">		brand_service.add(p);</span>
-<span class="nc" id="L35">	}</span>
+<span class="nc" id="L32">		BrandPojo p = ConversionUtil.convert(userform);</span>
+<span class="nc" id="L33">		brand_service.add(p);</span>
+<span class="nc" id="L34">	}</span>
 	
 	
 	@ApiOperation(value = &quot;Deletes a Brand Details record&quot;)
 	@RequestMapping(path=&quot;/api/brand/{id}&quot;, method = RequestMethod.DELETE)
 	public void delete(@PathVariable int id) {
-<span class="nc" id="L41">		brand_service.delete(id);</span>
-<span class="nc" id="L42">	}</span>
+<span class="nc" id="L40">		brand_service.delete(id);</span>
+<span class="nc" id="L41">	}</span>
 	
 	@ApiOperation(value = &quot;Gets a Brand details record by id&quot;)
 	@RequestMapping(path=&quot;/api/brand/{id}&quot;, method = RequestMethod.GET)
 	public BrandData get(@PathVariable int id) throws ApiException {
-<span class="nc" id="L47">		BrandPojo p = brand_service.get(id);</span>
-<span class="nc" id="L48">		return ConversionUtil.convert(p);</span>
+<span class="nc" id="L46">		BrandPojo p = brand_service.get(id);</span>
+<span class="nc" id="L47">		return ConversionUtil.convert(p);</span>
 	}
 	
 	
@@ -53,20 +52,17 @@ import io.swagger.annotations.ApiOperation;
 	@ApiOperation(value = &quot;Gets list of Brands&quot;)
 	@RequestMapping(path=&quot;/api/brand&quot;, method = RequestMethod.GET)
 	public List&lt;BrandData&gt; getAll() {
-<span class="nc" id="L56">		List&lt;BrandPojo&gt; list = brand_service.getAll();</span>
-<span class="nc" id="L57">		List&lt;BrandData&gt; list2 = new ArrayList&lt;BrandData&gt;();</span>
-<span class="nc bnc" id="L58" title="All 2 branches missed.">		for(BrandPojo p : list) {</span>
-<span class="nc" id="L59">			list2.add(ConversionUtil.convert(p));</span>
-<span class="nc" id="L60">		}</span>
-<span class="nc" id="L61">		return list2;</span>
+<span class="nc" id="L55">		List&lt;BrandPojo&gt; list = brand_service.getAll();</span>
+<span class="nc" id="L56">		List&lt;BrandData&gt; list2 = ConversionUtil.convert(list);</span>
+<span class="nc" id="L57">		return list2;</span>
 	}
 	
 	@ApiOperation(value = &quot;Updates a Brand details record&quot;)
 	@RequestMapping(path=&quot;/api/brand/{id}&quot;, method = RequestMethod.PUT)
 	public void update(@PathVariable int id,@RequestBody BrandForm f) throws ApiException {
-<span class="nc" id="L67">		BrandPojo p = ConversionUtil.convert(f);</span>
-<span class="nc" id="L68">		brand_service.update(id, p);</span>
-<span class="nc" id="L69">	}</span>
+<span class="nc" id="L63">		BrandPojo p = ConversionUtil.convert(f);</span>
+<span class="nc" id="L64">		brand_service.update(id, p);</span>
+<span class="nc" id="L65">	}</span>
 	
 	
 

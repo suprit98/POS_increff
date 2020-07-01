@@ -10,6 +10,7 @@ com/increff/pos/model/ErrorMessage.class
 com/increff/pos/pojo/OrderItemPojo.class
 com/increff/pos/controller/OrderController.class
 com/increff/pos/model/BrandForm.class
+com/increff/pos/util/PdfResponseUtil.class
 com/increff/pos/service/OrderService.class
 com/increff/pos/pojo/InventoryPojo.class
 com/increff/pos/controller/InventoryController.class

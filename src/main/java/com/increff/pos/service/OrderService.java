@@ -1,5 +1,6 @@
 package com.increff.pos.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,10 @@ public class OrderService {
 	private InventoryService inventory_service;
 	
 	@Transactional(rollbackFor = ApiException.class)
-	public void add(List<OrderItemPojo> lis, OrderPojo o) throws ApiException {
-		int order_id = order_dao.insert(o);
+	public void add(List<OrderItemPojo> lis) throws ApiException {
+		OrderPojo op = new OrderPojo();
+		op.setDatetime(LocalDateTime.now());
+		int order_id = order_dao.insert(op);
 		for(OrderItemPojo p:lis) {
 			p.setOrderPojo(order_dao.select(order_id));
 			order_item_dao.insert(p);
