@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.controller</a> &gt; <span class="el_source">OrderController.java</span></div><h1>OrderController.java</h1><pre class="source lang-java linenums">package com.increff.pos.controller;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.increff.pos.model.InvoiceData;
+import com.increff.pos.model.InvoiceDataList;
 import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.pojo.OrderItemPojo;
@@ -19,13 +24,14 @@ import com.increff.pos.service.ApiException;
 import com.increff.pos.service.OrderService;
 import com.increff.pos.service.ProductDetailsService;
 import com.increff.pos.util.ConversionUtil;
+import com.increff.pos.util.XmlUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @Api
 @RestController
-<span class="nc" id="L28">public class OrderController {</span>
+<span class="nc" id="L34">public class OrderController {</span>
 
 	@Autowired
 	private OrderService order_service;
@@ -37,46 +43,64 @@ import io.swagger.annotations.ApiOperation;
 
 	@ApiOperation(value = &quot;Adds Order Details&quot;)
 	@RequestMapping(path = &quot;/api/order&quot;, method = RequestMethod.POST)
-	public void add(@RequestBody OrderItemForm[] forms) throws ApiException {
-<span class="nc" id="L41">		List&lt;OrderItemPojo&gt; lis = new ArrayList&lt;OrderItemPojo&gt;();</span>
-<span class="nc bnc" id="L42" title="All 2 branches missed.">		for(OrderItemForm f:forms) {</span>
-<span class="nc" id="L43">			lis.add(ConversionUtil.convert(product_service,f));</span>
+	public void add(@RequestBody OrderItemForm[] forms, HttpServletResponse response) throws ApiException,Exception {
+<span class="nc" id="L47">		List&lt;OrderItemPojo&gt; lis = new ArrayList&lt;OrderItemPojo&gt;();</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">		for(OrderItemForm f:forms) {</span>
+<span class="nc" id="L49">			lis.add(ConversionUtil.convert(product_service,f));</span>
 		}
-<span class="nc" id="L45">		OrderPojo op = new OrderPojo();</span>
-<span class="nc" id="L46">		op.setDatetime(LocalDateTime.now());</span>
-<span class="nc" id="L47">		order_service.add(lis,op);</span>
-<span class="nc" id="L48">	}</span>
+<span class="nc" id="L51">		OrderPojo op = new OrderPojo();</span>
+<span class="nc" id="L52">		op.setDatetime(LocalDateTime.now());</span>
+<span class="nc" id="L53">		order_service.add(lis,op);</span>
+		
+<span class="nc" id="L55">		List&lt;InvoiceData&gt; invoiceLis = ConversionUtil.convert(product_service,lis);</span>
+<span class="nc" id="L56">		InvoiceDataList idl = new InvoiceDataList();</span>
+<span class="nc" id="L57">		idl.setInvoiceLis(invoiceLis);</span>
+<span class="nc" id="L58">		idl.setOrder_id(lis.get(0).getOrderPojo().getId());</span>
+		
+<span class="nc" id="L60">		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd HH:mm&quot;);</span>
+<span class="nc" id="L61">		idl.setDatetime(lis.get(0).getOrderPojo().getDatetime().format(formatter));</span>
+<span class="nc" id="L62">		XmlUtil.generateXML(idl);</span>
+<span class="nc" id="L63">		byte[] bytes = XmlUtil.generatePDF();</span>
+		
+<span class="nc" id="L65">		response.setContentType(&quot;application/pdf&quot;);</span>
+<span class="nc" id="L66">	    response.setContentLength(bytes.length);</span>
+	    
+<span class="nc" id="L68">	    response.getOutputStream().write(bytes);</span>
+<span class="nc" id="L69">	    response.getOutputStream().flush();</span>
+	    
+	    
+<span class="nc" id="L72">	}</span>
 	
 	@ApiOperation(value = &quot;Gets a OrderItem details record by id&quot;)
 	@RequestMapping(path=&quot;/api/order/{id}&quot;, method = RequestMethod.GET)
 	public OrderItemData get(@PathVariable int id) throws ApiException {
-<span class="nc" id="L53">		OrderItemPojo p = order_service.get(id);</span>
-<span class="nc" id="L54">		return ConversionUtil.convert(p);</span>
+<span class="nc" id="L77">		OrderItemPojo p = order_service.get(id);</span>
+<span class="nc" id="L78">		return ConversionUtil.convert(p);</span>
 	}
 	
 	@ApiOperation(value = &quot;Gets list of Order Items&quot;)
 	@RequestMapping(path=&quot;/api/order&quot;, method = RequestMethod.GET)
 	public List&lt;OrderItemData&gt; getAll() {
-<span class="nc" id="L60">		List&lt;OrderItemPojo&gt; list = order_service.getAll();</span>
-<span class="nc" id="L61">		List&lt;OrderItemData&gt; list2 = new ArrayList&lt;OrderItemData&gt;();</span>
-<span class="nc bnc" id="L62" title="All 2 branches missed.">		for(OrderItemPojo p : list) {</span>
-<span class="nc" id="L63">			list2.add(ConversionUtil.convert(p));</span>
-<span class="nc" id="L64">		}</span>
-<span class="nc" id="L65">		return list2;</span>
+<span class="nc" id="L84">		List&lt;OrderItemPojo&gt; list = order_service.getAll();</span>
+<span class="nc" id="L85">		List&lt;OrderItemData&gt; list2 = new ArrayList&lt;OrderItemData&gt;();</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">		for(OrderItemPojo p : list) {</span>
+<span class="nc" id="L87">			list2.add(ConversionUtil.convert(p));</span>
+<span class="nc" id="L88">		}</span>
+<span class="nc" id="L89">		return list2;</span>
 	}
 	
 	@ApiOperation(value = &quot;Deletes Order Item record&quot;)
 	@RequestMapping(path=&quot;/api/order/{id}&quot;, method = RequestMethod.DELETE)
 	public void delete(@PathVariable int id) {
-<span class="nc" id="L71">		order_service.delete(id);</span>
-<span class="nc" id="L72">	}</span>
+<span class="nc" id="L95">		order_service.delete(id);</span>
+<span class="nc" id="L96">	}</span>
 	
 	@ApiOperation(value = &quot;Updates a OrderItem record&quot;)
 	@RequestMapping(path=&quot;/api/order/{id}&quot;, method = RequestMethod.PUT)
 	public void update(@PathVariable int id,@RequestBody OrderItemForm f) throws ApiException {
-<span class="nc" id="L77">		OrderItemPojo p = ConversionUtil.convert(product_service,f);</span>
-<span class="nc" id="L78">		order_service.update(id, p);</span>
-<span class="nc" id="L79">	}</span>
+<span class="nc" id="L101">		OrderItemPojo p = ConversionUtil.convert(product_service,f);</span>
+<span class="nc" id="L102">		order_service.update(id, p);</span>
+<span class="nc" id="L103">	}</span>
 
 
 }

@@ -1,9 +1,13 @@
 package com.increff.pos.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.increff.pos.model.BrandData;
 import com.increff.pos.model.BrandForm;
 import com.increff.pos.model.InventoryData;
 import com.increff.pos.model.InventoryForm;
+import com.increff.pos.model.InvoiceData;
 import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.model.ProductDetailsData;
@@ -83,6 +87,19 @@ public class ConversionUtil {
 		d.setQuantity(p.getQuantity());
 		d.setOrderId(p.getOrderPojo().getId());
 		return d;
+	}
+
+	public static List<InvoiceData> convert(ProductDetailsService product_service, List<OrderItemPojo> lis) {
+		List<InvoiceData> invoiceLis = new ArrayList<InvoiceData>();
+		for(OrderItemPojo p:lis) {
+			InvoiceData i = new InvoiceData();
+			i.setId(p.getId());
+			i.setMrp(p.getProductPojo().getMrp());
+			i.setName(p.getProductPojo().getName());
+			i.setQuantity(p.getQuantity());
+			invoiceLis.add(i);
+		}
+		return invoiceLis;
 	}
 
 }

@@ -30,9 +30,17 @@ function addOrder(event){
 	   data: json,
 	   headers: {
        	'Content-Type': 'application/json'
-       },
-	   success: function(response) {
+     },
+		 xhrFields: {
+        responseType: 'blob'
+     },
+	   success: function(blob) {
 	   		alert("Order created");
+				console.log(blob.size);
+      	var link=document.createElement('a');
+      	link.href=window.URL.createObjectURL(blob);
+      	link.download="Invoice_" + new Date() + ".pdf";
+      	link.click();
 	   },
 	   error: function(response){
 	   		handleAjaxError(response);

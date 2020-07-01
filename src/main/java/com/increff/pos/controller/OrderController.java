@@ -1,8 +1,11 @@
 package com.increff.pos.controller;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.increff.pos.model.InvoiceData;
+import com.increff.pos.model.InvoiceDataList;
 import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.pojo.OrderItemPojo;
@@ -19,6 +24,7 @@ import com.increff.pos.service.ApiException;
 import com.increff.pos.service.OrderService;
 import com.increff.pos.service.ProductDetailsService;
 import com.increff.pos.util.ConversionUtil;
+import com.increff.pos.util.XmlUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,7 +43,7 @@ public class OrderController {
 
 	@ApiOperation(value = "Adds Order Details")
 	@RequestMapping(path = "/api/order", method = RequestMethod.POST)
-	public void add(@RequestBody OrderItemForm[] forms) throws ApiException {
+	public void add(@RequestBody OrderItemForm[] forms, HttpServletResponse response) throws ApiException,Exception {
 		List<OrderItemPojo> lis = new ArrayList<OrderItemPojo>();
 		for(OrderItemForm f:forms) {
 			lis.add(ConversionUtil.convert(product_service,f));
@@ -45,6 +51,24 @@ public class OrderController {
 		OrderPojo op = new OrderPojo();
 		op.setDatetime(LocalDateTime.now());
 		order_service.add(lis,op);
+		
+		List<InvoiceData> invoiceLis = ConversionUtil.convert(product_service,lis);
+		InvoiceDataList idl = new InvoiceDataList();
+		idl.setInvoiceLis(invoiceLis);
+		idl.setOrder_id(lis.get(0).getOrderPojo().getId());
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		idl.setDatetime(lis.get(0).getOrderPojo().getDatetime().format(formatter));
+		XmlUtil.generateXML(idl);
+		byte[] bytes = XmlUtil.generatePDF();
+		
+		response.setContentType("application/pdf");
+	    response.setContentLength(bytes.length);
+	    
+	    response.getOutputStream().write(bytes);
+	    response.getOutputStream().flush();
+	    
+	    
 	}
 	
 	@ApiOperation(value = "Gets a OrderItem details record by id")

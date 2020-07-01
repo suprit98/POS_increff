@@ -18,6 +18,7 @@ com/increff/pos/controller/AppRestControllerAdvice.class
 com/increff/pos/model/ProductDetailsData.class
 com/increff/pos/model/OrderItemForm.class
 com/increff/pos/spring/DBConfig.class
+com/increff/pos/util/XmlUtil.class
 com/increff/pos/controller/BrandController.class
 com/increff/pos/spring/SpringConfig.class
 com/increff/pos/model/InventoryForm.class
@@ -32,6 +33,8 @@ com/increff/pos/service/ApiException.class
 com/increff/pos/spring/ControllerConfig.class
 com/increff/pos/model/ProductDetailsForm.class
 com/increff/pos/service/InventoryService.class
+com/increff/pos/model/InvoiceDataList.class
 com/increff/pos/util/ConversionUtil.class
+com/increff/pos/model/InvoiceData.class
 com/increff/pos/pojo/BrandPojo.class
 com/increff/pos/dao/OrderDao.class
