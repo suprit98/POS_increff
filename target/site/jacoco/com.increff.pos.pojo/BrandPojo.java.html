@@ -4,9 +4,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Table;
 
 @Entity
-<span class="nc" id="L9">public class BrandPojo {</span>
+@Table(indexes= {
+		@Index(name = &quot;id&quot;, columnList = &quot;id&quot;),
+		@Index(name = &quot;brand_category_index&quot;, columnList = &quot;brand&quot;),
+		@Index(name = &quot;brand_category_index&quot;, columnList = &quot;category&quot;)
+})
+<span class="nc" id="L16">public class BrandPojo {</span>
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,28 +22,28 @@ import javax.persistence.Id;
 	private String category;
 
 	public int getId() {
-<span class="nc" id="L18">		return id;</span>
+<span class="nc" id="L25">		return id;</span>
 	}
 
 	public void setId(int id) {
-<span class="nc" id="L22">		this.id = id;</span>
-<span class="nc" id="L23">	}</span>
+<span class="nc" id="L29">		this.id = id;</span>
+<span class="nc" id="L30">	}</span>
 
 	public String getBrand() {
-<span class="nc" id="L26">		return brand;</span>
+<span class="nc" id="L33">		return brand;</span>
 	}
 
 	public void setBrand(String brand) {
-<span class="nc" id="L30">		this.brand = brand;</span>
-<span class="nc" id="L31">	}</span>
+<span class="nc" id="L37">		this.brand = brand;</span>
+<span class="nc" id="L38">	}</span>
 
 	public String getCategory() {
-<span class="nc" id="L34">		return category;</span>
+<span class="nc" id="L41">		return category;</span>
 	}
 
 	public void setCategory(String category) {
-<span class="nc" id="L38">		this.category = category;</span>
-<span class="nc" id="L39">	}</span>
+<span class="nc" id="L45">		this.category = category;</span>
+<span class="nc" id="L46">	}</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

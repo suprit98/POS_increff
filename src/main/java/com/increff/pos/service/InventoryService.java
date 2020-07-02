@@ -16,10 +16,12 @@ public class InventoryService {
 	private InventoryDao inventory_dao;
 	
 	@Transactional
-	public void add(InventoryPojo p) {
+	public void add(InventoryPojo p) throws ApiException {
+		validate(p);
 		inventory_dao.insert(p);
 	}
 	
+
 	@Transactional
 	public void delete(int id) {
 		inventory_dao.delete(id);	
@@ -49,7 +51,7 @@ public class InventoryService {
 	
 	@Transactional(rollbackFor = ApiException.class)
 	public void update(int id, InventoryPojo p) throws ApiException {
-		
+		validate(p);
 		InventoryPojo ex = checkIfExists(id);
 		ex.setQuantity(p.getQuantity());
 		inventory_dao.update(p);
@@ -62,6 +64,13 @@ public class InventoryService {
 			throw new ApiException("Inventory with given ID does not exist, id: " + id);
 		}
 		return p;
+	}
+	
+	private void validate(InventoryPojo p) throws ApiException {
+		if(p.getQuantity()<=0) {
+			throw new ApiException("Inventory quantity should be positive");
+		}
+		
 	}
 	
 

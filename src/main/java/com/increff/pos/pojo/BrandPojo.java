@@ -4,8 +4,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Table;
 
 @Entity
+@Table(indexes= {
+		@Index(name = "id", columnList = "id"),
+		@Index(name = "brand_category_index", columnList = "brand"),
+		@Index(name = "brand_category_index", columnList = "category")
+})
 public class BrandPojo {
 
 	@Id

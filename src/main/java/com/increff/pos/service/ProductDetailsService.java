@@ -17,7 +17,8 @@ public class ProductDetailsService {
 	private ProductDetailsDao productdetails_dao;
 	
 	@Transactional
-	public void add(ProductDetailsPojo p) {
+	public void add(ProductDetailsPojo p) throws ApiException {
+		validate(p);
 		normalize(p);
 		p.setBarcode(BarcodeUtil.randomString(8));
 		productdetails_dao.insert(p);
@@ -47,6 +48,7 @@ public class ProductDetailsService {
 	
 	@Transactional(rollbackFor = ApiException.class)
 	public void update(int id, ProductDetailsPojo p) throws ApiException {
+		validate(p);
 		normalize(p);
 		ProductDetailsPojo ex = checkIfExists(id);
 		ex.setBarcode(BarcodeUtil.randomString(8));
@@ -76,6 +78,15 @@ public class ProductDetailsService {
 	
 	protected static void normalize(ProductDetailsPojo p) {
 		p.setName(p.getName().toLowerCase());		
+	}
+	
+	protected static void validate(ProductDetailsPojo p) throws ApiException {
+		if(p.getName().isEmpty()) {
+			throw new ApiException("The name of product must not be empty");
+		}
+		if(p.getMrp()<=0) {
+			throw new ApiException("Mrp value should be positive");
+		}
 	}
 
 }

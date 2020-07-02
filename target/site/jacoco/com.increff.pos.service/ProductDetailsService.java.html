@@ -17,66 +17,77 @@ import com.increff.pos.util.BarcodeUtil;
 	private ProductDetailsDao productdetails_dao;
 	
 	@Transactional
-	public void add(ProductDetailsPojo p) {
-<span class="nc" id="L21">		normalize(p);</span>
-<span class="nc" id="L22">		p.setBarcode(BarcodeUtil.randomString(8));</span>
-<span class="nc" id="L23">		productdetails_dao.insert(p);</span>
-<span class="nc" id="L24">	}</span>
+	public void add(ProductDetailsPojo p) throws ApiException {
+<span class="nc" id="L21">		validate(p);</span>
+<span class="nc" id="L22">		normalize(p);</span>
+<span class="nc" id="L23">		p.setBarcode(BarcodeUtil.randomString(8));</span>
+<span class="nc" id="L24">		productdetails_dao.insert(p);</span>
+<span class="nc" id="L25">	}</span>
 	
 	@Transactional
 	public void delete(int id) {
-<span class="nc" id="L28">		productdetails_dao.delete(id);	</span>
-<span class="nc" id="L29">	}</span>
+<span class="nc" id="L29">		productdetails_dao.delete(id);	</span>
+<span class="nc" id="L30">	}</span>
 	
 	@Transactional
 	public ProductDetailsPojo get(int id) throws ApiException {
-<span class="nc" id="L33">		ProductDetailsPojo p = checkIfExists(id);</span>
-<span class="nc" id="L34">		return p;</span>
+<span class="nc" id="L34">		ProductDetailsPojo p = checkIfExists(id);</span>
+<span class="nc" id="L35">		return p;</span>
 	}
 	
 	@Transactional
 	public ProductDetailsPojo get(String barcode) throws ApiException {
-<span class="nc" id="L39">		ProductDetailsPojo p = checkIfExists(barcode);</span>
-<span class="nc" id="L40">		return p;</span>
+<span class="nc" id="L40">		ProductDetailsPojo p = checkIfExists(barcode);</span>
+<span class="nc" id="L41">		return p;</span>
 	}
 	
 	@Transactional
 	public List&lt;ProductDetailsPojo&gt; getAll() {
-<span class="nc" id="L45">		return productdetails_dao.selectAll();</span>
+<span class="nc" id="L46">		return productdetails_dao.selectAll();</span>
 	}
 	
 	@Transactional(rollbackFor = ApiException.class)
 	public void update(int id, ProductDetailsPojo p) throws ApiException {
-<span class="nc" id="L50">		normalize(p);</span>
-<span class="nc" id="L51">		ProductDetailsPojo ex = checkIfExists(id);</span>
-<span class="nc" id="L52">		ex.setBarcode(BarcodeUtil.randomString(8));</span>
-<span class="nc" id="L53">		ex.setBrandPojo(p.getBrandPojo());</span>
-<span class="nc" id="L54">		ex.setMrp(p.getMrp());</span>
-<span class="nc" id="L55">		ex.setName(p.getName());</span>
-<span class="nc" id="L56">		productdetails_dao.update(p);</span>
-<span class="nc" id="L57">	}</span>
+<span class="nc" id="L51">		validate(p);</span>
+<span class="nc" id="L52">		normalize(p);</span>
+<span class="nc" id="L53">		ProductDetailsPojo ex = checkIfExists(id);</span>
+<span class="nc" id="L54">		ex.setBarcode(BarcodeUtil.randomString(8));</span>
+<span class="nc" id="L55">		ex.setBrandPojo(p.getBrandPojo());</span>
+<span class="nc" id="L56">		ex.setMrp(p.getMrp());</span>
+<span class="nc" id="L57">		ex.setName(p.getName());</span>
+<span class="nc" id="L58">		productdetails_dao.update(p);</span>
+<span class="nc" id="L59">	}</span>
 	
 	@Transactional(rollbackFor = ApiException.class)
 	public ProductDetailsPojo checkIfExists(int id) throws ApiException {
-<span class="nc" id="L61">		ProductDetailsPojo p = productdetails_dao.select(id);</span>
-<span class="nc bnc" id="L62" title="All 2 branches missed.">		if(p == null) {</span>
-<span class="nc" id="L63">			throw new ApiException(&quot;ProductDetails with given ID does not exist, id: &quot; + id);</span>
+<span class="nc" id="L63">		ProductDetailsPojo p = productdetails_dao.select(id);</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">		if(p == null) {</span>
+<span class="nc" id="L65">			throw new ApiException(&quot;ProductDetails with given ID does not exist, id: &quot; + id);</span>
 		}
-<span class="nc" id="L65">		return p;</span>
+<span class="nc" id="L67">		return p;</span>
 	}
 	
 	@Transactional(rollbackFor = ApiException.class)
 	public ProductDetailsPojo checkIfExists(String barcode) throws ApiException {
-<span class="nc" id="L70">		ProductDetailsPojo p = productdetails_dao.select(barcode);</span>
-<span class="nc bnc" id="L71" title="All 2 branches missed.">		if(p == null) {</span>
-<span class="nc" id="L72">			throw new ApiException(&quot;ProductDetails with given barcode does not exist, barcode: &quot; + barcode);</span>
+<span class="nc" id="L72">		ProductDetailsPojo p = productdetails_dao.select(barcode);</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">		if(p == null) {</span>
+<span class="nc" id="L74">			throw new ApiException(&quot;ProductDetails with given barcode does not exist, barcode: &quot; + barcode);</span>
 		}
-<span class="nc" id="L74">		return p;</span>
+<span class="nc" id="L76">		return p;</span>
 	}
 	
 	protected static void normalize(ProductDetailsPojo p) {
-<span class="nc" id="L78">		p.setName(p.getName().toLowerCase());		</span>
-<span class="nc" id="L79">	}</span>
+<span class="nc" id="L80">		p.setName(p.getName().toLowerCase());		</span>
+<span class="nc" id="L81">	}</span>
+	
+	protected static void validate(ProductDetailsPojo p) throws ApiException {
+<span class="nc bnc" id="L84" title="All 2 branches missed.">		if(p.getName().isEmpty()) {</span>
+<span class="nc" id="L85">			throw new ApiException(&quot;The name of product must not be empty&quot;);</span>
+		}
+<span class="nc bnc" id="L87" title="All 2 branches missed.">		if(p.getMrp()&lt;=0) {</span>
+<span class="nc" id="L88">			throw new ApiException(&quot;Mrp value should be positive&quot;);</span>
+		}
+<span class="nc" id="L90">	}</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

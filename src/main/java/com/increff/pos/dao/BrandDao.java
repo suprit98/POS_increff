@@ -18,6 +18,7 @@ public class BrandDao {
 	EntityManager em;
 	
 	private static String select_all = "select p from BrandPojo p";
+	private static String select_brand_category = "select p from BrandPojo p where p.brand=:brand and p.category=:category";
 	
 	public void insert(BrandPojo p) {
 		em.persist(p);
@@ -36,6 +37,19 @@ public class BrandDao {
 		TypedQuery<BrandPojo> query = getQuery(select_all);
 		List<BrandPojo> results = query.getResultList();
 		return results;	
+	}
+	
+	public BrandPojo selectAllBrandCategory(String brand, String category) {
+		TypedQuery<BrandPojo> query = getQuery(select_brand_category);
+		query.setParameter("brand", brand);
+		query.setParameter("category", category);
+		List<BrandPojo> results = query.getResultList();
+		if(results.size()>0) {
+			return results.get(0);
+		}
+		else {
+			return null;
+		}
 	}
 	
 	public void update(BrandPojo p) {

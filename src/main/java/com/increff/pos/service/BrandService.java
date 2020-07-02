@@ -17,11 +17,13 @@ public class BrandService {
 	private BrandDao brand_dao;
 	
 	@Transactional
-	public void add(BrandPojo p) {
+	public void add(BrandPojo p) throws ApiException {
+		validate(p);
 		normalize(p);
 		brand_dao.insert(p);
 	}
 	
+
 	@Transactional
 	public void delete(int id) {
 		brand_dao.delete(id);	
@@ -75,6 +77,18 @@ public class BrandService {
 	protected static void normalize(BrandPojo p) {
 		p.setBrand(p.getBrand().toLowerCase().trim());
 		p.setCategory(p.getCategory().toLowerCase().trim());		
+	}
+	
+	private void validate(BrandPojo p) throws ApiException {
+		if(p.getBrand().isEmpty() || p.getCategory().isEmpty()) {
+			throw new ApiException("Brand and category values must not be empty");
+		}
+		
+		BrandPojo ex = brand_dao.selectAllBrandCategory(p.getBrand(), p.getCategory());
+		if(ex!=null) {
+			throw new ApiException("Brand and category values entered already exists");
+		}
+		
 	}
 
 }

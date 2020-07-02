@@ -16,53 +16,62 @@ import com.increff.pos.pojo.InventoryPojo;
 	private InventoryDao inventory_dao;
 	
 	@Transactional
-	public void add(InventoryPojo p) {
-<span class="nc" id="L20">		inventory_dao.insert(p);</span>
-<span class="nc" id="L21">	}</span>
+	public void add(InventoryPojo p) throws ApiException {
+<span class="nc" id="L20">		validate(p);</span>
+<span class="nc" id="L21">		inventory_dao.insert(p);</span>
+<span class="nc" id="L22">	}</span>
 	
+
 	@Transactional
 	public void delete(int id) {
-<span class="nc" id="L25">		inventory_dao.delete(id);	</span>
-<span class="nc" id="L26">	}</span>
+<span class="nc" id="L27">		inventory_dao.delete(id);	</span>
+<span class="nc" id="L28">	}</span>
 	
 	@Transactional
 	public InventoryPojo get(int id) throws ApiException {
-<span class="nc" id="L30">		InventoryPojo p = checkIfExists(id);</span>
-<span class="nc" id="L31">		return p;</span>
+<span class="nc" id="L32">		InventoryPojo p = checkIfExists(id);</span>
+<span class="nc" id="L33">		return p;</span>
 	}
 	
 	@Transactional
 	public InventoryPojo getByProductId(int product_id) throws ApiException {
-<span class="nc" id="L36">		List&lt;InventoryPojo&gt; lis = getAll();</span>
-<span class="nc bnc" id="L37" title="All 2 branches missed.">		for(InventoryPojo ip:lis) {</span>
-<span class="nc bnc" id="L38" title="All 2 branches missed.">			if(ip.getProductPojo().getId() == product_id) {</span>
-<span class="nc" id="L39">				return ip;</span>
+<span class="nc" id="L38">		List&lt;InventoryPojo&gt; lis = getAll();</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">		for(InventoryPojo ip:lis) {</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">			if(ip.getProductPojo().getId() == product_id) {</span>
+<span class="nc" id="L41">				return ip;</span>
 			}
-<span class="nc" id="L41">		}</span>
-<span class="nc" id="L42">		return null;</span>
+<span class="nc" id="L43">		}</span>
+<span class="nc" id="L44">		return null;</span>
 	}
 	
 	@Transactional
 	public List&lt;InventoryPojo&gt; getAll() {
-<span class="nc" id="L47">		return inventory_dao.selectAll();</span>
+<span class="nc" id="L49">		return inventory_dao.selectAll();</span>
 	}
 	
 	@Transactional(rollbackFor = ApiException.class)
 	public void update(int id, InventoryPojo p) throws ApiException {
-		
-<span class="nc" id="L53">		InventoryPojo ex = checkIfExists(id);</span>
-<span class="nc" id="L54">		ex.setQuantity(p.getQuantity());</span>
-<span class="nc" id="L55">		inventory_dao.update(p);</span>
-<span class="nc" id="L56">	}</span>
+<span class="nc" id="L54">		validate(p);</span>
+<span class="nc" id="L55">		InventoryPojo ex = checkIfExists(id);</span>
+<span class="nc" id="L56">		ex.setQuantity(p.getQuantity());</span>
+<span class="nc" id="L57">		inventory_dao.update(p);</span>
+<span class="nc" id="L58">	}</span>
 	
 	@Transactional(rollbackFor = ApiException.class)
 	public InventoryPojo checkIfExists(int id) throws ApiException {
-<span class="nc" id="L60">		InventoryPojo p = inventory_dao.select(id);</span>
-<span class="nc bnc" id="L61" title="All 2 branches missed.">		if(p == null) {</span>
-<span class="nc" id="L62">			throw new ApiException(&quot;Inventory with given ID does not exist, id: &quot; + id);</span>
+<span class="nc" id="L62">		InventoryPojo p = inventory_dao.select(id);</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">		if(p == null) {</span>
+<span class="nc" id="L64">			throw new ApiException(&quot;Inventory with given ID does not exist, id: &quot; + id);</span>
 		}
-<span class="nc" id="L64">		return p;</span>
+<span class="nc" id="L66">		return p;</span>
 	}
+	
+	private void validate(InventoryPojo p) throws ApiException {
+<span class="nc bnc" id="L70" title="All 2 branches missed.">		if(p.getQuantity()&lt;=0) {</span>
+<span class="nc" id="L71">			throw new ApiException(&quot;Inventory quantity should be positive&quot;);</span>
+		}
+		
+<span class="nc" id="L74">	}</span>
 	
 
 }

@@ -18,32 +18,46 @@ import com.increff.pos.pojo.BrandPojo;
 	EntityManager em;
 	
 <span class="nc" id="L20">	private static String select_all = &quot;select p from BrandPojo p&quot;;</span>
+<span class="nc" id="L21">	private static String select_brand_category = &quot;select p from BrandPojo p where p.brand=:brand and p.category=:category&quot;;</span>
 	
 	public void insert(BrandPojo p) {
-<span class="nc" id="L23">		em.persist(p);</span>
-<span class="nc" id="L24">	}</span>
+<span class="nc" id="L24">		em.persist(p);</span>
+<span class="nc" id="L25">	}</span>
 	
 	public void delete(int id) {
-<span class="nc" id="L27">		BrandPojo p = em.find(BrandPojo.class, id);</span>
-<span class="nc" id="L28">		em.remove(p);</span>
-<span class="nc" id="L29">	}</span>
+<span class="nc" id="L28">		BrandPojo p = em.find(BrandPojo.class, id);</span>
+<span class="nc" id="L29">		em.remove(p);</span>
+<span class="nc" id="L30">	}</span>
 	
 	public BrandPojo select(int id) {
-<span class="nc" id="L32">		return em.find(BrandPojo.class, id);</span>
+<span class="nc" id="L33">		return em.find(BrandPojo.class, id);</span>
 	}
 	
 	public List&lt;BrandPojo&gt; selectAll() {
-<span class="nc" id="L36">		TypedQuery&lt;BrandPojo&gt; query = getQuery(select_all);</span>
-<span class="nc" id="L37">		List&lt;BrandPojo&gt; results = query.getResultList();</span>
-<span class="nc" id="L38">		return results;	</span>
+<span class="nc" id="L37">		TypedQuery&lt;BrandPojo&gt; query = getQuery(select_all);</span>
+<span class="nc" id="L38">		List&lt;BrandPojo&gt; results = query.getResultList();</span>
+<span class="nc" id="L39">		return results;	</span>
+	}
+	
+	public BrandPojo selectAllBrandCategory(String brand, String category) {
+<span class="nc" id="L43">		TypedQuery&lt;BrandPojo&gt; query = getQuery(select_brand_category);</span>
+<span class="nc" id="L44">		query.setParameter(&quot;brand&quot;, brand);</span>
+<span class="nc" id="L45">		query.setParameter(&quot;category&quot;, category);</span>
+<span class="nc" id="L46">		List&lt;BrandPojo&gt; results = query.getResultList();</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">		if(results.size()&gt;0) {</span>
+<span class="nc" id="L48">			return results.get(0);</span>
+		}
+		else {
+<span class="nc" id="L51">			return null;</span>
+		}
 	}
 	
 	public void update(BrandPojo p) {
 		
-<span class="nc" id="L43">	}</span>
+<span class="nc" id="L57">	}</span>
 	
 	TypedQuery&lt;BrandPojo&gt; getQuery(String jpql) {
-<span class="nc" id="L46">		return em.createQuery(jpql,BrandPojo.class);</span>
+<span class="nc" id="L60">		return em.createQuery(jpql,BrandPojo.class);</span>
 	}
 	
 	

@@ -39,7 +39,7 @@ function addOrder(event){
      },
 	   success: function(response) {
 	   		alert("Order created");
-				$("#container").append('<button onclick="downloadPDF(' + response.id +')"></button>');
+				$("#container").append('<button onclick="downloadPDF(' + response.id +')">Download Invoice PDF</button>');
 	   },
 	   error: function(response){
 	   		handleAjaxError(response);
@@ -170,6 +170,7 @@ function displayOrderList(data){
 
     prev = parseInt(e.orderId);
 	}
+	$tbody.append('<tr><td colspan="5"><button onclick="downloadPDF('+prev +')">Download Invoice PDF</button></td></tr>');
 }
 
 function displayEditOrderItem(id){
