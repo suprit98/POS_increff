@@ -27,7 +27,7 @@ import com.increff.pos.pojo.OrderPojo;
 	private InventoryService inventory_service;
 	
 	@Transactional(rollbackFor = ApiException.class)
-	public void add(List&lt;OrderItemPojo&gt; lis) throws ApiException {
+	public int add(List&lt;OrderItemPojo&gt; lis) throws ApiException {
 <span class="nc" id="L31">		OrderPojo op = new OrderPojo();</span>
 <span class="nc" id="L32">		op.setDatetime(LocalDateTime.now());</span>
 <span class="nc" id="L33">		int order_id = order_dao.insert(op);</span>
@@ -36,77 +36,84 @@ import com.increff.pos.pojo.OrderPojo;
 <span class="nc" id="L36">			order_item_dao.insert(p);</span>
 <span class="nc" id="L37">			updateInventory(p);</span>
 <span class="nc" id="L38">		}</span>
-<span class="nc" id="L39">	}</span>
+<span class="nc" id="L39">		return order_id;</span>
+	}
 	
 	
 	@Transactional
 	public OrderItemPojo get(int id) throws ApiException {
-<span class="nc" id="L44">		OrderItemPojo p = checkIfExists(id);</span>
-<span class="nc" id="L45">		return p;</span>
+<span class="nc" id="L45">		OrderItemPojo p = checkIfExists(id);</span>
+<span class="nc" id="L46">		return p;</span>
+	}
+	
+	@Transactional
+	public List&lt;OrderItemPojo&gt; getOrderItems(int order_id) throws ApiException {
+<span class="nc" id="L51">		List&lt;OrderItemPojo&gt; lis = order_item_dao.selectOrder(order_id);</span>
+<span class="nc" id="L52">		return lis;</span>
 	}
 	
 	@Transactional
 	public List&lt;OrderItemPojo&gt; getAll() {
-<span class="nc" id="L50">		return order_item_dao.selectAll();</span>
+<span class="nc" id="L57">		return order_item_dao.selectAll();</span>
 	}
 	
 	@Transactional
 	public void delete(int id) {
-<span class="nc" id="L55">		order_item_dao.delete(id);	</span>
-<span class="nc" id="L56">	}</span>
+<span class="nc" id="L62">		order_item_dao.delete(id);	</span>
+<span class="nc" id="L63">	}</span>
 	
 	@Transactional(rollbackFor = ApiException.class)
 	public void update(int id, OrderItemPojo p) throws ApiException {
 		
-<span class="nc" id="L61">		OrderItemPojo ex = checkIfExists(id);</span>
-<span class="nc" id="L62">		int old_qty = ex.getQuantity();</span>
-<span class="nc" id="L63">		ex.setQuantity(p.getQuantity());</span>
-<span class="nc" id="L64">		ex.setProductPojo(p.getProductPojo());</span>
-<span class="nc" id="L65">		ex.setSellingPrice(p.getSellingPrice());</span>
-<span class="nc" id="L66">		order_item_dao.update(p);</span>
-<span class="nc" id="L67">		updateInventory(old_qty,p);</span>
-<span class="nc" id="L68">	}</span>
+<span class="nc" id="L68">		OrderItemPojo ex = checkIfExists(id);</span>
+<span class="nc" id="L69">		int old_qty = ex.getQuantity();</span>
+<span class="nc" id="L70">		ex.setQuantity(p.getQuantity());</span>
+<span class="nc" id="L71">		ex.setProductPojo(p.getProductPojo());</span>
+<span class="nc" id="L72">		ex.setSellingPrice(p.getSellingPrice());</span>
+<span class="nc" id="L73">		order_item_dao.update(p);</span>
+<span class="nc" id="L74">		updateInventory(old_qty,p);</span>
+<span class="nc" id="L75">	}</span>
 	
 	@Transactional(rollbackFor = ApiException.class)
 	public OrderItemPojo checkIfExists(int id) throws ApiException {
-<span class="nc" id="L72">		OrderItemPojo p = order_item_dao.select(id);</span>
-<span class="nc bnc" id="L73" title="All 2 branches missed.">		if(p == null) {</span>
-<span class="nc" id="L74">			throw new ApiException(&quot;OrderItem with given ID does not exist, id: &quot; + id);</span>
+<span class="nc" id="L79">		OrderItemPojo p = order_item_dao.select(id);</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">		if(p == null) {</span>
+<span class="nc" id="L81">			throw new ApiException(&quot;OrderItem with given ID does not exist, id: &quot; + id);</span>
 		}
-<span class="nc" id="L76">		return p;</span>
+<span class="nc" id="L83">		return p;</span>
 	}
 	
 	private void updateInventory(OrderItemPojo p) throws ApiException {
-<span class="nc" id="L80">		int quantity = p.getQuantity();</span>
+<span class="nc" id="L87">		int quantity = p.getQuantity();</span>
 		
-<span class="nc" id="L82">		int quantityInInventory = inventory_service.getByProductId(p.getProductPojo().getId()).getQuantity();</span>
+<span class="nc" id="L89">		int quantityInInventory = inventory_service.getByProductId(p.getProductPojo().getId()).getQuantity();</span>
 		
-<span class="nc bnc" id="L84" title="All 2 branches missed.">		if(quantity&gt;quantityInInventory) {</span>
-<span class="nc" id="L85">			throw new ApiException(&quot;Inventory does not contain this much quantity of product. Existing quantity in inventory: &quot;+ quantityInInventory);</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">		if(quantity&gt;quantityInInventory) {</span>
+<span class="nc" id="L92">			throw new ApiException(&quot;Inventory does not contain this much quantity of product. Existing quantity in inventory: &quot;+ quantityInInventory);</span>
 		}
 		else {
-<span class="nc" id="L88">			InventoryPojo new_ip = new InventoryPojo();</span>
-<span class="nc" id="L89">			new_ip.setQuantity(quantityInInventory-quantity);</span>
-<span class="nc" id="L90">			inventory_service.update(inventory_service.getByProductId(p.getProductPojo().getId()).getId(), new_ip);</span>
+<span class="nc" id="L95">			InventoryPojo new_ip = new InventoryPojo();</span>
+<span class="nc" id="L96">			new_ip.setQuantity(quantityInInventory-quantity);</span>
+<span class="nc" id="L97">			inventory_service.update(inventory_service.getByProductId(p.getProductPojo().getId()).getId(), new_ip);</span>
 		}
 		
-<span class="nc" id="L93">	}</span>
+<span class="nc" id="L100">	}</span>
 	
 	private void updateInventory(int old_qty, OrderItemPojo p) throws ApiException {
-<span class="nc" id="L96">		int quantity = p.getQuantity();</span>
+<span class="nc" id="L103">		int quantity = p.getQuantity();</span>
 		
-<span class="nc" id="L98">		int quantityInInventory = inventory_service.getByProductId(p.getProductPojo().getId()).getQuantity() + old_qty;</span>
+<span class="nc" id="L105">		int quantityInInventory = inventory_service.getByProductId(p.getProductPojo().getId()).getQuantity() + old_qty;</span>
 		
-<span class="nc bnc" id="L100" title="All 2 branches missed.">		if(quantity&gt;quantityInInventory) {</span>
-<span class="nc" id="L101">			throw new ApiException(&quot;Inventory does not contain this much quantity of product. Existing quantity in inventory: &quot;+ quantityInInventory);</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">		if(quantity&gt;quantityInInventory) {</span>
+<span class="nc" id="L108">			throw new ApiException(&quot;Inventory does not contain this much quantity of product. Existing quantity in inventory: &quot;+ quantityInInventory);</span>
 		}
 		else {
-<span class="nc" id="L104">			InventoryPojo new_ip = new InventoryPojo();</span>
-<span class="nc" id="L105">			new_ip.setQuantity(quantityInInventory-quantity);</span>
-<span class="nc" id="L106">			inventory_service.update(inventory_service.getByProductId(p.getProductPojo().getId()).getId(), new_ip);</span>
+<span class="nc" id="L111">			InventoryPojo new_ip = new InventoryPojo();</span>
+<span class="nc" id="L112">			new_ip.setQuantity(quantityInInventory-quantity);</span>
+<span class="nc" id="L113">			inventory_service.update(inventory_service.getByProductId(p.getProductPojo().getId()).getId(), new_ip);</span>
 		}
 		
-<span class="nc" id="L109">	}</span>
+<span class="nc" id="L116">	}</span>
 	
 
 }

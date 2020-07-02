@@ -6,6 +6,7 @@ com/increff/pos/dao/ProductDetailsDao.class
 com/increff/pos/controller/ProductDetailsController.class
 com/increff/pos/App.class
 com/increff/pos/spring/WebInitializer.class
+com/increff/pos/controller/InvoiceController.class
 com/increff/pos/model/ErrorMessage.class
 com/increff/pos/pojo/OrderItemPojo.class
 com/increff/pos/controller/OrderController.class
@@ -30,6 +31,7 @@ com/increff/pos/service/ProductDetailsService.class
 com/increff/pos/controller/UIController.class
 com/increff/pos/dao/InventoryDao.class
 com/increff/pos/model/InventoryData.class
+com/increff/pos/model/OrderData.class
 com/increff/pos/service/ApiException.class
 com/increff/pos/spring/ControllerConfig.class
 com/increff/pos/model/ProductDetailsForm.class

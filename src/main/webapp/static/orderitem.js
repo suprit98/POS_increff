@@ -6,6 +6,12 @@ function getOrderUrl(){
 	return baseUrl + "/api/order";
 }
 
+function getInvoiceUrl(){
+	var baseUrl = $("meta[name=baseUrl]").attr("content");
+	console.log(baseUrl);
+	return baseUrl + "/api/invoice";
+}
+
 function addOrderItemToList(event) {
 	var $form = $("#orderitem-form");
 	var json = toJson($form);
@@ -31,16 +37,9 @@ function addOrder(event){
 	   headers: {
        	'Content-Type': 'application/json'
      },
-		 xhrFields: {
-        responseType: 'blob'
-     },
-	   success: function(blob) {
+	   success: function(response) {
 	   		alert("Order created");
-				console.log(blob.size);
-      	var link=document.createElement('a');
-      	link.href=window.URL.createObjectURL(blob);
-      	link.download="Invoice_" + new Date() + ".pdf";
-      	link.click();
+				$("#container").append('<button onclick="downloadPDF(' + response.id +')">Download Invoice PDF</button>');
 	   },
 	   error: function(response){
 	   		handleAjaxError(response);
@@ -164,13 +163,14 @@ function displayOrderList(data){
 		console.log("orderId: "+ parseInt(e.orderId));
 
 		if(parseInt(prev) != parseInt(e.orderId) && parseInt(prev)!=0){
-
+			$tbody.append('<tr><td colspan="5"><button onclick="downloadPDF('+prev +')">Download Invoice PDF</button></td></tr>');
 			$tbody.append(thHtml);
 		}
 		$tbody.append(row);
 
     prev = parseInt(e.orderId);
 	}
+	$tbody.append('<tr><td colspan="5"><button onclick="downloadPDF('+prev +')">Download Invoice PDF</button></td></tr>');
 }
 
 function displayEditOrderItem(id){
@@ -185,6 +185,28 @@ function displayEditOrderItem(id){
 	   		handleAjaxError(response);
 	   }
 	});
+}
+
+function downloadPDF(id) {
+	var url = getInvoiceUrl() + "/" + id;
+	$.ajax({
+	   url: url,
+	   type: 'GET',
+		 xhrFields: {
+        responseType: 'blob'
+     },
+	   success: function(blob) {
+				console.log(blob.size);
+      	var link=document.createElement('a');
+      	link.href=window.URL.createObjectURL(blob);
+      	link.download="Invoice_" + new Date() + ".pdf";
+      	link.click();
+	   },
+	   error: function(response){
+	   		handleAjaxError(response);
+	   }
+	});
+
 }
 
 function displayOrderItem(data){

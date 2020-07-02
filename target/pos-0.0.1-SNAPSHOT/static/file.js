@@ -11,6 +11,7 @@ function readFileData(file, callback){
 }
 
 function handleAjaxError(response) {
+	console.log(response.responseText);
 	var response = JSON.parse(response.responseText);
 	alert(response.message);
 }

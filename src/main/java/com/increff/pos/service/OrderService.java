@@ -27,7 +27,7 @@ public class OrderService {
 	private InventoryService inventory_service;
 	
 	@Transactional(rollbackFor = ApiException.class)
-	public void add(List<OrderItemPojo> lis) throws ApiException {
+	public int add(List<OrderItemPojo> lis) throws ApiException {
 		OrderPojo op = new OrderPojo();
 		op.setDatetime(LocalDateTime.now());
 		int order_id = order_dao.insert(op);
@@ -36,6 +36,7 @@ public class OrderService {
 			order_item_dao.insert(p);
 			updateInventory(p);
 		}
+		return order_id;
 	}
 	
 	
@@ -43,6 +44,12 @@ public class OrderService {
 	public OrderItemPojo get(int id) throws ApiException {
 		OrderItemPojo p = checkIfExists(id);
 		return p;
+	}
+	
+	@Transactional
+	public List<OrderItemPojo> getOrderItems(int order_id) throws ApiException {
+		List<OrderItemPojo> lis = order_item_dao.selectOrder(order_id);
+		return lis;
 	}
 	
 	@Transactional

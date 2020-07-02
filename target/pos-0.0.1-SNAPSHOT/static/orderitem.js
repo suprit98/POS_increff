@@ -6,6 +6,12 @@ function getOrderUrl(){
 	return baseUrl + "/api/order";
 }
 
+function getInvoiceUrl(){
+	var baseUrl = $("meta[name=baseUrl]").attr("content");
+	console.log(baseUrl);
+	return baseUrl + "/api/invoice";
+}
+
 function addOrderItemToList(event) {
 	var $form = $("#orderitem-form");
 	var json = toJson($form);
@@ -31,16 +37,9 @@ function addOrder(event){
 	   headers: {
        	'Content-Type': 'application/json'
      },
-		 xhrFields: {
-        responseType: 'blob'
-     },
-	   success: function(blob) {
+	   success: function(response) {
 	   		alert("Order created");
-				console.log(blob.size);
-      	var link=document.createElement('a');
-      	link.href=window.URL.createObjectURL(blob);
-      	link.download="Invoice_" + new Date() + ".pdf";
-      	link.click();
+				$("#container").append('<button onclick="downloadPDF(' + response.id +')"></button>');
 	   },
 	   error: function(response){
 	   		handleAjaxError(response);
@@ -60,15 +59,38 @@ function updateOrder(event){
 	var $form = $("#orderitem-edit-form");
 	var json = toJson($form);
 
-	ajaxQuery(url,'PUT',json,getPreviousOrders);
-
+	$.ajax({
+	   url: url,
+	   type: 'PUT',
+	   data: json,
+	   headers: {
+       	'Content-Type': 'application/json'
+       },
+	   success: function(response) {
+	   		getPreviousOrders();
+	   },
+	   error: function(response){
+	   		handleAjaxError(response);
+	   }
+	});
 	return false;
 
 }
 
 function deleteOrderItemFromOrderList(id) {
 	var url = getOrderUrl() + "/" + id;
-	ajaxQuery(url,'DELETE','',getPreviousOrders);
+
+	$.ajax({
+	   url: url,
+	   type: 'DELETE',
+	   success: function(data) {
+	   		console.log("Order Item deleted");
+	   		getPreviousOrders();     //...
+	   },
+	   error: function(response){
+	   		handleAjaxError(response);
+	   }
+	});
 }
 
 function deleteOrderItem(id) {
@@ -78,7 +100,17 @@ function deleteOrderItem(id) {
 
 function getPreviousOrders() {
 	var url = getOrderUrl();
-	ajaxQuery(url,'GET','',displayOrderList);
+	$.ajax({
+	   url: url,
+	   type: 'GET',
+	   success: function(data) {
+	   		console.log(data);
+	   		displayOrderList(data);     //...
+	   },
+	   error: function(response){
+	   		handleAjaxError(response);
+	   }
+	});
 }
 
 
@@ -127,10 +159,11 @@ function displayOrderList(data){
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
 
-
+		console.log("Prev: " + prev);
+		console.log("orderId: "+ parseInt(e.orderId));
 
 		if(parseInt(prev) != parseInt(e.orderId) && parseInt(prev)!=0){
-
+			$tbody.append('<tr><td colspan="5"><button onclick="downloadPDF('+prev +')">Download Invoice PDF</button></td></tr>');
 			$tbody.append(thHtml);
 		}
 		$tbody.append(row);
@@ -141,7 +174,38 @@ function displayOrderList(data){
 
 function displayEditOrderItem(id){
 	var url = getOrderUrl() + "/" + id;
-	ajaxQuery(url,'GET','',displayOrderItem);
+	$.ajax({
+	   url: url,
+	   type: 'GET',
+	   success: function(data) {
+	   		displayOrderItem(data);
+	   },
+	   error: function(response){
+	   		handleAjaxError(response);
+	   }
+	});
+}
+
+function downloadPDF(id) {
+	var url = getInvoiceUrl() + "/" + id;
+	$.ajax({
+	   url: url,
+	   type: 'GET',
+		 xhrFields: {
+        responseType: 'blob'
+     },
+	   success: function(blob) {
+				console.log(blob.size);
+      	var link=document.createElement('a');
+      	link.href=window.URL.createObjectURL(blob);
+      	link.download="Invoice_" + new Date() + ".pdf";
+      	link.click();
+	   },
+	   error: function(response){
+	   		handleAjaxError(response);
+	   }
+	});
+
 }
 
 function displayOrderItem(data){

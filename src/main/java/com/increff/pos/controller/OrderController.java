@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.increff.pos.model.OrderData;
 import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.pojo.OrderItemPojo;
@@ -18,7 +19,6 @@ import com.increff.pos.service.ApiException;
 import com.increff.pos.service.OrderService;
 import com.increff.pos.service.ProductDetailsService;
 import com.increff.pos.util.ConversionUtil;
-import com.increff.pos.util.PdfResponseUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,11 +35,12 @@ public class OrderController {
 
 	@ApiOperation(value = "Adds Order Details")
 	@RequestMapping(path = "/api/order", method = RequestMethod.POST)
-	public void add(@RequestBody OrderItemForm[] forms, HttpServletResponse response) throws ApiException, Exception {
+	public OrderData add(@RequestBody OrderItemForm[] forms, HttpServletResponse response) throws ApiException, Exception {
 		List<OrderItemPojo> lis = ConversionUtil.convertOrderItemForms(product_service, forms);
-		order_service.add(lis);
-
-		PdfResponseUtil.generatePdfResponse(product_service, lis, response);
+		int order_id = order_service.add(lis);
+		OrderData od = new OrderData();
+		od.setId(order_id);
+		return od;
 
 	}
 
