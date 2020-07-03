@@ -6,6 +6,12 @@ function getOrderUrl(){
 	return baseUrl + "/api/order";
 }
 
+function getOrderItemUrl(){
+	var baseUrl = $("meta[name=baseUrl]").attr("content");
+	console.log(baseUrl);
+	return baseUrl + "/api/order_item";
+}
+
 function getInvoiceUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content");
 	console.log(baseUrl);
@@ -26,25 +32,21 @@ function getOrderItemList() {
 }
 
 function addOrder(event){
-	//Set the values to update
+	var $form = $("#orderitem-add-form");
+	var json = toJson($form);
+	var order_id = $("#orderitem-add-form input[name=order_id]").val();
+	var url = getOrderItemUrl() + "/" + order_id;
+
+	ajaxQuery(url,'POST',json,getPreviousOrders);
+
+	return false;
+}
+
+function addOrderItem(event) {
 	var json = JSON.stringify(orderitemList);
 	var url = getOrderUrl();
 
-	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-     },
-	   success: function(response) {
-	   		alert("Order created");
-				$("#container").append('<button onclick="downloadPDF(' + response.id +')">Download Invoice PDF</button>');
-	   },
-	   error: function(response){
-	   		handleAjaxError(response);
-	   }
-	});
+	ajaxQuery(url,'POST',json,displayDownloadPdfButton);
 
 	return false;
 }
@@ -59,38 +61,14 @@ function updateOrder(event){
 	var $form = $("#orderitem-edit-form");
 	var json = toJson($form);
 
-	$.ajax({
-	   url: url,
-	   type: 'PUT',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },
-	   success: function(response) {
-	   		getPreviousOrders();
-	   },
-	   error: function(response){
-	   		handleAjaxError(response);
-	   }
-	});
+	ajaxQuery(url,'PUT',json,getPreviousOrders);
 	return false;
 
 }
 
 function deleteOrderItemFromOrderList(id) {
 	var url = getOrderUrl() + "/" + id;
-
-	$.ajax({
-	   url: url,
-	   type: 'DELETE',
-	   success: function(data) {
-	   		console.log("Order Item deleted");
-	   		getPreviousOrders();     //...
-	   },
-	   error: function(response){
-	   		handleAjaxError(response);
-	   }
-	});
+	ajaxQuery(url,'DELETE','',getPreviousOrders);
 }
 
 function deleteOrderItem(id) {
@@ -100,17 +78,7 @@ function deleteOrderItem(id) {
 
 function getPreviousOrders() {
 	var url = getOrderUrl();
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   		console.log(data);
-	   		displayOrderList(data);     //...
-	   },
-	   error: function(response){
-	   		handleAjaxError(response);
-	   }
-	});
+	ajaxQuery(url,'GET','',displayOrderList);
 }
 
 
@@ -159,32 +127,21 @@ function displayOrderList(data){
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
 
-		console.log("Prev: " + prev);
-		console.log("orderId: "+ parseInt(e.orderId));
 
 		if(parseInt(prev) != parseInt(e.orderId) && parseInt(prev)!=0){
-			$tbody.append('<tr><td colspan="5"><button onclick="downloadPDF('+prev +')">Download Invoice PDF</button></td></tr>');
+			$tbody.append('<tr><td colspan="3"><button onclick="downloadPDF('+prev +')">Download Invoice PDF</button></td><td colspan="2"><button onclick="displayAddOrderItemModal(' + prev + ')">Add Order Item</button></td></tr>');
 			$tbody.append(thHtml);
 		}
 		$tbody.append(row);
 
     prev = parseInt(e.orderId);
 	}
-	$tbody.append('<tr><td colspan="5"><button onclick="downloadPDF('+prev +')">Download Invoice PDF</button></td></tr>');
+	$tbody.append('<tr><td colspan="3"><button onclick="downloadPDF('+prev +')">Download Invoice PDF</button></td><td colspan="2"><button onclick="displayAddOrderItemModal(' + prev + ')">Add Order Item</button></td></tr>');
 }
 
 function displayEditOrderItem(id){
 	var url = getOrderUrl() + "/" + id;
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   		displayOrderItem(data);
-	   },
-	   error: function(response){
-	   		handleAjaxError(response);
-	   }
-	});
+	ajaxQuery(url,'GET','',displayOrderItem);
 }
 
 function downloadPDF(id) {
@@ -216,12 +173,23 @@ function displayOrderItem(data){
 	$('#edit-orderitem-modal').modal('toggle');
 }
 
+function displayAddOrderItemModal(order_id) {
+	$("#orderitem-add-form input[name=order_id]").val(order_id);
+	$('#add-orderitem-modal').modal('toggle');
+}
+
+function displayDownloadPdfButton(response) {
+	alert("Order created");
+	$("#container").append('<button onclick="downloadPDF(' + response.id +')">Download Invoice PDF</button>');
+}
+
 
 //INITIALIZATION CODE
 function init(){
 	$('#add-orderitem').click(addOrderItemToList);
 	$('#refresh-data').click(getOrderItemList);
-	$('#add-order').click(addOrder);
+	$('#add-order').click(addOrderItem);
+	$("#add-orderitem-previousorders").click(addOrder);
 	$('#update-orderitem').click(updateOrder);
 }
 

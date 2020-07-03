@@ -16,7 +16,7 @@ public class OrderItemDao {
 	@PersistenceContext
 	EntityManager em;
 	
-	private static String select_all = "select p from OrderItemPojo p";
+	private static String select_all = "select p from OrderItemPojo p order by p.orderPojo";
 	private static String select_order = "select p from OrderItemPojo p where orderId=:orderId";
 	
 	public void insert(OrderItemPojo p) {

@@ -43,34 +43,41 @@ import io.swagger.annotations.ApiOperation;
 <span class="nc" id="L43">		return od;</span>
 
 	}
+	
+	@ApiOperation(value = &quot;Adds an OrderItem to an existing order&quot;)
+	@RequestMapping(path = &quot;/api/order_item/{id}&quot;, method = RequestMethod.POST)
+	public void addOrderItem(@PathVariable int order_id, @RequestBody OrderItemForm f) throws ApiException {
+<span class="nc" id="L50">		OrderItemPojo p = ConversionUtil.convert(product_service,f);</span>
+<span class="nc" id="L51">		order_service.addOrderItem(order_id, p);</span>
+<span class="nc" id="L52">	}</span>
 
 	@ApiOperation(value = &quot;Gets a OrderItem details record by id&quot;)
 	@RequestMapping(path = &quot;/api/order/{id}&quot;, method = RequestMethod.GET)
 	public OrderItemData get(@PathVariable int id) throws ApiException {
-<span class="nc" id="L50">		OrderItemPojo p = order_service.get(id);</span>
-<span class="nc" id="L51">		return ConversionUtil.convert(p);</span>
+<span class="nc" id="L57">		OrderItemPojo p = order_service.get(id);</span>
+<span class="nc" id="L58">		return ConversionUtil.convert(p);</span>
 	}
 
 	@ApiOperation(value = &quot;Gets list of Order Items&quot;)
 	@RequestMapping(path = &quot;/api/order&quot;, method = RequestMethod.GET)
 	public List&lt;OrderItemData&gt; getAll() {
-<span class="nc" id="L57">		List&lt;OrderItemPojo&gt; list = order_service.getAll();</span>
-<span class="nc" id="L58">		List&lt;OrderItemData&gt; list2 = ConversionUtil.convertOrderItemList(list);</span>
-<span class="nc" id="L59">		return list2;</span>
+<span class="nc" id="L64">		List&lt;OrderItemPojo&gt; list = order_service.getAll();</span>
+<span class="nc" id="L65">		List&lt;OrderItemData&gt; list2 = ConversionUtil.convertOrderItemList(list);</span>
+<span class="nc" id="L66">		return list2;</span>
 	}
 
 	@ApiOperation(value = &quot;Deletes Order Item record&quot;)
 	@RequestMapping(path = &quot;/api/order/{id}&quot;, method = RequestMethod.DELETE)
 	public void delete(@PathVariable int id) {
-<span class="nc" id="L65">		order_service.delete(id);</span>
-<span class="nc" id="L66">	}</span>
+<span class="nc" id="L72">		order_service.delete(id);</span>
+<span class="nc" id="L73">	}</span>
 
 	@ApiOperation(value = &quot;Updates a OrderItem record&quot;)
 	@RequestMapping(path = &quot;/api/order/{id}&quot;, method = RequestMethod.PUT)
 	public void update(@PathVariable int id, @RequestBody OrderItemForm f) throws ApiException {
-<span class="nc" id="L71">		OrderItemPojo p = ConversionUtil.convert(product_service, f);</span>
-<span class="nc" id="L72">		order_service.update(id, p);</span>
-<span class="nc" id="L73">	}</span>
+<span class="nc" id="L78">		OrderItemPojo p = ConversionUtil.convert(product_service, f);</span>
+<span class="nc" id="L79">		order_service.update(id, p);</span>
+<span class="nc" id="L80">	}</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

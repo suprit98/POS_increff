@@ -4,11 +4,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
-<span class="fc" id="L11">public class ProductDetailsPojo {</span>
+@Table(indexes= {
+		@Index(name = &quot;id&quot;, columnList = &quot;id&quot;),
+		@Index(name = &quot;barcode_index&quot;, columnList = &quot;barcode&quot;)
+})
+<span class="fc" id="L17">public class ProductDetailsPojo {</span>
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,46 +28,46 @@ import javax.persistence.ManyToOne;
 	private double mrp;
 
 	public int getId() {
-<span class="fc" id="L25">		return id;</span>
+<span class="fc" id="L31">		return id;</span>
 	}
 
 	public void setId(int id) {
-<span class="nc" id="L29">		this.id = id;</span>
-<span class="nc" id="L30">	}</span>
+<span class="nc" id="L35">		this.id = id;</span>
+<span class="nc" id="L36">	}</span>
 
 	public String getBarcode() {
-<span class="fc" id="L33">		return barcode;</span>
+<span class="fc" id="L39">		return barcode;</span>
 	}
 
 	public void setBarcode(String barcode) {
-<span class="fc" id="L37">		this.barcode = barcode;</span>
-<span class="fc" id="L38">	}</span>
+<span class="fc" id="L43">		this.barcode = barcode;</span>
+<span class="fc" id="L44">	}</span>
 
 	
 
 	public BrandPojo getBrandPojo() {
-<span class="fc" id="L43">		return brandPojo;</span>
+<span class="fc" id="L49">		return brandPojo;</span>
 	}
 
 	public void setBrandPojo(BrandPojo brandPojo) {
-<span class="fc" id="L47">		this.brandPojo = brandPojo;</span>
-<span class="fc" id="L48">	}</span>
+<span class="fc" id="L53">		this.brandPojo = brandPojo;</span>
+<span class="fc" id="L54">	}</span>
 
 	public String getName() {
-<span class="fc" id="L51">		return name;</span>
+<span class="fc" id="L57">		return name;</span>
 	}
 
 	public void setName(String name) {
-<span class="fc" id="L55">		this.name = name;</span>
-<span class="fc" id="L56">	}</span>
+<span class="fc" id="L61">		this.name = name;</span>
+<span class="fc" id="L62">	}</span>
 
 	public double getMrp() {
-<span class="fc" id="L59">		return mrp;</span>
+<span class="fc" id="L65">		return mrp;</span>
 	}
 
 	public void setMrp(double mrp) {
-<span class="fc" id="L63">		this.mrp = mrp;</span>
-<span class="fc" id="L64">	}</span>
+<span class="fc" id="L69">		this.mrp = mrp;</span>
+<span class="fc" id="L70">	}</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

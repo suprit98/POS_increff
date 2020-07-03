@@ -59,7 +59,12 @@ public class OrderService {
 	
 	@Transactional
 	public void delete(int id) {
-		order_item_dao.delete(id);	
+		int order_id = order_item_dao.select(id).getOrderPojo().getId();
+		order_item_dao.delete(id);
+		List<OrderItemPojo> lis = order_item_dao.selectOrder(order_id);
+		if(lis.size() == 0) {
+			order_dao.delete(order_id);
+		}
 	}
 	
 	@Transactional(rollbackFor = ApiException.class)
@@ -72,6 +77,14 @@ public class OrderService {
 		ex.setSellingPrice(p.getSellingPrice());
 		order_item_dao.update(p);
 		updateInventory(old_qty,p);
+	}
+	
+	@Transactional(rollbackFor = ApiException.class)
+	public void addOrderItem(int order_id, OrderItemPojo p) throws ApiException {
+		
+		p.setOrderPojo(order_dao.select(order_id));
+		order_item_dao.insert(p);
+		updateInventory(p);
 	}
 	
 	@Transactional(rollbackFor = ApiException.class)

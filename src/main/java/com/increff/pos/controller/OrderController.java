@@ -43,6 +43,13 @@ public class OrderController {
 		return od;
 
 	}
+	
+	@ApiOperation(value = "Adds an OrderItem to an existing order")
+	@RequestMapping(path = "/api/order_item/{order_id}", method = RequestMethod.POST)
+	public void addOrderItem(@PathVariable int order_id, @RequestBody OrderItemForm f) throws ApiException {
+		OrderItemPojo p = ConversionUtil.convert(product_service,f);
+		order_service.addOrderItem(order_id, p);
+	}
 
 	@ApiOperation(value = "Gets a OrderItem details record by id")
 	@RequestMapping(path = "/api/order/{id}", method = RequestMethod.GET)
