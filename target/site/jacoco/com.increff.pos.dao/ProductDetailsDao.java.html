@@ -11,52 +11,52 @@ import org.springframework.stereotype.Repository;
 import com.increff.pos.pojo.ProductDetailsPojo;
 
 @Repository
-<span class="nc" id="L14">public class ProductDetailsDao {</span>
+<span class="fc" id="L14">public class ProductDetailsDao {</span>
 	
 	@PersistenceContext
 	EntityManager em;
 	
-<span class="nc" id="L19">	private static String select_all = &quot;select p from ProductDetailsPojo p&quot;;</span>
-<span class="nc" id="L20">	private static String select_barcode = &quot;select p from ProductDetailsPojo p where barcode=:barcode&quot;;</span>
+<span class="fc" id="L19">	private static String select_all = &quot;select p from ProductDetailsPojo p&quot;;</span>
+<span class="fc" id="L20">	private static String select_barcode = &quot;select p from ProductDetailsPojo p where barcode=:barcode&quot;;</span>
 	
 	public void insert(ProductDetailsPojo p) {
-<span class="nc" id="L23">		em.persist(p);</span>
-<span class="nc" id="L24">	}</span>
+<span class="fc" id="L23">		em.persist(p);</span>
+<span class="fc" id="L24">	}</span>
 	
 	public void delete(int id) {
-<span class="nc" id="L27">		ProductDetailsPojo p = em.find(ProductDetailsPojo.class, id);</span>
-<span class="nc" id="L28">		em.remove(p);</span>
-<span class="nc" id="L29">	}</span>
+<span class="fc" id="L27">		ProductDetailsPojo p = em.find(ProductDetailsPojo.class, id);</span>
+<span class="fc" id="L28">		em.remove(p);</span>
+<span class="fc" id="L29">	}</span>
 	
 	public ProductDetailsPojo select(int id) {
-<span class="nc" id="L32">		return em.find(ProductDetailsPojo.class, id);</span>
+<span class="fc" id="L32">		return em.find(ProductDetailsPojo.class, id);</span>
 	}
 	
 	public ProductDetailsPojo select(String barcode) {
-<span class="nc" id="L36">		TypedQuery&lt;ProductDetailsPojo&gt; query = getQuery(select_barcode);</span>
-<span class="nc" id="L37">		query.setParameter(&quot;barcode&quot;, barcode);</span>
-<span class="nc" id="L38">		List&lt;ProductDetailsPojo&gt; lis = query.getResultList();</span>
-<span class="nc bnc" id="L39" title="All 2 branches missed.">		if(lis.size()&gt;0) {</span>
-<span class="nc" id="L40">			ProductDetailsPojo p = lis.get(0);</span>
-<span class="nc" id="L41">			return p;</span>
+<span class="fc" id="L36">		TypedQuery&lt;ProductDetailsPojo&gt; query = getQuery(select_barcode);</span>
+<span class="fc" id="L37">		query.setParameter(&quot;barcode&quot;, barcode);</span>
+<span class="fc" id="L38">		List&lt;ProductDetailsPojo&gt; lis = query.getResultList();</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">		if(lis.size()&gt;0) {</span>
+<span class="fc" id="L40">			ProductDetailsPojo p = lis.get(0);</span>
+<span class="fc" id="L41">			return p;</span>
 		}
 		else {
-<span class="nc" id="L44">			return null;</span>
+<span class="fc" id="L44">			return null;</span>
 		}
 	}
 	
 	public List&lt;ProductDetailsPojo&gt; selectAll() {
-<span class="nc" id="L49">		TypedQuery&lt;ProductDetailsPojo&gt; query = getQuery(select_all);</span>
-<span class="nc" id="L50">		List&lt;ProductDetailsPojo&gt; results = query.getResultList();</span>
-<span class="nc" id="L51">		return results;	</span>
+<span class="fc" id="L49">		TypedQuery&lt;ProductDetailsPojo&gt; query = getQuery(select_all);</span>
+<span class="fc" id="L50">		List&lt;ProductDetailsPojo&gt; results = query.getResultList();</span>
+<span class="fc" id="L51">		return results;	</span>
 	}
 	
 	public void update(ProductDetailsPojo p) {
 		
-<span class="nc" id="L56">	}</span>
+<span class="fc" id="L56">	}</span>
 	
 	TypedQuery&lt;ProductDetailsPojo&gt; getQuery(String jpql) {
-<span class="nc" id="L59">		return em.createQuery(jpql,ProductDetailsPojo.class);</span>
+<span class="fc" id="L59">		return em.createQuery(jpql,ProductDetailsPojo.class);</span>
 	}
 
 }

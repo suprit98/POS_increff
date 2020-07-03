@@ -42,6 +42,7 @@ public class BrandService {
 	
 	@Transactional(rollbackFor = ApiException.class)
 	public void update(int id, BrandPojo p) throws ApiException {
+		validate(p);
 		normalize(p);
 		BrandPojo ex = checkIfExists(id);
 		ex.setBrand(p.getBrand());
@@ -74,12 +75,12 @@ public class BrandService {
 		return id;
 	}
 	
-	protected static void normalize(BrandPojo p) {
+	protected void normalize(BrandPojo p) {
 		p.setBrand(p.getBrand().toLowerCase().trim());
 		p.setCategory(p.getCategory().toLowerCase().trim());		
 	}
 	
-	private void validate(BrandPojo p) throws ApiException {
+	protected void validate(BrandPojo p) throws ApiException {
 		if(p.getBrand().isEmpty() || p.getCategory().isEmpty()) {
 			throw new ApiException("Brand and category values must not be empty");
 		}

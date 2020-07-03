@@ -1,1 +1,4 @@
-com/increff/pos/AppTest.class
+com/increff/pos/service/ProductDetailsServiceTest.class
+com/increff/pos/service/BrandServiceTest.class
+com/increff/pos/spring/QaConfig.class
+com/increff/pos/spring/AbstractUnitTest.class

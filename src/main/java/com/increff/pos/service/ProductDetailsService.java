@@ -76,11 +76,11 @@ public class ProductDetailsService {
 		return p;
 	}
 	
-	protected static void normalize(ProductDetailsPojo p) {
+	protected void normalize(ProductDetailsPojo p) {
 		p.setName(p.getName().toLowerCase());		
 	}
 	
-	protected static void validate(ProductDetailsPojo p) throws ApiException {
+	protected void validate(ProductDetailsPojo p) throws ApiException {
 		if(p.getName().isEmpty()) {
 			throw new ApiException("The name of product must not be empty");
 		}

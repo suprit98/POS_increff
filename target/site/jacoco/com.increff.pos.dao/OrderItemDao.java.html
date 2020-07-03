@@ -11,13 +11,13 @@ import org.springframework.stereotype.Repository;
 import com.increff.pos.pojo.OrderItemPojo;
 
 @Repository
-<span class="nc" id="L14">public class OrderItemDao {</span>
+<span class="fc" id="L14">public class OrderItemDao {</span>
 	
 	@PersistenceContext
 	EntityManager em;
 	
-<span class="nc" id="L19">	private static String select_all = &quot;select p from OrderItemPojo p&quot;;</span>
-<span class="nc" id="L20">	private static String select_order = &quot;select p from OrderItemPojo p where orderId=:orderId&quot;;</span>
+<span class="fc" id="L19">	private static String select_all = &quot;select p from OrderItemPojo p&quot;;</span>
+<span class="fc" id="L20">	private static String select_order = &quot;select p from OrderItemPojo p where orderId=:orderId&quot;;</span>
 	
 	public void insert(OrderItemPojo p) {
 <span class="nc" id="L23">		em.persist(p);</span>
