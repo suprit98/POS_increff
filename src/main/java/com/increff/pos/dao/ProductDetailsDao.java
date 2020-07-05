@@ -47,8 +47,7 @@ public class ProductDetailsDao {
 	
 	public List<ProductDetailsPojo> selectAll() {
 		TypedQuery<ProductDetailsPojo> query = getQuery(select_all);
-		List<ProductDetailsPojo> results = query.getResultList();
-		return results;	
+		return query.getResultList();	
 	}
 	
 	public void update(ProductDetailsPojo p) {

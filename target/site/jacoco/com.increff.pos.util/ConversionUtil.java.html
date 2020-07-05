@@ -8,6 +8,7 @@ import com.increff.pos.model.BrandForm;
 import com.increff.pos.model.InventoryData;
 import com.increff.pos.model.InventoryForm;
 import com.increff.pos.model.InvoiceData;
+import com.increff.pos.model.OrderData;
 import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.model.ProductDetailsData;
@@ -20,126 +21,132 @@ import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandService;
 import com.increff.pos.service.ProductDetailsService;
 
-<span class="nc" id="L23">public class ConversionUtil {</span>
+<span class="nc" id="L24">public class ConversionUtil {</span>
 
 	public static BrandPojo convert(BrandForm d) {
-<span class="nc" id="L26">		BrandPojo p = new BrandPojo();</span>
-<span class="nc" id="L27">		p.setBrand(d.getBrand());</span>
-<span class="nc" id="L28">		p.setCategory(d.getCategory());</span>
-<span class="nc" id="L29">		return p;</span>
+<span class="nc" id="L27">		BrandPojo p = new BrandPojo();</span>
+<span class="nc" id="L28">		p.setBrand(d.getBrand());</span>
+<span class="nc" id="L29">		p.setCategory(d.getCategory());</span>
+<span class="nc" id="L30">		return p;</span>
 	}
 
 	public static BrandData convert(BrandPojo p) {
-<span class="nc" id="L33">		BrandData d = new BrandData();</span>
-<span class="nc" id="L34">		d.setBrand(p.getBrand());</span>
-<span class="nc" id="L35">		d.setCategory(p.getCategory());</span>
-<span class="nc" id="L36">		d.setId(p.getId());</span>
-<span class="nc" id="L37">		return d;</span>
+<span class="nc" id="L34">		BrandData d = new BrandData();</span>
+<span class="nc" id="L35">		d.setBrand(p.getBrand());</span>
+<span class="nc" id="L36">		d.setCategory(p.getCategory());</span>
+<span class="nc" id="L37">		d.setId(p.getId());</span>
+<span class="nc" id="L38">		return d;</span>
 	}
 
 	public static ProductDetailsPojo convert(BrandService brand_service, ProductDetailsForm f) throws ApiException {
-<span class="nc" id="L41">		ProductDetailsPojo p = new ProductDetailsPojo();</span>
-<span class="nc" id="L42">		p.setName(f.getName());</span>
-<span class="nc" id="L43">		p.setMrp(f.getMrp());</span>
-<span class="nc" id="L44">		int brand_id = brand_service.getId(f.getBrand(), f.getCategory());</span>
-<span class="nc" id="L45">		p.setBrandPojo(brand_service.get(brand_id));</span>
-<span class="nc" id="L46">		return p;</span>
+<span class="nc" id="L42">		ProductDetailsPojo p = new ProductDetailsPojo();</span>
+<span class="nc" id="L43">		p.setName(f.getName());</span>
+<span class="nc" id="L44">		p.setMrp(f.getMrp());</span>
+<span class="nc" id="L45">		int brand_id = brand_service.getId(f.getBrand(), f.getCategory());</span>
+<span class="nc" id="L46">		p.setBrandPojo(brand_service.get(brand_id));</span>
+<span class="nc" id="L47">		return p;</span>
 	}
 
 	public static ProductDetailsData convert(ProductDetailsPojo p) {
-<span class="nc" id="L50">		ProductDetailsData d = new ProductDetailsData();</span>
-<span class="nc" id="L51">		d.setId(p.getId());</span>
-<span class="nc" id="L52">		d.setBrand(p.getBrandPojo().getBrand());</span>
-<span class="nc" id="L53">		d.setCategory(p.getBrandPojo().getCategory());</span>
-<span class="nc" id="L54">		d.setMrp(p.getMrp());</span>
-<span class="nc" id="L55">		d.setName(p.getName());</span>
-<span class="nc" id="L56">		d.setBarcode(p.getBarcode());</span>
-<span class="nc" id="L57">		return d;</span>
+<span class="nc" id="L51">		ProductDetailsData d = new ProductDetailsData();</span>
+<span class="nc" id="L52">		d.setId(p.getId());</span>
+<span class="nc" id="L53">		d.setBrand(p.getBrandPojo().getBrand());</span>
+<span class="nc" id="L54">		d.setCategory(p.getBrandPojo().getCategory());</span>
+<span class="nc" id="L55">		d.setMrp(p.getMrp());</span>
+<span class="nc" id="L56">		d.setName(p.getName());</span>
+<span class="nc" id="L57">		d.setBarcode(p.getBarcode());</span>
+<span class="nc" id="L58">		return d;</span>
 	}
 	
 	public static InventoryPojo convert(InventoryForm f, ProductDetailsPojo product_pojo) throws ApiException {
-<span class="nc" id="L61">		InventoryPojo p = new InventoryPojo();</span>
-<span class="nc" id="L62">		p.setProductPojo(product_pojo);</span>
-<span class="nc" id="L63">		p.setQuantity(f.getQuantity());</span>
-<span class="nc" id="L64">		return p;</span>
+<span class="nc" id="L62">		InventoryPojo p = new InventoryPojo();</span>
+<span class="nc" id="L63">		p.setProductPojo(product_pojo);</span>
+<span class="nc" id="L64">		p.setQuantity(f.getQuantity());</span>
+<span class="nc" id="L65">		return p;</span>
 	}
 
 	public static InventoryData convert(InventoryPojo p) {
-<span class="nc" id="L68">		InventoryData d = new InventoryData();</span>
-<span class="nc" id="L69">		d.setId(p.getId());</span>
-<span class="nc" id="L70">		d.setBarcode(p.getProductPojo().getBarcode());</span>
-<span class="nc" id="L71">		d.setQuantity(p.getQuantity());</span>
-<span class="nc" id="L72">		return d;</span>
+<span class="nc" id="L69">		InventoryData d = new InventoryData();</span>
+<span class="nc" id="L70">		d.setId(p.getId());</span>
+<span class="nc" id="L71">		d.setBarcode(p.getProductPojo().getBarcode());</span>
+<span class="nc" id="L72">		d.setQuantity(p.getQuantity());</span>
+<span class="nc" id="L73">		return d;</span>
 	}
 	
 	public static OrderItemPojo convert(ProductDetailsService product_service, OrderItemForm f) throws ApiException {
-<span class="nc" id="L76">		OrderItemPojo p = new OrderItemPojo();</span>
-<span class="nc" id="L77">		p.setProductPojo(product_service.get(f.getBarcode()));</span>
-<span class="nc" id="L78">		p.setQuantity(f.getQuantity());</span>
-<span class="nc" id="L79">		p.setSellingPrice(product_service.get(f.getBarcode()).getMrp());</span>
-<span class="nc" id="L80">		return p;</span>
+<span class="nc" id="L77">		OrderItemPojo p = new OrderItemPojo();</span>
+<span class="nc" id="L78">		p.setProductPojo(product_service.get(f.getBarcode()));</span>
+<span class="nc" id="L79">		p.setQuantity(f.getQuantity());</span>
+<span class="nc" id="L80">		p.setSellingPrice(product_service.get(f.getBarcode()).getMrp());</span>
+<span class="nc" id="L81">		return p;</span>
 	}
 
 	public static OrderItemData convert(OrderItemPojo p) {
-<span class="nc" id="L84">		OrderItemData d = new OrderItemData();</span>
-<span class="nc" id="L85">		d.setId(p.getId());</span>
-<span class="nc" id="L86">		d.setBarcode(p.getProductPojo().getBarcode());</span>
-<span class="nc" id="L87">		d.setQuantity(p.getQuantity());</span>
-<span class="nc" id="L88">		d.setOrderId(p.getOrderPojo().getId());</span>
-<span class="nc" id="L89">		return d;</span>
+<span class="nc" id="L85">		OrderItemData d = new OrderItemData();</span>
+<span class="nc" id="L86">		d.setId(p.getId());</span>
+<span class="nc" id="L87">		d.setBarcode(p.getProductPojo().getBarcode());</span>
+<span class="nc" id="L88">		d.setQuantity(p.getQuantity());</span>
+<span class="nc" id="L89">		d.setOrderId(p.getOrderPojo().getId());</span>
+<span class="nc" id="L90">		return d;</span>
 	}
 
 	public static List&lt;InvoiceData&gt; convert(ProductDetailsService product_service, List&lt;OrderItemPojo&gt; lis) {
-<span class="nc" id="L93">		List&lt;InvoiceData&gt; invoiceLis = new ArrayList&lt;InvoiceData&gt;();</span>
-<span class="nc bnc" id="L94" title="All 2 branches missed.">		for(OrderItemPojo p:lis) {</span>
-<span class="nc" id="L95">			InvoiceData i = new InvoiceData();</span>
-<span class="nc" id="L96">			i.setId(p.getId());</span>
-<span class="nc" id="L97">			i.setMrp(p.getProductPojo().getMrp());</span>
-<span class="nc" id="L98">			i.setName(p.getProductPojo().getName());</span>
-<span class="nc" id="L99">			i.setQuantity(p.getQuantity());</span>
-<span class="nc" id="L100">			invoiceLis.add(i);</span>
-<span class="nc" id="L101">		}</span>
-<span class="nc" id="L102">		return invoiceLis;</span>
+<span class="nc" id="L94">		List&lt;InvoiceData&gt; invoiceLis = new ArrayList&lt;InvoiceData&gt;();</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">		for(OrderItemPojo p:lis) {</span>
+<span class="nc" id="L96">			InvoiceData i = new InvoiceData();</span>
+<span class="nc" id="L97">			i.setId(p.getId());</span>
+<span class="nc" id="L98">			i.setMrp(p.getProductPojo().getMrp());</span>
+<span class="nc" id="L99">			i.setName(p.getProductPojo().getName());</span>
+<span class="nc" id="L100">			i.setQuantity(p.getQuantity());</span>
+<span class="nc" id="L101">			invoiceLis.add(i);</span>
+<span class="nc" id="L102">		}</span>
+<span class="nc" id="L103">		return invoiceLis;</span>
 	}
 	
 	public static List&lt;BrandData&gt; convert(List&lt;BrandPojo&gt; list) {
-<span class="nc" id="L106">		List&lt;BrandData&gt; list2 = new ArrayList&lt;BrandData&gt;();</span>
-<span class="nc bnc" id="L107" title="All 2 branches missed.">		for(BrandPojo p : list) {</span>
-<span class="nc" id="L108">			list2.add(convert(p));</span>
-<span class="nc" id="L109">		}</span>
-<span class="nc" id="L110">		return list2;</span>
+<span class="nc" id="L107">		List&lt;BrandData&gt; list2 = new ArrayList&lt;BrandData&gt;();</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">		for(BrandPojo p : list) {</span>
+<span class="nc" id="L109">			list2.add(convert(p));</span>
+<span class="nc" id="L110">		}</span>
+<span class="nc" id="L111">		return list2;</span>
 	}
 	
 	public static List&lt;ProductDetailsData&gt; convertProductList(List&lt;ProductDetailsPojo&gt; list) {
-<span class="nc" id="L114">		List&lt;ProductDetailsData&gt; list2 = new ArrayList&lt;ProductDetailsData&gt;();</span>
-<span class="nc bnc" id="L115" title="All 2 branches missed.">		for(ProductDetailsPojo p : list) {</span>
-<span class="nc" id="L116">			list2.add(convert(p));</span>
-<span class="nc" id="L117">		}</span>
-<span class="nc" id="L118">		return list2;</span>
+<span class="nc" id="L115">		List&lt;ProductDetailsData&gt; list2 = new ArrayList&lt;ProductDetailsData&gt;();</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">		for(ProductDetailsPojo p : list) {</span>
+<span class="nc" id="L117">			list2.add(convert(p));</span>
+<span class="nc" id="L118">		}</span>
+<span class="nc" id="L119">		return list2;</span>
 	}
 	
 	public static List&lt;InventoryData&gt; convertInventoryList(List&lt;InventoryPojo&gt; list) {
-<span class="nc" id="L122">		List&lt;InventoryData&gt; list2 = new ArrayList&lt;InventoryData&gt;();</span>
-<span class="nc bnc" id="L123" title="All 2 branches missed.">		for(InventoryPojo p : list) {</span>
-<span class="nc" id="L124">			list2.add(convert(p));</span>
-<span class="nc" id="L125">		}</span>
-<span class="nc" id="L126">		return list2;</span>
+<span class="nc" id="L123">		List&lt;InventoryData&gt; list2 = new ArrayList&lt;InventoryData&gt;();</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">		for(InventoryPojo p : list) {</span>
+<span class="nc" id="L125">			list2.add(convert(p));</span>
+<span class="nc" id="L126">		}</span>
+<span class="nc" id="L127">		return list2;</span>
 	}
 	
 	public static List&lt;OrderItemData&gt; convertOrderItemList(List&lt;OrderItemPojo&gt; list) {
-<span class="nc" id="L130">		List&lt;OrderItemData&gt; list2 = new ArrayList&lt;OrderItemData&gt;();</span>
-<span class="nc bnc" id="L131" title="All 2 branches missed.">		for(OrderItemPojo p : list) {</span>
-<span class="nc" id="L132">			list2.add(convert(p));</span>
-<span class="nc" id="L133">		}</span>
-<span class="nc" id="L134">		return list2;</span>
+<span class="nc" id="L131">		List&lt;OrderItemData&gt; list2 = new ArrayList&lt;OrderItemData&gt;();</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		for(OrderItemPojo p : list) {</span>
+<span class="nc" id="L133">			list2.add(convert(p));</span>
+<span class="nc" id="L134">		}</span>
+<span class="nc" id="L135">		return list2;</span>
 	}
 	
 	public static List&lt;OrderItemPojo&gt; convertOrderItemForms(ProductDetailsService product_service, OrderItemForm[] forms) throws ApiException {
-<span class="nc" id="L138">		List&lt;OrderItemPojo&gt; list2 = new ArrayList&lt;OrderItemPojo&gt;();</span>
-<span class="nc bnc" id="L139" title="All 2 branches missed.">		for(OrderItemForm f : forms) {</span>
-<span class="nc" id="L140">			list2.add(convert(product_service,f));</span>
+<span class="nc" id="L139">		List&lt;OrderItemPojo&gt; list2 = new ArrayList&lt;OrderItemPojo&gt;();</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">		for(OrderItemForm f : forms) {</span>
+<span class="nc" id="L141">			list2.add(convert(product_service,f));</span>
 		}
-<span class="nc" id="L142">		return list2;</span>
+<span class="nc" id="L143">		return list2;</span>
+	}
+	
+	public static OrderData setOrderData(int order_id) {
+<span class="nc" id="L147">		OrderData d = new OrderData();</span>
+<span class="nc" id="L148">		d.setId(order_id);</span>
+<span class="nc" id="L149">		return d;</span>
 	}
 
 }

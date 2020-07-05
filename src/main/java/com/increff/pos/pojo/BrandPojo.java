@@ -10,8 +10,7 @@ import javax.persistence.Table;
 @Entity
 @Table(indexes= {
 		@Index(name = "id", columnList = "id"),
-		@Index(name = "brand_category_index", columnList = "brand"),
-		@Index(name = "brand_category_index", columnList = "category")
+		@Index(name = "brand_category_index", columnList = "brand,category", unique = true)
 })
 public class BrandPojo {
 

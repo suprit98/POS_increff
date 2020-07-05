@@ -35,15 +35,13 @@ public class OrderItemDao {
 	
 	public List<OrderItemPojo> selectAll() {
 		TypedQuery<OrderItemPojo> query = getQuery(select_all);
-		List<OrderItemPojo> results = query.getResultList();
-		return results;	
+		return query.getResultList();	
 	}
 	
 	public List<OrderItemPojo> selectOrder(int orderId) {
 		TypedQuery<OrderItemPojo> query = getQuery(select_order);
 		query.setParameter("orderId", orderId);
-		List<OrderItemPojo> results = query.getResultList();
-		return results;	
+		return query.getResultList();
 	}
 	
 	public void update(OrderItemPojo p) {

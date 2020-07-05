@@ -1,36 +1,182 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PdfResponseUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.util</a> &gt; <span class="el_source">PdfResponseUtil.java</span></div><h1>PdfResponseUtil.java</h1><pre class="source lang-java linenums">package com.increff.pos.util;
 
+import java.io.File;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.stream.StreamSource;
 
+import com.increff.pos.model.BrandData;
+import com.increff.pos.model.BrandDataList;
+import com.increff.pos.model.InventoryReportData;
+import com.increff.pos.model.InventoryReportList;
 import com.increff.pos.model.InvoiceData;
 import com.increff.pos.model.InvoiceDataList;
+import com.increff.pos.model.SalesData;
+import com.increff.pos.model.SalesDataList;
+import com.increff.pos.pojo.BrandPojo;
+import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
+import com.increff.pos.service.ApiException;
+import com.increff.pos.service.BrandService;
 import com.increff.pos.service.ProductDetailsService;
 
-<span class="nc" id="L13">public class PdfResponseUtil {</span>
+<span class="nc" id="L28">public class PdfResponseUtil {</span>
+
+	public static void generateInvoicePdfResponse(ProductDetailsService product_service, List&lt;OrderItemPojo&gt; lis,
+			HttpServletResponse response) throws Exception {
+
+<span class="nc" id="L33">		List&lt;InvoiceData&gt; invoiceLis = ConversionUtil.convert(product_service, lis);</span>
+<span class="nc" id="L34">		InvoiceDataList idl = new InvoiceDataList();</span>
+<span class="nc" id="L35">		idl.setInvoiceLis(invoiceLis);</span>
+<span class="nc" id="L36">		idl.setOrder_id(lis.get(0).getOrderPojo().getId());</span>
+
+<span class="nc" id="L38">		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd HH:mm&quot;);</span>
+<span class="nc" id="L39">		idl.setDatetime(lis.get(0).getOrderPojo().getDatetime().format(formatter));</span>
+<span class="nc" id="L40">		XmlUtil.generateXmlInvoice(idl);</span>
+<span class="nc" id="L41">		byte[] bytes = XmlUtil.generatePDF(new File(&quot;invoice.xml&quot;), new StreamSource(&quot;invoice.xsl&quot;));</span>
+
+<span class="nc" id="L43">		response.setContentType(&quot;application/pdf&quot;);</span>
+<span class="nc" id="L44">		response.setContentLength(bytes.length);</span>
+
+<span class="nc" id="L46">		response.getOutputStream().write(bytes);</span>
+<span class="nc" id="L47">		response.getOutputStream().flush();</span>
+
+<span class="nc" id="L49">	}</span>
+
+	public static void generateBrandReportResponse(List&lt;BrandPojo&gt; brand_pojo_list, HttpServletResponse response)
+			throws Exception {
+
+<span class="nc" id="L54">		List&lt;BrandData&gt; converted_list = ConversionUtil.convert(brand_pojo_list);</span>
+<span class="nc" id="L55">		BrandDataList brand_data_list = new BrandDataList();</span>
+<span class="nc" id="L56">		brand_data_list.setBrand_list(converted_list);</span>
+
+<span class="nc" id="L58">		XmlUtil.generateXmlBrandReport(brand_data_list);</span>
+<span class="nc" id="L59">		byte[] bytes = XmlUtil.generatePDF(new File(&quot;brand_report.xml&quot;), new StreamSource(&quot;brand_report.xsl&quot;));</span>
+
+<span class="nc" id="L61">		response.setContentType(&quot;application/pdf&quot;);</span>
+<span class="nc" id="L62">		response.setContentLength(bytes.length);</span>
+
+<span class="nc" id="L64">		response.getOutputStream().write(bytes);</span>
+<span class="nc" id="L65">		response.getOutputStream().flush();</span>
+
+<span class="nc" id="L67">	}</span>
+
+	public static void generateInventoryReportResponse(BrandService brand_service,
+			List&lt;InventoryPojo&gt; inventory_pojo_list, HttpServletResponse response) throws Exception {
+
+<span class="nc" id="L72">		List&lt;InventoryReportData&gt; converted_list = createInventoryReportList(brand_service, inventory_pojo_list);</span>
+<span class="nc" id="L73">		InventoryReportList inventory_data_list = new InventoryReportList();</span>
+<span class="nc" id="L74">		inventory_data_list.setInventory_list(converted_list);</span>
+
+<span class="nc" id="L76">		XmlUtil.generateXmlInventoryReport(inventory_data_list);</span>
+<span class="nc" id="L77">		byte[] bytes = XmlUtil.generatePDF(new File(&quot;inventory_report.xml&quot;), new StreamSource(&quot;inventory_report.xsl&quot;));</span>
+
+<span class="nc" id="L79">		response.setContentType(&quot;application/pdf&quot;);</span>
+<span class="nc" id="L80">		response.setContentLength(bytes.length);</span>
+
+<span class="nc" id="L82">		response.getOutputStream().write(bytes);</span>
+<span class="nc" id="L83">		response.getOutputStream().flush();</span>
+
+<span class="nc" id="L85">	}</span>
 	
-	public static void generatePdfResponse(ProductDetailsService product_service, List&lt;OrderItemPojo&gt; lis, HttpServletResponse response) throws Exception {
-		
-<span class="nc" id="L17">		List&lt;InvoiceData&gt; invoiceLis = ConversionUtil.convert(product_service,lis);</span>
-<span class="nc" id="L18">		InvoiceDataList idl = new InvoiceDataList();</span>
-<span class="nc" id="L19">		idl.setInvoiceLis(invoiceLis);</span>
-<span class="nc" id="L20">		idl.setOrder_id(lis.get(0).getOrderPojo().getId());</span>
-		
-<span class="nc" id="L22">		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd HH:mm&quot;);</span>
-<span class="nc" id="L23">		idl.setDatetime(lis.get(0).getOrderPojo().getDatetime().format(formatter));</span>
-<span class="nc" id="L24">		XmlUtil.generateXML(idl);</span>
-<span class="nc" id="L25">		byte[] bytes = XmlUtil.generatePDF();</span>
-		
-<span class="nc" id="L27">		response.setContentType(&quot;application/pdf&quot;);</span>
-<span class="nc" id="L28">	    response.setContentLength(bytes.length);</span>
-	    
-<span class="nc" id="L30">	    response.getOutputStream().write(bytes);</span>
-<span class="nc" id="L31">	    response.getOutputStream().flush();</span>
-		
-<span class="nc" id="L33">	}</span>
+	public static void generateSalesReportResponse(String brand, String category, List&lt;OrderItemPojo&gt; orderitem_list, HttpServletResponse response)
+			throws Exception {
+
+<span class="nc" id="L90">		List&lt;SalesData&gt; converted_list = createSalesList(brand, category, orderitem_list);</span>
+<span class="nc" id="L91">		SalesDataList sales_data_list = new SalesDataList();</span>
+<span class="nc" id="L92">		sales_data_list.setSales_list(converted_list);</span>
+
+<span class="nc" id="L94">		XmlUtil.generateXmlSalesReport(sales_data_list);</span>
+<span class="nc" id="L95">		byte[] bytes = XmlUtil.generatePDF(new File(&quot;sales_report.xml&quot;), new StreamSource(&quot;sales_report.xsl&quot;));</span>
+
+<span class="nc" id="L97">		response.setContentType(&quot;application/pdf&quot;);</span>
+<span class="nc" id="L98">		response.setContentLength(bytes.length);</span>
+
+<span class="nc" id="L100">		response.getOutputStream().write(bytes);</span>
+<span class="nc" id="L101">		response.getOutputStream().flush();</span>
+
+<span class="nc" id="L103">	}</span>
+
+	private static List&lt;InventoryReportData&gt; createInventoryReportList(BrandService brand_service,
+			List&lt;InventoryPojo&gt; inventory_list) throws ApiException {
+<span class="nc" id="L107">		Map&lt;Integer, Integer&gt; map_brandid_quantity = new HashMap&lt;Integer, Integer&gt;();</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">		for (InventoryPojo p : inventory_list) {</span>
+<span class="nc" id="L109">			int brand_id = p.getProductPojo().getBrandPojo().getId();</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">			if (map_brandid_quantity.get(brand_id) != null) {</span>
+<span class="nc" id="L111">				int qty = map_brandid_quantity.get(brand_id);</span>
+<span class="nc" id="L112">				qty += p.getQuantity();</span>
+<span class="nc" id="L113">				map_brandid_quantity.put(brand_id, qty);</span>
+<span class="nc" id="L114">			} else {</span>
+<span class="nc" id="L115">				map_brandid_quantity.put(brand_id, p.getQuantity());</span>
+			}
+<span class="nc" id="L117">		}</span>
+<span class="nc" id="L118">		List&lt;InventoryReportData&gt; inventory_report_list = new ArrayList&lt;InventoryReportData&gt;();</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">		for (Integer brand_id : map_brandid_quantity.keySet()) {</span>
+<span class="nc" id="L120">			InventoryReportData d = new InventoryReportData();</span>
+<span class="nc" id="L121">			d.setBrand(brand_service.get(brand_id).getBrand());</span>
+<span class="nc" id="L122">			d.setCategory(brand_service.get(brand_id).getCategory());</span>
+<span class="nc" id="L123">			d.setQuantity(map_brandid_quantity.get(brand_id));</span>
+<span class="nc" id="L124">			inventory_report_list.add(d);</span>
+<span class="nc" id="L125">		}</span>
+<span class="nc" id="L126">		return inventory_report_list;</span>
+	}
+	
+	private static List&lt;SalesData&gt; createSalesList(String brand, String category, List&lt;OrderItemPojo&gt; orderitem_list){
+<span class="nc bnc" id="L130" title="All 4 branches missed.">		if(brand.isEmpty() &amp;&amp; !category.isEmpty()) {</span>
+<span class="nc" id="L131">			int qty = 0;</span>
+<span class="nc" id="L132">			double revenue = 0;</span>
+			
+<span class="nc bnc" id="L134" title="All 2 branches missed.">			for(OrderItemPojo order_item_pojo: orderitem_list) {</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">				if(order_item_pojo.getProductPojo().getBrandPojo().getCategory().contentEquals(category)) {</span>
+<span class="nc" id="L136">					qty += order_item_pojo.getQuantity();</span>
+<span class="nc" id="L137">					revenue += (order_item_pojo.getQuantity() * order_item_pojo.getSellingPrice());</span>
+				}
+<span class="nc" id="L139">			}</span>
+<span class="nc" id="L140">			List&lt;SalesData&gt; sales_list = new ArrayList&lt;SalesData&gt;();</span>
+<span class="nc" id="L141">			SalesData s = new SalesData();</span>
+<span class="nc" id="L142">			s.setCategory(category);</span>
+<span class="nc" id="L143">			s.setQuantity(qty);</span>
+<span class="nc" id="L144">			s.setRevenue(revenue);</span>
+<span class="nc" id="L145">			sales_list.add(s);</span>
+<span class="nc" id="L146">			return sales_list;</span>
+		}
+		else {
+<span class="nc" id="L149">			Map&lt;String,Integer&gt; map_quantity = new HashMap&lt;String,Integer&gt;();</span>
+<span class="nc" id="L150">			Map&lt;String,Double&gt; map_revenue = new HashMap&lt;String,Double&gt;();</span>
+			
+<span class="nc bnc" id="L152" title="All 2 branches missed.">			for(OrderItemPojo order_item_pojo: orderitem_list) {</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">				if(order_item_pojo.getProductPojo().getBrandPojo().getBrand().contentEquals(brand)) {</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">					if(map_quantity.get(order_item_pojo.getProductPojo().getBrandPojo().getCategory()) == null) {</span>
+<span class="nc" id="L155">						map_quantity.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(),order_item_pojo.getQuantity());</span>
+<span class="nc" id="L156">						map_revenue.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(),(order_item_pojo.getQuantity()*order_item_pojo.getSellingPrice()));</span>
+					}
+					else {
+<span class="nc" id="L159">						int qty = map_quantity.get(order_item_pojo.getProductPojo().getBrandPojo().getCategory());</span>
+<span class="nc" id="L160">						double revenue = map_quantity.get(order_item_pojo.getProductPojo().getBrandPojo().getCategory());</span>
+<span class="nc" id="L161">						qty += order_item_pojo.getQuantity();</span>
+<span class="nc" id="L162">						revenue += (order_item_pojo.getQuantity() * order_item_pojo.getSellingPrice());</span>
+<span class="nc" id="L163">						map_quantity.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(),qty);</span>
+<span class="nc" id="L164">						map_revenue.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(),revenue);</span>
+					}
+				}
+<span class="nc" id="L167">			}</span>
+<span class="nc" id="L168">			List&lt;SalesData&gt; sales_list = new ArrayList&lt;SalesData&gt;();</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">			for(String category_it: map_quantity.keySet()) {</span>
+<span class="nc" id="L170">				SalesData s = new SalesData();</span>
+<span class="nc" id="L171">				s.setCategory(category_it);</span>
+<span class="nc" id="L172">				s.setQuantity(map_quantity.get(category_it));</span>
+<span class="nc" id="L173">				s.setRevenue(map_revenue.get(category_it));</span>
+<span class="nc" id="L174">				sales_list.add(s);</span>
+<span class="nc" id="L175">			}</span>
+<span class="nc" id="L176">			return sales_list;</span>
+		}
+	}
+	
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

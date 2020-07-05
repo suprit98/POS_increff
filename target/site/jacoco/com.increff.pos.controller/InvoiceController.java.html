@@ -32,7 +32,7 @@ import io.swagger.annotations.ApiOperation;
 	@RequestMapping(path = &quot;/api/invoice/{id}&quot;, method = RequestMethod.GET)
 	public void get(@PathVariable int id, HttpServletResponse response) throws Exception {
 <span class="nc" id="L34">		List&lt;OrderItemPojo&gt; lis = order_service.getOrderItems(id);</span>
-<span class="nc" id="L35">		PdfResponseUtil.generatePdfResponse(product_service, lis, response);</span>
+<span class="nc" id="L35">		PdfResponseUtil.generateInvoicePdfResponse(product_service, lis, response);</span>
 <span class="nc" id="L36">	}</span>
 
 }

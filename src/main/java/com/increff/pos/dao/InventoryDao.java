@@ -33,8 +33,7 @@ public class InventoryDao {
 	
 	public List<InventoryPojo> selectAll() {
 		TypedQuery<InventoryPojo> query = getQuery(select_all);
-		List<InventoryPojo> results = query.getResultList();
-		return results;	
+		return query.getResultList();
 	}
 	
 	public void update(InventoryPojo p) {

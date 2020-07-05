@@ -17,12 +17,12 @@
 			<fo:page-sequence master-reference="simpleA4">
 				<fo:flow flow-name="xsl-region-body">
 					<fo:block font-size="16pt" font-family="Helvetica"
-						color="blue" font-weight="bold" space-after="5mm">
+						color="black" font-weight="bold" space-after="5mm">
 						Order Id:
 						<xsl:value-of select="order_id" />
 					</fo:block>
 					<fo:block font-size="16pt" font-family="Helvetica"
-						color="blue" font-weight="bold" space-after="5mm">
+						color="black" font-weight="bold" space-after="5mm">
 						Date and Time:
 						<xsl:value-of select="datetime" />
 					</fo:block>
@@ -57,7 +57,7 @@
 						</fo:table>
 					</fo:block>
 					<fo:block font-size="16pt" font-family="Helvetica"
-						color="blue" font-weight="bold" space-after="5mm">
+						color="black" font-weight="bold" space-after="5mm">
 						Total: Rs.
 						<xsl:value-of select="total" />
 					</fo:block>

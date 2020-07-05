@@ -33,16 +33,15 @@ import com.increff.pos.pojo.InventoryPojo;
 	
 	public List&lt;InventoryPojo&gt; selectAll() {
 <span class="nc" id="L35">		TypedQuery&lt;InventoryPojo&gt; query = getQuery(select_all);</span>
-<span class="nc" id="L36">		List&lt;InventoryPojo&gt; results = query.getResultList();</span>
-<span class="nc" id="L37">		return results;	</span>
+<span class="nc" id="L36">		return query.getResultList();</span>
 	}
 	
 	public void update(InventoryPojo p) {
 		
-<span class="nc" id="L42">	}</span>
+<span class="nc" id="L41">	}</span>
 	
 	TypedQuery&lt;InventoryPojo&gt; getQuery(String jpql) {
-<span class="nc" id="L45">		return em.createQuery(jpql,InventoryPojo.class);</span>
+<span class="nc" id="L44">		return em.createQuery(jpql,InventoryPojo.class);</span>
 	}
 
 }

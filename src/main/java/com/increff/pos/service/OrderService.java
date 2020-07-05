@@ -1,6 +1,8 @@
 package com.increff.pos.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +67,14 @@ public class OrderService {
 		if(lis.size() == 0) {
 			order_dao.delete(order_id);
 		}
+	}
+	
+	@Transactional
+	public List<OrderPojo> getByDate(String startdate, String enddate) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDateTime startDate = LocalDate.parse(startdate, formatter).atStartOfDay();
+		LocalDateTime endDate = LocalDate.parse(enddate, formatter).atStartOfDay();
+		return order_dao.selectByDate(startDate, endDate);
 	}
 	
 	@Transactional(rollbackFor = ApiException.class)

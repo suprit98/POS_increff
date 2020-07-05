@@ -45,6 +45,11 @@ public class UIController {
 	public ModelAndView previous_orders() {
 		return mav("previousorders.html");
 	}
+	
+	@RequestMapping(value = "/ui/reports")
+	public ModelAndView reports() {
+		return mav("reports.html");
+	}
 
 	private ModelAndView mav(String page) {
 		ModelAndView mav = new ModelAndView(page);

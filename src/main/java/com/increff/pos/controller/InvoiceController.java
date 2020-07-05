@@ -32,7 +32,7 @@ public class InvoiceController {
 	@RequestMapping(path = "/api/invoice/{id}", method = RequestMethod.GET)
 	public void get(@PathVariable int id, HttpServletResponse response) throws Exception {
 		List<OrderItemPojo> lis = order_service.getOrderItems(id);
-		PdfResponseUtil.generatePdfResponse(product_service, lis, response);
+		PdfResponseUtil.generateInvoicePdfResponse(product_service, lis, response);
 	}
 
 }

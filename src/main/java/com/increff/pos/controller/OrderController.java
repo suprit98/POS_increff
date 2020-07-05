@@ -38,9 +38,7 @@ public class OrderController {
 	public OrderData add(@RequestBody OrderItemForm[] forms, HttpServletResponse response) throws ApiException, Exception {
 		List<OrderItemPojo> lis = ConversionUtil.convertOrderItemForms(product_service, forms);
 		int order_id = order_service.add(lis);
-		OrderData od = new OrderData();
-		od.setId(order_id);
-		return od;
+		return ConversionUtil.setOrderData(order_id);
 
 	}
 	

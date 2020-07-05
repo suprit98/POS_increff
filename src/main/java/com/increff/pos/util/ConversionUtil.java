@@ -8,6 +8,7 @@ import com.increff.pos.model.BrandForm;
 import com.increff.pos.model.InventoryData;
 import com.increff.pos.model.InventoryForm;
 import com.increff.pos.model.InvoiceData;
+import com.increff.pos.model.OrderData;
 import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.model.ProductDetailsData;
@@ -140,6 +141,12 @@ public class ConversionUtil {
 			list2.add(convert(product_service,f));
 		}
 		return list2;
+	}
+	
+	public static OrderData setOrderData(int order_id) {
+		OrderData d = new OrderData();
+		d.setId(order_id);
+		return d;
 	}
 
 }

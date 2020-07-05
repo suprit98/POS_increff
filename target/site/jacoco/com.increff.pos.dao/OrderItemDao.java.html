@@ -16,7 +16,7 @@ import com.increff.pos.pojo.OrderItemPojo;
 	@PersistenceContext
 	EntityManager em;
 	
-<span class="fc" id="L19">	private static String select_all = &quot;select p from OrderItemPojo p&quot;;</span>
+<span class="fc" id="L19">	private static String select_all = &quot;select p from OrderItemPojo p order by p.orderPojo&quot;;</span>
 <span class="fc" id="L20">	private static String select_order = &quot;select p from OrderItemPojo p where orderId=:orderId&quot;;</span>
 	
 	public void insert(OrderItemPojo p) {
@@ -35,23 +35,21 @@ import com.increff.pos.pojo.OrderItemPojo;
 	
 	public List&lt;OrderItemPojo&gt; selectAll() {
 <span class="nc" id="L37">		TypedQuery&lt;OrderItemPojo&gt; query = getQuery(select_all);</span>
-<span class="nc" id="L38">		List&lt;OrderItemPojo&gt; results = query.getResultList();</span>
-<span class="nc" id="L39">		return results;	</span>
+<span class="nc" id="L38">		return query.getResultList();	</span>
 	}
 	
 	public List&lt;OrderItemPojo&gt; selectOrder(int orderId) {
-<span class="nc" id="L43">		TypedQuery&lt;OrderItemPojo&gt; query = getQuery(select_order);</span>
-<span class="nc" id="L44">		query.setParameter(&quot;orderId&quot;, orderId);</span>
-<span class="nc" id="L45">		List&lt;OrderItemPojo&gt; results = query.getResultList();</span>
-<span class="nc" id="L46">		return results;	</span>
+<span class="nc" id="L42">		TypedQuery&lt;OrderItemPojo&gt; query = getQuery(select_order);</span>
+<span class="nc" id="L43">		query.setParameter(&quot;orderId&quot;, orderId);</span>
+<span class="nc" id="L44">		return query.getResultList();</span>
 	}
 	
 	public void update(OrderItemPojo p) {
 		
-<span class="nc" id="L51">	}</span>
+<span class="nc" id="L49">	}</span>
 	
 	TypedQuery&lt;OrderItemPojo&gt; getQuery(String jpql) {
-<span class="nc" id="L54">		return em.createQuery(jpql,OrderItemPojo.class);</span>
+<span class="nc" id="L52">		return em.createQuery(jpql,OrderItemPojo.class);</span>
 	}
 
 }

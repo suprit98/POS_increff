@@ -35,8 +35,7 @@ public class BrandDao {
 	
 	public List<BrandPojo> selectAll() {
 		TypedQuery<BrandPojo> query = getQuery(select_all);
-		List<BrandPojo> results = query.getResultList();
-		return results;	
+		return query.getResultList();
 	}
 	
 	public BrandPojo selectAllBrandCategory(String brand, String category) {

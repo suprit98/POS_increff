@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sales_items>
+    <sales_item>
+        <category>dairy</category>
+        <quantity>32</quantity>
+        <revenue>1100.0</revenue>
+    </sales_item>
+</sales_items>

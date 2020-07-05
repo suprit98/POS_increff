@@ -47,16 +47,15 @@ import com.increff.pos.pojo.ProductDetailsPojo;
 	
 	public List&lt;ProductDetailsPojo&gt; selectAll() {
 <span class="fc" id="L49">		TypedQuery&lt;ProductDetailsPojo&gt; query = getQuery(select_all);</span>
-<span class="fc" id="L50">		List&lt;ProductDetailsPojo&gt; results = query.getResultList();</span>
-<span class="fc" id="L51">		return results;	</span>
+<span class="fc" id="L50">		return query.getResultList();	</span>
 	}
 	
 	public void update(ProductDetailsPojo p) {
 		
-<span class="fc" id="L56">	}</span>
+<span class="fc" id="L55">	}</span>
 	
 	TypedQuery&lt;ProductDetailsPojo&gt; getQuery(String jpql) {
-<span class="fc" id="L59">		return em.createQuery(jpql,ProductDetailsPojo.class);</span>
+<span class="fc" id="L58">		return em.createQuery(jpql,ProductDetailsPojo.class);</span>
 	}
 
 }
