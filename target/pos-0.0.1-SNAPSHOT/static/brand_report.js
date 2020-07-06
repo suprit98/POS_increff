@@ -72,7 +72,7 @@ function getSalesReport(){
       	link.click();
 	   },
 	   error: function(response){
-	   		handleAjaxError(response);
+	   		alert("Error has occurred");
 	   }
 	});
 }

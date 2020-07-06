@@ -9,6 +9,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
 import com.increff.pos.pojo.InventoryPojo;
+import com.increff.pos.pojo.ProductDetailsPojo;
 
 @Repository
 public class InventoryDao {
@@ -17,6 +18,7 @@ public class InventoryDao {
 	EntityManager em;
 	
 	private static String select_all = "select p from InventoryPojo p";
+	private static String select_product = "select p from InventoryPojo p where p.productPojo=:productpojo";
 	
 	public void insert(InventoryPojo p) {
 		em.persist(p);
@@ -29,6 +31,12 @@ public class InventoryDao {
 	
 	public InventoryPojo select(int id) {
 		return em.find(InventoryPojo.class, id);
+	}
+	
+	public List<InventoryPojo> selectByProduct(ProductDetailsPojo p) {
+		TypedQuery<InventoryPojo> query = getQuery(select_product);
+		query.setParameter("productpojo", p);
+		return query.getResultList();
 	}
 	
 	public List<InventoryPojo> selectAll() {

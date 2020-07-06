@@ -11,68 +11,76 @@ import com.increff.pos.pojo.InventoryPojo;
 
 @Service
 <span class="fc" id="L13">public class InventoryService {</span>
-	
+
 	@Autowired
 	private InventoryDao inventory_dao;
-	
+
+
 	@Transactional
 	public void add(InventoryPojo p) throws ApiException {
-<span class="nc" id="L20">		validate(p);</span>
-<span class="nc" id="L21">		inventory_dao.insert(p);</span>
-<span class="nc" id="L22">	}</span>
-	
+<span class="fc" id="L21">		validate(p);</span>
+<span class="fc" id="L22">		checkIfBarcodePresent(p);</span>
+<span class="fc" id="L23">		inventory_dao.insert(p);</span>
+<span class="fc" id="L24">	}</span>
 
 	@Transactional
 	public void delete(int id) {
-<span class="nc" id="L27">		inventory_dao.delete(id);	</span>
-<span class="nc" id="L28">	}</span>
-	
+<span class="fc" id="L28">		inventory_dao.delete(id);</span>
+<span class="fc" id="L29">	}</span>
+
 	@Transactional
 	public InventoryPojo get(int id) throws ApiException {
-<span class="nc" id="L32">		InventoryPojo p = checkIfExists(id);</span>
-<span class="nc" id="L33">		return p;</span>
+<span class="fc" id="L33">		InventoryPojo p = checkIfExists(id);</span>
+<span class="fc" id="L34">		return p;</span>
 	}
-	
+
 	@Transactional
 	public InventoryPojo getByProductId(int product_id) throws ApiException {
-<span class="nc" id="L38">		List&lt;InventoryPojo&gt; lis = getAll();</span>
-<span class="nc bnc" id="L39" title="All 2 branches missed.">		for(InventoryPojo ip:lis) {</span>
-<span class="nc bnc" id="L40" title="All 2 branches missed.">			if(ip.getProductPojo().getId() == product_id) {</span>
-<span class="nc" id="L41">				return ip;</span>
+<span class="fc" id="L39">		List&lt;InventoryPojo&gt; lis = getAll();</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">		for (InventoryPojo ip : lis) {</span>
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">			if (ip.getProductPojo().getId() == product_id) {</span>
+<span class="fc" id="L42">				return ip;</span>
 			}
-<span class="nc" id="L43">		}</span>
-<span class="nc" id="L44">		return null;</span>
+<span class="nc" id="L44">		}</span>
+<span class="nc" id="L45">		return null;</span>
 	}
-	
+
 	@Transactional
 	public List&lt;InventoryPojo&gt; getAll() {
-<span class="nc" id="L49">		return inventory_dao.selectAll();</span>
+<span class="fc" id="L50">		return inventory_dao.selectAll();</span>
 	}
-	
+
 	@Transactional(rollbackFor = ApiException.class)
 	public void update(int id, InventoryPojo p) throws ApiException {
-<span class="nc" id="L54">		validate(p);</span>
-<span class="nc" id="L55">		InventoryPojo ex = checkIfExists(id);</span>
-<span class="nc" id="L56">		ex.setQuantity(p.getQuantity());</span>
-<span class="nc" id="L57">		inventory_dao.update(p);</span>
-<span class="nc" id="L58">	}</span>
-	
+<span class="fc" id="L55">		validate(p);</span>
+<span class="fc" id="L56">		InventoryPojo ex = checkIfExists(id);</span>
+<span class="fc" id="L57">		ex.setQuantity(p.getQuantity());</span>
+<span class="fc" id="L58">		inventory_dao.update(p);</span>
+<span class="fc" id="L59">	}</span>
+
 	@Transactional(rollbackFor = ApiException.class)
 	public InventoryPojo checkIfExists(int id) throws ApiException {
-<span class="nc" id="L62">		InventoryPojo p = inventory_dao.select(id);</span>
-<span class="nc bnc" id="L63" title="All 2 branches missed.">		if(p == null) {</span>
-<span class="nc" id="L64">			throw new ApiException(&quot;Inventory with given ID does not exist, id: &quot; + id);</span>
+<span class="fc" id="L63">		InventoryPojo p = inventory_dao.select(id);</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">		if (p == null) {</span>
+<span class="fc" id="L65">			throw new ApiException(&quot;Inventory with given ID does not exist, id: &quot; + id);</span>
 		}
-<span class="nc" id="L66">		return p;</span>
+<span class="fc" id="L67">		return p;</span>
 	}
+
+	protected void validate(InventoryPojo p) throws ApiException {
+<span class="fc bfc" id="L71" title="All 2 branches covered.">		if (p.getQuantity() &lt;= 0) {</span>
+<span class="fc" id="L72">			throw new ApiException(&quot;Inventory quantity should be positive&quot;);</span>
+		}
+
+<span class="fc" id="L75">	}</span>
 	
-	private void validate(InventoryPojo p) throws ApiException {
-<span class="nc bnc" id="L70" title="All 2 branches missed.">		if(p.getQuantity()&lt;=0) {</span>
-<span class="nc" id="L71">			throw new ApiException(&quot;Inventory quantity should be positive&quot;);</span>
+	protected void checkIfBarcodePresent(InventoryPojo p) throws ApiException {
+<span class="fc" id="L78">		List&lt;InventoryPojo&gt; lis = inventory_dao.selectByProduct(p.getProductPojo());</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">		if(lis.size()&gt;0) {</span>
+<span class="fc" id="L80">			throw new ApiException(&quot;Inventory for this product already exists. You can edit the inventory details if you want to&quot;);</span>
 		}
 		
-<span class="nc" id="L74">	}</span>
-	
+<span class="fc" id="L83">	}</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

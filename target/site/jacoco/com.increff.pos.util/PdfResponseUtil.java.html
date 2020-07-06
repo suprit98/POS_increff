@@ -83,9 +83,9 @@ import com.increff.pos.service.ProductDetailsService;
 <span class="nc" id="L83">		response.getOutputStream().flush();</span>
 
 <span class="nc" id="L85">	}</span>
-	
-	public static void generateSalesReportResponse(String brand, String category, List&lt;OrderItemPojo&gt; orderitem_list, HttpServletResponse response)
-			throws Exception {
+
+	public static void generateSalesReportResponse(String brand, String category, List&lt;OrderItemPojo&gt; orderitem_list,
+			HttpServletResponse response) throws Exception {
 
 <span class="nc" id="L90">		List&lt;SalesData&gt; converted_list = createSalesList(brand, category, orderitem_list);</span>
 <span class="nc" id="L91">		SalesDataList sales_data_list = new SalesDataList();</span>
@@ -125,14 +125,14 @@ import com.increff.pos.service.ProductDetailsService;
 <span class="nc" id="L125">		}</span>
 <span class="nc" id="L126">		return inventory_report_list;</span>
 	}
-	
-	private static List&lt;SalesData&gt; createSalesList(String brand, String category, List&lt;OrderItemPojo&gt; orderitem_list){
-<span class="nc bnc" id="L130" title="All 4 branches missed.">		if(brand.isEmpty() &amp;&amp; !category.isEmpty()) {</span>
+
+	private static List&lt;SalesData&gt; createSalesList(String brand, String category, List&lt;OrderItemPojo&gt; orderitem_list) {
+<span class="nc bnc" id="L130" title="All 4 branches missed.">		if (brand.isEmpty() &amp;&amp; !category.isEmpty()) {</span>
 <span class="nc" id="L131">			int qty = 0;</span>
 <span class="nc" id="L132">			double revenue = 0;</span>
-			
-<span class="nc bnc" id="L134" title="All 2 branches missed.">			for(OrderItemPojo order_item_pojo: orderitem_list) {</span>
-<span class="nc bnc" id="L135" title="All 2 branches missed.">				if(order_item_pojo.getProductPojo().getBrandPojo().getCategory().contentEquals(category)) {</span>
+
+<span class="nc bnc" id="L134" title="All 2 branches missed.">			for (OrderItemPojo order_item_pojo : orderitem_list) {</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">				if (order_item_pojo.getProductPojo().getBrandPojo().getCategory().contentEquals(category)) {</span>
 <span class="nc" id="L136">					qty += order_item_pojo.getQuantity();</span>
 <span class="nc" id="L137">					revenue += (order_item_pojo.getQuantity() * order_item_pojo.getSellingPrice());</span>
 				}
@@ -144,39 +144,89 @@ import com.increff.pos.service.ProductDetailsService;
 <span class="nc" id="L144">			s.setRevenue(revenue);</span>
 <span class="nc" id="L145">			sales_list.add(s);</span>
 <span class="nc" id="L146">			return sales_list;</span>
-		}
-		else {
-<span class="nc" id="L149">			Map&lt;String,Integer&gt; map_quantity = new HashMap&lt;String,Integer&gt;();</span>
-<span class="nc" id="L150">			Map&lt;String,Double&gt; map_revenue = new HashMap&lt;String,Double&gt;();</span>
-			
-<span class="nc bnc" id="L152" title="All 2 branches missed.">			for(OrderItemPojo order_item_pojo: orderitem_list) {</span>
-<span class="nc bnc" id="L153" title="All 2 branches missed.">				if(order_item_pojo.getProductPojo().getBrandPojo().getBrand().contentEquals(brand)) {</span>
-<span class="nc bnc" id="L154" title="All 2 branches missed.">					if(map_quantity.get(order_item_pojo.getProductPojo().getBrandPojo().getCategory()) == null) {</span>
-<span class="nc" id="L155">						map_quantity.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(),order_item_pojo.getQuantity());</span>
-<span class="nc" id="L156">						map_revenue.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(),(order_item_pojo.getQuantity()*order_item_pojo.getSellingPrice()));</span>
-					}
-					else {
+<span class="nc bnc" id="L147" title="All 4 branches missed.">		} else if (!brand.isEmpty() &amp;&amp; category.isEmpty()) {</span>
+<span class="nc" id="L148">			Map&lt;String, Integer&gt; map_quantity = new HashMap&lt;String, Integer&gt;();</span>
+<span class="nc" id="L149">			Map&lt;String, Double&gt; map_revenue = new HashMap&lt;String, Double&gt;();</span>
+
+<span class="nc bnc" id="L151" title="All 2 branches missed.">			for (OrderItemPojo order_item_pojo : orderitem_list) {</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">				if (order_item_pojo.getProductPojo().getBrandPojo().getBrand().contentEquals(brand)) {</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">					if (map_quantity.get(order_item_pojo.getProductPojo().getBrandPojo().getCategory()) == null) {</span>
+<span class="nc" id="L154">						map_quantity.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(),</span>
+<span class="nc" id="L155">								order_item_pojo.getQuantity());</span>
+<span class="nc" id="L156">						map_revenue.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(),</span>
+<span class="nc" id="L157">								(order_item_pojo.getQuantity() * order_item_pojo.getSellingPrice()));</span>
+					} else {
 <span class="nc" id="L159">						int qty = map_quantity.get(order_item_pojo.getProductPojo().getBrandPojo().getCategory());</span>
-<span class="nc" id="L160">						double revenue = map_quantity.get(order_item_pojo.getProductPojo().getBrandPojo().getCategory());</span>
-<span class="nc" id="L161">						qty += order_item_pojo.getQuantity();</span>
-<span class="nc" id="L162">						revenue += (order_item_pojo.getQuantity() * order_item_pojo.getSellingPrice());</span>
-<span class="nc" id="L163">						map_quantity.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(),qty);</span>
-<span class="nc" id="L164">						map_revenue.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(),revenue);</span>
+<span class="nc" id="L160">						double revenue = map_quantity</span>
+<span class="nc" id="L161">								.get(order_item_pojo.getProductPojo().getBrandPojo().getCategory());</span>
+<span class="nc" id="L162">						qty += order_item_pojo.getQuantity();</span>
+<span class="nc" id="L163">						revenue += (order_item_pojo.getQuantity() * order_item_pojo.getSellingPrice());</span>
+<span class="nc" id="L164">						map_quantity.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(), qty);</span>
+<span class="nc" id="L165">						map_revenue.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(), revenue);</span>
 					}
 				}
-<span class="nc" id="L167">			}</span>
-<span class="nc" id="L168">			List&lt;SalesData&gt; sales_list = new ArrayList&lt;SalesData&gt;();</span>
-<span class="nc bnc" id="L169" title="All 2 branches missed.">			for(String category_it: map_quantity.keySet()) {</span>
-<span class="nc" id="L170">				SalesData s = new SalesData();</span>
-<span class="nc" id="L171">				s.setCategory(category_it);</span>
-<span class="nc" id="L172">				s.setQuantity(map_quantity.get(category_it));</span>
-<span class="nc" id="L173">				s.setRevenue(map_revenue.get(category_it));</span>
-<span class="nc" id="L174">				sales_list.add(s);</span>
-<span class="nc" id="L175">			}</span>
-<span class="nc" id="L176">			return sales_list;</span>
-		}
-	}
-	
+<span class="nc" id="L168">			}</span>
+<span class="nc" id="L169">			List&lt;SalesData&gt; sales_list = new ArrayList&lt;SalesData&gt;();</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">			for (String category_it : map_quantity.keySet()) {</span>
+<span class="nc" id="L171">				SalesData s = new SalesData();</span>
+<span class="nc" id="L172">				s.setCategory(category_it);</span>
+<span class="nc" id="L173">				s.setQuantity(map_quantity.get(category_it));</span>
+<span class="nc" id="L174">				s.setRevenue(map_revenue.get(category_it));</span>
+<span class="nc" id="L175">				sales_list.add(s);</span>
+<span class="nc" id="L176">			}</span>
+<span class="nc" id="L177">			return sales_list;</span>
+<span class="nc bnc" id="L178" title="All 4 branches missed.">		} else if (!brand.isEmpty() &amp;&amp; !category.isEmpty()) {</span>
+<span class="nc" id="L179">			int qty = 0;</span>
+<span class="nc" id="L180">			double revenue = 0;</span>
 
+<span class="nc bnc" id="L182" title="All 2 branches missed.">			for (OrderItemPojo order_item_pojo : orderitem_list) {</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">				if (order_item_pojo.getProductPojo().getBrandPojo().getCategory().contentEquals(category)</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">						&amp;&amp; order_item_pojo.getProductPojo().getBrandPojo().getBrand().contentEquals(brand)) {</span>
+<span class="nc" id="L185">					qty += order_item_pojo.getQuantity();</span>
+<span class="nc" id="L186">					revenue += (order_item_pojo.getQuantity() * order_item_pojo.getSellingPrice());</span>
+				}
+<span class="nc" id="L188">			}</span>
+<span class="nc" id="L189">			List&lt;SalesData&gt; sales_list = new ArrayList&lt;SalesData&gt;();</span>
+<span class="nc" id="L190">			SalesData s = new SalesData();</span>
+<span class="nc" id="L191">			s.setCategory(category);</span>
+<span class="nc" id="L192">			s.setQuantity(qty);</span>
+<span class="nc" id="L193">			s.setRevenue(revenue);</span>
+<span class="nc" id="L194">			sales_list.add(s);</span>
+<span class="nc" id="L195">			return sales_list;</span>
+		} else {
+
+<span class="nc" id="L198">			Map&lt;String, Integer&gt; map_quantity = new HashMap&lt;String, Integer&gt;();</span>
+<span class="nc" id="L199">			Map&lt;String, Double&gt; map_revenue = new HashMap&lt;String, Double&gt;();</span>
+
+<span class="nc bnc" id="L201" title="All 2 branches missed.">			for (OrderItemPojo order_item_pojo : orderitem_list) {</span>
+
+<span class="nc bnc" id="L203" title="All 2 branches missed.">				if (map_quantity.get(order_item_pojo.getProductPojo().getBrandPojo().getCategory()) == null) {</span>
+<span class="nc" id="L204">					map_quantity.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(),</span>
+<span class="nc" id="L205">							order_item_pojo.getQuantity());</span>
+<span class="nc" id="L206">					map_revenue.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(),</span>
+<span class="nc" id="L207">							(order_item_pojo.getQuantity() * order_item_pojo.getSellingPrice()));</span>
+				} else {
+<span class="nc" id="L209">					int qty = map_quantity.get(order_item_pojo.getProductPojo().getBrandPojo().getCategory());</span>
+<span class="nc" id="L210">					double revenue = map_revenue.get(order_item_pojo.getProductPojo().getBrandPojo().getCategory());</span>
+<span class="nc" id="L211">					qty += order_item_pojo.getQuantity();</span>
+<span class="nc" id="L212">					revenue += (order_item_pojo.getQuantity() * order_item_pojo.getSellingPrice());</span>
+<span class="nc" id="L213">					map_quantity.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(), qty);</span>
+<span class="nc" id="L214">					map_revenue.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(), revenue);</span>
+				}
+
+<span class="nc" id="L217">			}</span>
+<span class="nc" id="L218">			List&lt;SalesData&gt; sales_list = new ArrayList&lt;SalesData&gt;();</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">			for (String category_it : map_quantity.keySet()) {</span>
+<span class="nc" id="L220">				SalesData s = new SalesData();</span>
+<span class="nc" id="L221">				s.setCategory(category_it);</span>
+<span class="nc" id="L222">				s.setQuantity(map_quantity.get(category_it));</span>
+<span class="nc" id="L223">				s.setRevenue(map_revenue.get(category_it));</span>
+<span class="nc" id="L224">				sales_list.add(s);</span>
+<span class="nc" id="L225">			}</span>
+<span class="nc" id="L226">			return sales_list;</span>
+
+		}
+
+	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

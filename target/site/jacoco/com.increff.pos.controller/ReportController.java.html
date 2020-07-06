@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +27,9 @@ import io.swagger.annotations.ApiOperation;
 
 @Api
 @RestController
-<span class="fc" id="L29">public class ReportController {</span>
+<span class="fc" id="L30">public class ReportController {</span>
+	
+<span class="fc" id="L32">	private static final Logger logger = Logger.getLogger(ReportController.class);</span>
 	
 	@Autowired
 	private BrandService brand_service;
@@ -40,27 +43,29 @@ import io.swagger.annotations.ApiOperation;
 	@ApiOperation(value = &quot;Gets Brand Report&quot;)
 	@RequestMapping(path = &quot;/api/report/brand&quot;, method = RequestMethod.GET)
 	public void get(HttpServletResponse response) throws Exception {
-<span class="nc" id="L43">		List&lt;BrandPojo&gt; brand_pojo_list = brand_service.getAll();</span>
-<span class="nc" id="L44">		PdfResponseUtil.generateBrandReportResponse(brand_pojo_list, response);</span>
-<span class="nc" id="L45">	}</span>
+<span class="nc" id="L46">		List&lt;BrandPojo&gt; brand_pojo_list = brand_service.getAll();</span>
+<span class="nc" id="L47">		PdfResponseUtil.generateBrandReportResponse(brand_pojo_list, response);</span>
+<span class="nc" id="L48">	}</span>
 	
 	@ApiOperation(value = &quot;Gets Inventory Report&quot;)
 	@RequestMapping(path = &quot;/api/report/inventory&quot;, method = RequestMethod.GET)
 	public void getInventory(HttpServletResponse response) throws Exception {
-<span class="nc" id="L50">		List&lt;InventoryPojo&gt; inventory_pojo_list = inventory_service.getAll();</span>
-<span class="nc" id="L51">		PdfResponseUtil.generateInventoryReportResponse(brand_service, inventory_pojo_list, response);</span>
-<span class="nc" id="L52">	}</span>
+<span class="nc" id="L53">		List&lt;InventoryPojo&gt; inventory_pojo_list = inventory_service.getAll();</span>
+<span class="nc" id="L54">		PdfResponseUtil.generateInventoryReportResponse(brand_service, inventory_pojo_list, response);</span>
+<span class="nc" id="L55">	}</span>
 	
 	@ApiOperation(value = &quot;Gets Sales Report&quot;)
 	@RequestMapping(path = &quot;/api/report/sales&quot;, method = RequestMethod.POST)
 	public void getSales(@RequestBody SalesFilter sales_filter,HttpServletResponse response) throws Exception {
-<span class="nc" id="L57">		List&lt;OrderPojo&gt; order_list = order_service.getByDate(sales_filter.getStartDate(), sales_filter.getEndDate());</span>
-<span class="nc" id="L58">		List&lt;OrderItemPojo&gt; order_item_list = new ArrayList&lt;OrderItemPojo&gt;();</span>
-<span class="nc bnc" id="L59" title="All 2 branches missed.">		for(OrderPojo order_pojo: order_list) {</span>
-<span class="nc" id="L60">			order_item_list.addAll(order_service.getOrderItems(order_pojo.getId()));</span>
-<span class="nc" id="L61">		}</span>
-<span class="nc" id="L62">		PdfResponseUtil.generateSalesReportResponse(sales_filter.getBrand(), sales_filter.getCategory(), order_item_list, response);</span>
-<span class="nc" id="L63">	}</span>
+<span class="nc" id="L60">		logger.info(sales_filter.getCategory());</span>
+<span class="nc" id="L61">		logger.info(sales_filter.getStartDate());</span>
+<span class="nc" id="L62">		List&lt;OrderPojo&gt; order_list = order_service.getByDate(sales_filter.getStartDate(), sales_filter.getEndDate());</span>
+<span class="nc" id="L63">		List&lt;OrderItemPojo&gt; order_item_list = new ArrayList&lt;OrderItemPojo&gt;();</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">		for(OrderPojo order_pojo: order_list) {</span>
+<span class="nc" id="L65">			order_item_list.addAll(order_service.getOrderItems(order_pojo.getId()));</span>
+<span class="nc" id="L66">		}</span>
+<span class="nc" id="L67">		PdfResponseUtil.generateSalesReportResponse(sales_filter.getBrand(), sales_filter.getCategory(), order_item_list, response);</span>
+<span class="nc" id="L68">	}</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
