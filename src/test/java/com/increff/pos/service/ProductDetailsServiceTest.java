@@ -1,6 +1,8 @@
 package com.increff.pos.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +25,25 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 		BrandPojo b = getBrandPojo();
 		ProductDetailsPojo p = getProductDetailsPojo(b);
 		product_service.add(p);
+		assertEquals(p.getBarcode(),product_service.get(p.getId()).getBarcode());
+		assertEquals(p.getName(),product_service.get(p.getId()).getName());
+		assertEquals(p.getMrp(),product_service.get(p.getId()).getMrp(),0.001);
+		assertEquals(p.getBrandPojo(),product_service.get(p.getId()).getBrandPojo());
 
 	}
 
-	@Test(expected = ApiException.class)
+	@Test()
 	public void testAddWrong() throws ApiException {
 
 		BrandPojo b = getBrandPojo();
 		ProductDetailsPojo p = getWrongProductDetailsPojo(b);
-		product_service.add(p);
+		try {
+			product_service.add(p);
+			fail("ApiException did not occur");
+		} catch (ApiException e) {
+			assertEquals(e.getMessage(),"The name of product must not be empty");
+		}
+		
 
 	}
 
@@ -43,6 +55,12 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 		product_service.add(p);
 
 		product_service.delete(p.getId());
+		try {
+			product_service.get(p.getId());
+			fail("ApiException did not occur");
+		} catch (ApiException e) {
+			assertEquals(e.getMessage(),"ProductDetails with given ID does not exist, id: " + p.getId());
+		}
 
 	}
 
@@ -53,14 +71,23 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 		ProductDetailsPojo p = getProductDetailsPojo(b);
 		product_service.add(p);
 
-		product_service.get(p.getId());
+		ProductDetailsPojo db_product_pojo = product_service.get(p.getId());
+		assertEquals(p.getBarcode(),db_product_pojo.getBarcode());
+		assertEquals(p.getBrandPojo(),db_product_pojo.getBrandPojo());
+		assertEquals(p.getMrp(),db_product_pojo.getMrp(),0.001);
+		assertEquals(p.getName(),db_product_pojo.getName());
 
 	}
 
-	@Test(expected = ApiException.class)
+	@Test()
 	public void testGetByIdNotExisting() throws ApiException {
-
-		product_service.get(5);
+		try {
+			product_service.get(5);
+			fail("ApiException did not occur");
+		} catch (ApiException e) {
+			assertEquals(e.getMessage(),"ProductDetails with given ID does not exist, id: " + 5);
+		}
+		
 
 	}
 
@@ -71,14 +98,24 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 		ProductDetailsPojo p = getProductDetailsPojo(b);
 		product_service.add(p);
 
-		product_service.get(p.getBarcode());
+		ProductDetailsPojo db_product_pojo = product_service.get(p.getBarcode());
+		assertEquals(p.getId(),db_product_pojo.getId());
+		assertEquals(p.getBrandPojo(),db_product_pojo.getBrandPojo());
+		assertEquals(p.getMrp(),db_product_pojo.getMrp(),0.001);
+		assertEquals(p.getName(),db_product_pojo.getName());
 
 	}
 
-	@Test(expected = ApiException.class)
+	@Test()
 	public void testGetByBarcodeNotExisting() throws ApiException {
 
-		product_service.get("abcdefgh");
+		try {
+			product_service.get("abcdefgh");
+			fail("ApiException did not occur");
+		} catch (ApiException e) {
+			assertEquals(e.getMessage(),"ProductDetails with given barcode does not exist, barcode: " + "abcdefgh");
+		}
+		
 
 	}
 
@@ -95,16 +132,25 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 		
 		ProductDetailsPojo p2 = getNewProductDetailsPojo(b);
 		product_service.update(p.getId(), p2);
+		assertEquals(p2.getBrandPojo(),product_service.get(p.getId()).getBrandPojo());
+		assertEquals(p2.getName(),product_service.get(p.getId()).getName());
+		assertEquals(p2.getMrp(),product_service.get(p.getId()).getMrp(),0.001);
 	}
 	
-	@Test(expected = ApiException.class)
+	@Test()
 	public void testUpdateWrong() throws ApiException {
 		BrandPojo b = getBrandPojo();
 		ProductDetailsPojo p = getProductDetailsPojo(b);
 		product_service.add(p);
 		
 		ProductDetailsPojo p2 = getWrongProductDetailsPojo(b);
-		product_service.update(p.getId(), p2);
+		try {
+			product_service.update(p.getId(), p2);
+			fail("ApiException did not occur");
+		} catch (ApiException e) {
+			assertEquals(e.getMessage(),"The name of product must not be empty");
+		}
+		
 	}
 	
 	@Test()
@@ -113,7 +159,11 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 		ProductDetailsPojo p = getProductDetailsPojo(b);
 		product_service.add(p);
 		
-		product_service.checkIfExists(p.getId());
+		ProductDetailsPojo db_product_pojo = product_service.checkIfExists(p.getId());
+		assertEquals(p.getBarcode(),db_product_pojo.getBarcode());
+		assertEquals(p.getBrandPojo(),db_product_pojo.getBrandPojo());
+		assertEquals(p.getMrp(),db_product_pojo.getMrp(),0.001);
+		assertEquals(p.getName(),db_product_pojo.getName());
 	}
 	
 	@Test()
@@ -122,19 +172,34 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 		ProductDetailsPojo p = getProductDetailsPojo(b);
 		product_service.add(p);
 		
-		product_service.checkIfExists(p.getBarcode());
+		ProductDetailsPojo db_product_pojo = product_service.checkIfExists(p.getBarcode());
+		assertEquals(p.getBarcode(),db_product_pojo.getBarcode());
+		assertEquals(p.getBrandPojo(),db_product_pojo.getBrandPojo());
+		assertEquals(p.getMrp(),db_product_pojo.getMrp(),0.001);
+		assertEquals(p.getName(),db_product_pojo.getName());
 	}
 	
-	@Test(expected = ApiException.class)
+	@Test()
 	public void testCheckIfExistsIdWrong() throws ApiException {
 		
-		product_service.checkIfExists(5);
+		try {
+			product_service.checkIfExists(5);
+			fail("ApiException did not occur");
+		} catch (ApiException e) {
+			assertEquals(e.getMessage(),"ProductDetails with given ID does not exist, id: " + 5);
+		}
+		
 	}
 	
-	@Test(expected = ApiException.class)
+	@Test()
 	public void testCheckIfExistsBarcodeWrong() throws ApiException {
 		
-		product_service.checkIfExists("abcdefgh");
+		try {
+			product_service.checkIfExists("abcdefgh");
+			fail("ApiException did not occur");
+		} catch (ApiException e) {
+			assertEquals(e.getMessage(),"ProductDetails with given barcode does not exist, barcode: " + "abcdefgh");
+		}
 	}
 	
 	@Test
@@ -153,15 +218,22 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 		ProductDetailsPojo p = getProductDetailsPojo(b);
 		
 		product_service.validate(p);
+		assertTrue(!p.getName().isEmpty());
+		assertTrue(p.getMrp()>=0);
 		
 	}
 	
-	@Test(expected = ApiException.class)
+	@Test()
 	public void testValidateWrong() throws ApiException {
 		BrandPojo b = getBrandPojo();
 		ProductDetailsPojo p = getWrongProductDetailsPojo(b);
 		
-		product_service.validate(p);
+		try {
+			product_service.validate(p);
+			fail("ApiException did not occur");
+		} catch (ApiException e) {
+			assertEquals(e.getMessage(),"The name of product must not be empty");
+		}
 		
 	}
 
