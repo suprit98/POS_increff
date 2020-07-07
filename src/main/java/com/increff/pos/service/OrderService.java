@@ -35,13 +35,15 @@ public class OrderService {
 		int order_id = order_dao.insert(op);
 		for(OrderItemPojo p:lis) {
 			p.setOrderPojo(order_dao.select(order_id));
+			validate(p);
 			order_item_dao.insert(p);
 			updateInventory(p);
 		}
 		return order_id;
 	}
 	
-	
+
+
 	@Transactional
 	public OrderItemPojo get(int id) throws ApiException {
 		OrderItemPojo p = checkIfExists(id);
@@ -134,6 +136,13 @@ public class OrderService {
 			InventoryPojo new_ip = new InventoryPojo();
 			new_ip.setQuantity(quantityInInventory-quantity);
 			inventory_service.update(inventory_service.getByProductId(p.getProductPojo().getId()).getId(), new_ip);
+		}
+		
+	}
+	
+	private void validate(OrderItemPojo p) throws ApiException {
+		if(p.getQuantity() <=0 ) {
+			throw new ApiException("Quantity must be positive");
 		}
 		
 	}

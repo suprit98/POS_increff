@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="16" failures="0" name="com.increff.pos.service.BrandServiceTest" time="0.13" errors="0" skipped="0">
+<testsuite tests="16" failures="0" name="com.increff.pos.service.BrandServiceTest" time="0.089" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib"/>
@@ -65,19 +65,19 @@
     <property name="sun.cpu.isalist" value=""/>
   </properties>
   <testcase classname="com.increff.pos.service.BrandServiceTest" name="testValidateAlreadyExists" time="0"/>
-  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testCheckIfExistsNotExisting" time="0"/>
-  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testAdd" time="0"/>
-  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testGet" time="0.007"/>
-  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testUpdateWrong" time="0.009"/>
-  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testGetId" time="0.018"/>
+  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testCheckIfExistsNotExisting" time="0.001"/>
+  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testAdd" time="0.007"/>
+  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testGet" time="0.006"/>
+  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testUpdateWrong" time="0.006"/>
+  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testGetId" time="0.008"/>
   <testcase classname="com.increff.pos.service.BrandServiceTest" name="testValidate" time="0.004"/>
-  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testAddWrong" time="0.008"/>
-  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testGetNotExisting" time="0.008"/>
-  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testCheckIfExists" time="0.01"/>
-  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testNormalize" time="0.008"/>
-  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testDelete" time="0.007"/>
-  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testGetAll" time="0.022"/>
-  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testGetIdNotExisting" time="0.011"/>
-  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testUpdate" time="0.009"/>
-  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testAddDuplicate" time="0.009"/>
+  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testAddWrong" time="0.003"/>
+  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testGetNotExisting" time="0.004"/>
+  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testCheckIfExists" time="0.006"/>
+  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testNormalize" time="0.005"/>
+  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testDelete" time="0.006"/>
+  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testGetAll" time="0.014"/>
+  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testGetIdNotExisting" time="0.007"/>
+  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testUpdate" time="0.006"/>
+  <testcase classname="com.increff.pos.service.BrandServiceTest" name="testAddDuplicate" time="0.006"/>
 </testsuite>

@@ -22,18 +22,18 @@ import com.increff.pos.pojo.OrderPojo;
 	
 	
 	public int insert(OrderPojo p) {
-<span class="nc" id="L25">		em.persist(p);</span>
-<span class="nc" id="L26">		em.flush();</span>
-<span class="nc" id="L27">		return p.getId();</span>
+<span class="fc" id="L25">		em.persist(p);</span>
+<span class="fc" id="L26">		em.flush();</span>
+<span class="fc" id="L27">		return p.getId();</span>
 	}
 	
 	public void delete(int id) {
-<span class="nc" id="L31">		OrderPojo p = em.find(OrderPojo.class, id);</span>
-<span class="nc" id="L32">		em.remove(p);</span>
-<span class="nc" id="L33">	}</span>
+<span class="fc" id="L31">		OrderPojo p = em.find(OrderPojo.class, id);</span>
+<span class="fc" id="L32">		em.remove(p);</span>
+<span class="fc" id="L33">	}</span>
 	
 	public OrderPojo select(int id) {
-<span class="nc" id="L36">		return em.find(OrderPojo.class, id);</span>
+<span class="fc" id="L36">		return em.find(OrderPojo.class, id);</span>
 	}
 	
 	
@@ -43,10 +43,10 @@ import com.increff.pos.pojo.OrderPojo;
 	}
 	
 	public List&lt;OrderPojo&gt; selectByDate(LocalDateTime startdate, LocalDateTime enddate) {
-<span class="nc" id="L46">		TypedQuery&lt;OrderPojo&gt; query = getQuery(select_date_filter);</span>
-<span class="nc" id="L47">		query.setParameter(&quot;startdate&quot;, startdate);</span>
-<span class="nc" id="L48">		query.setParameter(&quot;enddate&quot;, enddate);</span>
-<span class="nc" id="L49">		return query.getResultList();</span>
+<span class="fc" id="L46">		TypedQuery&lt;OrderPojo&gt; query = getQuery(select_date_filter);</span>
+<span class="fc" id="L47">		query.setParameter(&quot;startdate&quot;, startdate);</span>
+<span class="fc" id="L48">		query.setParameter(&quot;enddate&quot;, enddate);</span>
+<span class="fc" id="L49">		return query.getResultList();</span>
 	}
 	
 	public void update(OrderPojo p) {
@@ -54,7 +54,7 @@ import com.increff.pos.pojo.OrderPojo;
 <span class="nc" id="L54">	}</span>
 	
 	TypedQuery&lt;OrderPojo&gt; getQuery(String jpql) {
-<span class="nc" id="L57">		return em.createQuery(jpql,OrderPojo.class);</span>
+<span class="fc" id="L57">		return em.createQuery(jpql,OrderPojo.class);</span>
 	}
 
 

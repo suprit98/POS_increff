@@ -144,7 +144,8 @@ public class PdfResponseUtil {
 			s.setRevenue(revenue);
 			sales_list.add(s);
 			return sales_list;
-		} else if (!brand.isEmpty() && category.isEmpty()) {
+		} 
+		else if (!brand.isEmpty() && category.isEmpty()) {
 			Map<String, Integer> map_quantity = new HashMap<String, Integer>();
 			Map<String, Double> map_revenue = new HashMap<String, Double>();
 
@@ -175,7 +176,8 @@ public class PdfResponseUtil {
 				sales_list.add(s);
 			}
 			return sales_list;
-		} else if (!brand.isEmpty() && !category.isEmpty()) {
+		} 
+		else if (!brand.isEmpty() && !category.isEmpty()) {
 			int qty = 0;
 			double revenue = 0;
 
@@ -193,7 +195,8 @@ public class PdfResponseUtil {
 			s.setRevenue(revenue);
 			sales_list.add(s);
 			return sales_list;
-		} else {
+		} 
+		else {
 
 			Map<String, Integer> map_quantity = new HashMap<String, Integer>();
 			Map<String, Double> map_revenue = new HashMap<String, Double>();
