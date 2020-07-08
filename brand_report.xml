@@ -3,21 +3,11 @@
     <brand_item>
         <brand>amul</brand>
         <category>dairy</category>
-        <id>7</id>
+        <id>51</id>
     </brand_item>
     <brand_item>
-        <brand>dabur</brand>
-        <category>health</category>
-        <id>4</id>
-    </brand_item>
-    <brand_item>
-        <brand>nestle</brand>
-        <category>dairy</category>
-        <id>1</id>
-    </brand_item>
-    <brand_item>
-        <brand>samsung</brand>
-        <category>technology</category>
-        <id>16</id>
+        <brand>amul</brand>
+        <category>bakery</category>
+        <id>52</id>
     </brand_item>
 </brands>

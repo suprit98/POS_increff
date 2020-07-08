@@ -57,14 +57,7 @@ public class ReportController {
 	@ApiOperation(value = "Gets Sales Report")
 	@RequestMapping(path = "/api/report/sales", method = RequestMethod.POST)
 	public void getSales(@RequestBody SalesFilter sales_filter,HttpServletResponse response) throws Exception {
-		logger.info(sales_filter.getCategory());
-		logger.info(sales_filter.getStartDate());
-		List<OrderPojo> order_list = order_service.getByDate(sales_filter.getStartDate(), sales_filter.getEndDate());
-		List<OrderItemPojo> order_item_list = new ArrayList<OrderItemPojo>();
-		for(OrderPojo order_pojo: order_list) {
-			order_item_list.addAll(order_service.getOrderItems(order_pojo.getId()));
-		}
-		PdfResponseUtil.generateSalesReportResponse(sales_filter.getBrand(), sales_filter.getCategory(), order_item_list, response);
+		
 	}
 
 }

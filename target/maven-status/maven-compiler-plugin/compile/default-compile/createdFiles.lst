@@ -47,4 +47,5 @@ com/increff/pos/model/InvoiceData.class
 com/increff/pos/pojo/BrandPojo.class
 com/increff/pos/controller/ReportController.class
 com/increff/pos/model/SalesData.class
+com/increff/pos/service/ReportService.class
 com/increff/pos/dao/OrderDao.class

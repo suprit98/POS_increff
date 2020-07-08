@@ -2,58 +2,38 @@ package com.increff.pos.util;
 
 import static org.junit.Assert.assertEquals;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.increff.pos.model.BrandData;
 import com.increff.pos.model.BrandForm;
 import com.increff.pos.model.InventoryData;
 import com.increff.pos.model.InventoryForm;
+import com.increff.pos.model.InventoryReportData;
 import com.increff.pos.model.InvoiceData;
 import com.increff.pos.model.OrderData;
 import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.model.ProductDetailsData;
 import com.increff.pos.model.ProductDetailsForm;
+import com.increff.pos.model.SalesData;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
-import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.pojo.ProductDetailsPojo;
 import com.increff.pos.service.ApiException;
-import com.increff.pos.service.BrandService;
-import com.increff.pos.service.InventoryService;
-import com.increff.pos.service.OrderService;
-import com.increff.pos.service.ProductDetailsService;
-import com.increff.pos.spring.AbstractUnitTest;
 
-public class ConversionUtilTest extends AbstractUnitTest {
+public class ConversionUtilTest extends AbstractUtilTest {
 
-	@Autowired
-	private BrandService brand_service;
-
-	@Autowired
-	private ProductDetailsService product_service;
-
-	@Autowired
-	private InventoryService inventory_service;
-	
-	@Autowired
-	private OrderService order_service;
-	
-	private static String barcode_item1;
-	private static String barcode_item2;
 
 	@Before
 	public void init() throws ApiException {
 		BrandPojo brand = getBrandPojo();
+		BrandPojo brand2 = getAnotherBrandPojo();
 		ProductDetailsPojo product1 = getProductDetailsPojo(brand);
-		ProductDetailsPojo product2 = getAnotherProductDetailsPojo(brand);
+		ProductDetailsPojo product2 = getAnotherProductDetailsPojo(brand2);
 		getInventoryPojo(product1);
 		getInventoryPojo(product2);
 		getOrderItemPojo();
@@ -228,64 +208,47 @@ public class ConversionUtilTest extends AbstractUnitTest {
 		OrderData order_data = ConversionUtil.setOrderData(id);
 		assertEquals(id, order_data.getId());
 	}
-
-	private BrandPojo getBrandPojo() throws ApiException {
-		BrandPojo p = new BrandPojo();
-		p.setBrand("Amul");
-		p.setCategory("Dairy");
-		brand_service.add(p);
-		return p;
-	}
-
-	private ProductDetailsPojo getProductDetailsPojo(BrandPojo b) throws ApiException {
-		ProductDetailsPojo p = new ProductDetailsPojo();
-		p.setBrandPojo(b);
-		p.setName("Milk");
-		p.setMrp(50);
-		product_service.add(p);
-		barcode_item1 = p.getBarcode();
-		return p;
-	}
-
-	private ProductDetailsPojo getAnotherProductDetailsPojo(BrandPojo b) throws ApiException {
-		ProductDetailsPojo p = new ProductDetailsPojo();
-		p.setBrandPojo(b);
-		p.setName("Paneer");
-		p.setMrp(80);
-		product_service.add(p);
-		barcode_item2 = p.getBarcode();
-		return p;
-	}
-
-	private InventoryPojo getInventoryPojo(ProductDetailsPojo p) throws ApiException {
-		InventoryPojo i = new InventoryPojo();
-		i.setProductPojo(p);
-		i.setQuantity(20);
-		inventory_service.add(i);
-		return i;
+	
+	@Test
+	public void testCreateInventoryReportList() throws ApiException {
+		List<InventoryPojo> inventory_list = inventory_service.getAll();
+		List<InventoryReportData> inventory_report_list = ConversionUtil.createInventoryReportList(brand_service, inventory_list);
+		List<BrandPojo> brand_list = brand_service.getAll();
+		assertEquals(brand_list.size(),inventory_report_list.size());
 	}
 	
-	private OrderPojo getOrderPojo() {
-		OrderPojo order = new OrderPojo();
-		order.setId(1);
-		order.setDatetime(LocalDateTime.now());
-		return order;
+	@Test
+	public void testCreateSalesListNoBrand() {
+		String category = "dairy";
+		List<OrderItemPojo> order_item_list = order_service.getAll();
+		List<SalesData> sales_list = ConversionUtil.createSalesList("", category, order_item_list);
+		assertEquals(1,sales_list.size());
+		assertEquals(sales_list.get(0).getCategory(),category);
 	}
 	
-	private List<OrderItemPojo> getOrderItemPojo() throws ApiException {
-		OrderItemPojo order_item = new OrderItemPojo();
-		order_item.setProductPojo(product_service.get(barcode_item1));
-		order_item.setQuantity(2);
-		order_item.setSellingPrice(product_service.get(barcode_item1).getMrp());
-		OrderItemPojo order_item2 = new OrderItemPojo();
-		order_item2.setProductPojo(product_service.get(barcode_item2));
-		order_item2.setQuantity(1);
-		order_item2.setSellingPrice(product_service.get(barcode_item2).getMrp());
-		List<OrderItemPojo> order_item_list = new ArrayList<OrderItemPojo>();
-		order_item_list.add(order_item);
-		order_item_list.add(order_item2);
-		order_service.add(order_item_list);
-		return order_item_list;
+	@Test
+	public void testCreateSalesListNoCategory() {
+		String brand = "amul";
+		List<OrderItemPojo> order_item_list = order_service.getAll();
+		List<SalesData> sales_list = ConversionUtil.createSalesList(brand, "", order_item_list);
+		assertEquals(2,sales_list.size());
+	}
+	
+	@Test
+	public void testCreateSalesListNoBrandNoCategory() {
+		List<OrderItemPojo> order_item_list = order_service.getAll();
+		List<SalesData> sales_list = ConversionUtil.createSalesList("", "", order_item_list);
+		assertEquals(2,sales_list.size());
+	}
+	
+	@Test
+	public void testCreateSalesList() {
+		String brand = "amul";
+		String category = "bakery";
+		List<OrderItemPojo> order_item_list = order_service.getAll();
+		List<SalesData> sales_list = ConversionUtil.createSalesList(brand, category, order_item_list);
+		assertEquals(1,sales_list.size());
+		assertEquals(sales_list.get(0).getCategory(),category);
 	}
 
 }

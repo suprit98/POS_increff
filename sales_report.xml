@@ -2,7 +2,7 @@
 <sales_items>
     <sales_item>
         <category>dairy</category>
-        <quantity>32</quantity>
-        <revenue>1100.0</revenue>
+        <quantity>2</quantity>
+        <revenue>100.0</revenue>
     </sales_item>
 </sales_items>

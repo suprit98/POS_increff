@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <inventory_items>
     <inventory_item>
-        <brand>nestle</brand>
+        <brand>amul</brand>
         <category>dairy</category>
-        <quantity>22</quantity>
-    </inventory_item>
-    <inventory_item>
-        <brand>dabur</brand>
-        <category>health</category>
-        <quantity>13</quantity>
+        <quantity>18</quantity>
     </inventory_item>
     <inventory_item>
         <brand>amul</brand>
-        <category>dairy</category>
-        <quantity>22</quantity>
+        <category>bakery</category>
+        <quantity>19</quantity>
     </inventory_item>
 </inventory_items>

@@ -68,6 +68,8 @@ public class BrandServiceTest extends AbstractUnitTest {
 		int id = p.getId();
 		brand_service.delete(id);
 		
+		//brand_service.delete(id);
+		
 		try {
 			brand_service.get(id);
 			fail("Api Exception did not occur");
