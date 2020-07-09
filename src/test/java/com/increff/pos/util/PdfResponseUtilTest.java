@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import com.increff.pos.pojo.BrandPojo;
-import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.ProductDetailsPojo;
 import com.increff.pos.service.ApiException;
@@ -36,25 +35,25 @@ public class PdfResponseUtilTest extends AbstractUtilTest {
 		assertEquals(response.getContentAsByteArray().length, response.getContentLength());
 	}
 	
-	@Test
+	/*@Test
 	public void testGenerateBrandReportResponse() throws Exception {
 		List<BrandPojo> brand_list = brand_service.getAll();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		PdfResponseUtil.generateBrandReportResponse(brand_list, response);
 		assertEquals(response.getContentType(),"application/pdf");
 		assertEquals(response.getContentAsByteArray().length, response.getContentLength());
-	}
+	}*/
 	
-	@Test
+	/*@Test
 	public void testGenerateInventoryReportResponse() throws Exception {
 		List<InventoryPojo> inventory_list = inventory_service.getAll();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		PdfResponseUtil.generateInventoryReportResponse(brand_service, inventory_list, response);
 		assertEquals(response.getContentType(),"application/pdf");
 		assertEquals(response.getContentAsByteArray().length, response.getContentLength());
-	}
+	}*/
 	
-	@Test
+	/*@Test
 	public void testGenerateSalesReportResponse() throws Exception {
 		String category = "dairy";
 		List<OrderItemPojo> order_item_list = order_service.getAll();
@@ -62,6 +61,6 @@ public class PdfResponseUtilTest extends AbstractUtilTest {
 		PdfResponseUtil.generateSalesReportResponse("", category, order_item_list, response);
 		assertEquals(response.getContentType(),"application/pdf");
 		assertEquals(response.getContentAsByteArray().length, response.getContentLength());
-	}
+	}*/
 
 }

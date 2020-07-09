@@ -7,18 +7,12 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.stream.StreamSource;
 
-import com.increff.pos.model.BrandData;
 import com.increff.pos.model.BrandDataList;
-import com.increff.pos.model.InventoryReportData;
 import com.increff.pos.model.InventoryReportList;
 import com.increff.pos.model.InvoiceData;
 import com.increff.pos.model.InvoiceDataList;
-import com.increff.pos.model.SalesData;
 import com.increff.pos.model.SalesDataList;
-import com.increff.pos.pojo.BrandPojo;
-import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
-import com.increff.pos.service.BrandService;
 import com.increff.pos.service.ProductDetailsService;
 
 public class PdfResponseUtil {
@@ -44,58 +38,26 @@ public class PdfResponseUtil {
 
 	}
 
-	public static void generateBrandReportResponse(List<BrandPojo> brand_pojo_list, HttpServletResponse response)
-			throws Exception {
+	public static byte[] generateBrandReportResponse(BrandDataList brand_list) throws Exception {
 
-		List<BrandData> converted_list = ConversionUtil.convert(brand_pojo_list);
-		BrandDataList brand_data_list = new BrandDataList();
-		brand_data_list.setBrand_list(converted_list);
-
-		XmlUtil.generateXmlBrandReport(brand_data_list);
+		XmlUtil.generateXml(new File("brand_report.xml"), brand_list, BrandDataList.class);
 		byte[] bytes = XmlUtil.generatePDF(new File("brand_report.xml"), new StreamSource("brand_report.xsl"));
-
-		response.setContentType("application/pdf");
-		response.setContentLength(bytes.length);
-
-		response.getOutputStream().write(bytes);
-		response.getOutputStream().flush();
+		return bytes;
 
 	}
 
-	public static void generateInventoryReportResponse(BrandService brand_service,
-			List<InventoryPojo> inventory_pojo_list, HttpServletResponse response) throws Exception {
+	public static byte[] generateInventoryReportResponse(InventoryReportList inventory_list) throws Exception {
 
-		List<InventoryReportData> converted_list = ConversionUtil.createInventoryReportList(brand_service, inventory_pojo_list);
-		InventoryReportList inventory_data_list = new InventoryReportList();
-		inventory_data_list.setInventory_list(converted_list);
-
-		XmlUtil.generateXmlInventoryReport(inventory_data_list);
+		XmlUtil.generateXml(new File("inventory_report.xml"), inventory_list, InventoryReportList.class);
 		byte[] bytes = XmlUtil.generatePDF(new File("inventory_report.xml"), new StreamSource("inventory_report.xsl"));
-
-		response.setContentType("application/pdf");
-		response.setContentLength(bytes.length);
-
-		response.getOutputStream().write(bytes);
-		response.getOutputStream().flush();
+		return bytes;
 
 	}
 
-	public static void generateSalesReportResponse(String brand, String category, List<OrderItemPojo> orderitem_list,
-			HttpServletResponse response) throws Exception {
-
-		List<SalesData> converted_list = ConversionUtil.createSalesList(brand, category, orderitem_list);
-		SalesDataList sales_data_list = new SalesDataList();
-		sales_data_list.setSales_list(converted_list);
-
-		XmlUtil.generateXmlSalesReport(sales_data_list);
+	public static byte[] generateSalesResponse(SalesDataList sales_data_list) throws Exception {
+		XmlUtil.generateXml(new File("sales_report.xml"), sales_data_list, SalesDataList.class);
 		byte[] bytes = XmlUtil.generatePDF(new File("sales_report.xml"), new StreamSource("sales_report.xsl"));
-
-		response.setContentType("application/pdf");
-		response.setContentLength(bytes.length);
-
-		response.getOutputStream().write(bytes);
-		response.getOutputStream().flush();
-
+		return bytes;
 	}
 
 }

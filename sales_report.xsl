@@ -30,6 +30,10 @@
 							<fo:table-header>
 								<fo:table-cell
 									xsl:use-attribute-sets="tableBorder">
+									<fo:block font-weight="bold">Brand</fo:block>
+								</fo:table-cell>
+								<fo:table-cell
+									xsl:use-attribute-sets="tableBorder">
 									<fo:block font-weight="bold">Category</fo:block>
 								</fo:table-cell>
 								<fo:table-cell
@@ -52,6 +56,11 @@
 	</xsl:template>
 	<xsl:template match="sales_item">
 		<fo:table-row>
+			<fo:table-cell xsl:use-attribute-sets="tableBorder">
+				<fo:block>
+					<xsl:value-of select="brand" />
+				</fo:block>
+			</fo:table-cell>
 			<fo:table-cell xsl:use-attribute-sets="tableBorder">
 				<fo:block>
 					<xsl:value-of select="category" />

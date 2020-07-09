@@ -17,93 +17,80 @@ import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.MimeConstants;
 
-import com.increff.pos.model.BrandDataList;
 import com.increff.pos.model.InventoryReportList;
 import com.increff.pos.model.InvoiceData;
 import com.increff.pos.model.InvoiceDataList;
-import com.increff.pos.model.SalesDataList;
 
-<span class="nc" id="L26">public class XmlUtil {</span>
+<span class="nc" id="L24">public class XmlUtil {</span>
 
 	public static void generateXmlInvoice(InvoiceDataList idl) throws Exception {
 
-<span class="fc" id="L30">		double total = calculateTotal(idl);</span>
+<span class="fc" id="L28">		double total = calculateTotal(idl);</span>
 
-<span class="fc" id="L32">		idl.setTotal(total);</span>
+<span class="fc" id="L30">		idl.setTotal(total);</span>
 
-<span class="fc" id="L34">		File file = new File(&quot;invoice.xml&quot;);</span>
-<span class="fc" id="L35">		JAXBContext context = JAXBContext.newInstance(InvoiceDataList.class);</span>
-<span class="fc" id="L36">		Marshaller m = context.createMarshaller();</span>
+<span class="fc" id="L32">		File file = new File(&quot;invoice.xml&quot;);</span>
+<span class="fc" id="L33">		JAXBContext context = JAXBContext.newInstance(InvoiceDataList.class);</span>
+<span class="fc" id="L34">		Marshaller m = context.createMarshaller();</span>
 		// for pretty-print XML in JAXB
-<span class="fc" id="L38">		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);</span>
-<span class="fc" id="L39">		m.marshal(idl, file);</span>
-<span class="fc" id="L40">	}</span>
+<span class="fc" id="L36">		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);</span>
+<span class="fc" id="L37">		m.marshal(idl, file);</span>
+<span class="fc" id="L38">	}</span>
 
-	public static void generateXmlBrandReport(BrandDataList idl) throws Exception {
-
-
-<span class="fc" id="L45">		File file = new File(&quot;brand_report.xml&quot;);</span>
-<span class="fc" id="L46">		JAXBContext context = JAXBContext.newInstance(BrandDataList.class);</span>
-<span class="fc" id="L47">		Marshaller m = context.createMarshaller();</span>
-		// for pretty-print XML in JAXB
-<span class="fc" id="L49">		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);</span>
-<span class="fc" id="L50">		m.marshal(idl, file);</span>
-<span class="fc" id="L51">	}</span>
 	
 	public static void generateXmlInventoryReport(InventoryReportList idl) throws Exception {
 
 
-<span class="fc" id="L56">		File file = new File(&quot;inventory_report.xml&quot;);</span>
-<span class="fc" id="L57">		JAXBContext context = JAXBContext.newInstance(InventoryReportList.class);</span>
-<span class="fc" id="L58">		Marshaller m = context.createMarshaller();</span>
+<span class="nc" id="L44">		File file = new File(&quot;inventory_report.xml&quot;);</span>
+<span class="nc" id="L45">		JAXBContext context = JAXBContext.newInstance(InventoryReportList.class);</span>
+<span class="nc" id="L46">		Marshaller m = context.createMarshaller();</span>
 		// for pretty-print XML in JAXB
-<span class="fc" id="L60">		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);</span>
-<span class="fc" id="L61">		m.marshal(idl, file);</span>
-<span class="fc" id="L62">	}</span>
+<span class="nc" id="L48">		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);</span>
+<span class="nc" id="L49">		m.marshal(idl, file);</span>
+<span class="nc" id="L50">	}</span>
 
 	public static byte[] generatePDF(File xml_file, StreamSource xsl_source) throws Exception {
-<span class="fc" id="L65">		FopFactory fopFactory = FopFactory.newInstance(new File(&quot;.&quot;).toURI());</span>
+<span class="fc" id="L53">		FopFactory fopFactory = FopFactory.newInstance(new File(&quot;.&quot;).toURI());</span>
 		// Setup a buffer to obtain the content length
-<span class="fc" id="L67">		ByteArrayOutputStream out = new ByteArrayOutputStream();</span>
+<span class="fc" id="L55">		ByteArrayOutputStream out = new ByteArrayOutputStream();</span>
 		// Setup FOP
-<span class="fc" id="L69">		Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, out);</span>
-<span class="fc" id="L70">		TransformerFactory factory = TransformerFactory.newInstance();</span>
-<span class="fc" id="L71">		Transformer transformer = factory.newTransformer(xsl_source);</span>
+<span class="fc" id="L57">		Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, out);</span>
+<span class="fc" id="L58">		TransformerFactory factory = TransformerFactory.newInstance();</span>
+<span class="fc" id="L59">		Transformer transformer = factory.newTransformer(xsl_source);</span>
 		// Make sure the XSL transformation's result is piped through to FOP
-<span class="fc" id="L73">		Result res = new SAXResult(fop.getDefaultHandler());</span>
+<span class="fc" id="L61">		Result res = new SAXResult(fop.getDefaultHandler());</span>
 
 		// Setup input
-<span class="fc" id="L76">		Source src = new StreamSource(xml_file);</span>
+<span class="fc" id="L64">		Source src = new StreamSource(xml_file);</span>
 
 		// Start the transformation and rendering process
-<span class="fc" id="L79">		transformer.transform(src, res);</span>
+<span class="fc" id="L67">		transformer.transform(src, res);</span>
 
-<span class="fc" id="L81">		byte[] bytes = out.toByteArray();</span>
+<span class="fc" id="L69">		byte[] bytes = out.toByteArray();</span>
 
-<span class="fc" id="L83">		out.close();</span>
-<span class="fc" id="L84">		out.flush();</span>
+<span class="fc" id="L71">		out.close();</span>
+<span class="fc" id="L72">		out.flush();</span>
 
-<span class="fc" id="L86">		return bytes;</span>
+<span class="fc" id="L74">		return bytes;</span>
 
 	}
 
 	private static double calculateTotal(InvoiceDataList idl) {
-<span class="fc" id="L91">		double total = 0;</span>
-<span class="fc bfc" id="L92" title="All 2 branches covered.">		for (InvoiceData i : idl.getInvoiceLis()) {</span>
-<span class="fc" id="L93">			total += (i.getMrp() * i.getQuantity());</span>
-<span class="fc" id="L94">		}</span>
-<span class="fc" id="L95">		return total;</span>
+<span class="fc" id="L79">		double total = 0;</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">		for (InvoiceData i : idl.getInvoiceLis()) {</span>
+<span class="fc" id="L81">			total += (i.getMrp() * i.getQuantity());</span>
+<span class="fc" id="L82">		}</span>
+<span class="fc" id="L83">		return total;</span>
 	}
 
-	public static void generateXmlSalesReport(SalesDataList sales_data_list) throws JAXBException {
-<span class="fc" id="L99">		File file = new File(&quot;sales_report.xml&quot;);</span>
-<span class="fc" id="L100">		JAXBContext context = JAXBContext.newInstance(SalesDataList.class);</span>
-<span class="fc" id="L101">		Marshaller m = context.createMarshaller();</span>
+	public static void generateXml(File file,Object list,Class&lt;?&gt; class_type) throws JAXBException {
+<span class="nc" id="L87">		JAXBContext context = JAXBContext.newInstance(class_type);</span>
+<span class="nc" id="L88">		Marshaller m = context.createMarshaller();</span>
 		// for pretty-print XML in JAXB
-<span class="fc" id="L103">		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);</span>
-<span class="fc" id="L104">		m.marshal(sales_data_list, file);</span>
+<span class="nc" id="L90">		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);</span>
+<span class="nc" id="L91">		m.marshal(list, file);</span>
 		
-<span class="fc" id="L106">	}</span>
+<span class="nc" id="L93">	}</span>
 
 
 }

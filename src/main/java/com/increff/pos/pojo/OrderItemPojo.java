@@ -70,5 +70,13 @@ public class OrderItemPojo {
 	public void setSellingPrice(double sellingPrice) {
 		this.sellingPrice = sellingPrice;
 	}
+	
+	public BrandPojo getBrandPojo() {
+		return productPojo.getBrandPojo();
+	}
+	
+	public double getRevenue() {
+		return quantity*sellingPrice;
+	}
 
 }

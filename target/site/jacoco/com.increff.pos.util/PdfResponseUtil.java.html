@@ -7,96 +7,58 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.stream.StreamSource;
 
-import com.increff.pos.model.BrandData;
 import com.increff.pos.model.BrandDataList;
-import com.increff.pos.model.InventoryReportData;
 import com.increff.pos.model.InventoryReportList;
 import com.increff.pos.model.InvoiceData;
 import com.increff.pos.model.InvoiceDataList;
-import com.increff.pos.model.SalesData;
 import com.increff.pos.model.SalesDataList;
-import com.increff.pos.pojo.BrandPojo;
-import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
-import com.increff.pos.service.BrandService;
 import com.increff.pos.service.ProductDetailsService;
 
-<span class="nc" id="L24">public class PdfResponseUtil {</span>
+<span class="nc" id="L18">public class PdfResponseUtil {</span>
 
 	public static void generateInvoicePdfResponse(ProductDetailsService product_service, List&lt;OrderItemPojo&gt; lis,
 			HttpServletResponse response) throws Exception {
 
-<span class="fc" id="L29">		List&lt;InvoiceData&gt; invoiceLis = ConversionUtil.convert(product_service, lis);</span>
-<span class="fc" id="L30">		InvoiceDataList idl = new InvoiceDataList();</span>
-<span class="fc" id="L31">		idl.setInvoiceLis(invoiceLis);</span>
-<span class="fc" id="L32">		idl.setOrder_id(lis.get(0).getOrderPojo().getId());</span>
+<span class="fc" id="L23">		List&lt;InvoiceData&gt; invoiceLis = ConversionUtil.convert(product_service, lis);</span>
+<span class="fc" id="L24">		InvoiceDataList idl = new InvoiceDataList();</span>
+<span class="fc" id="L25">		idl.setInvoiceLis(invoiceLis);</span>
+<span class="fc" id="L26">		idl.setOrder_id(lis.get(0).getOrderPojo().getId());</span>
 
-<span class="fc" id="L34">		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd HH:mm&quot;);</span>
-<span class="fc" id="L35">		idl.setDatetime(lis.get(0).getOrderPojo().getDatetime().format(formatter));</span>
-<span class="fc" id="L36">		XmlUtil.generateXmlInvoice(idl);</span>
-<span class="fc" id="L37">		byte[] bytes = XmlUtil.generatePDF(new File(&quot;invoice.xml&quot;), new StreamSource(&quot;invoice.xsl&quot;));</span>
+<span class="fc" id="L28">		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd HH:mm&quot;);</span>
+<span class="fc" id="L29">		idl.setDatetime(lis.get(0).getOrderPojo().getDatetime().format(formatter));</span>
+<span class="fc" id="L30">		XmlUtil.generateXmlInvoice(idl);</span>
+<span class="fc" id="L31">		byte[] bytes = XmlUtil.generatePDF(new File(&quot;invoice.xml&quot;), new StreamSource(&quot;invoice.xsl&quot;));</span>
 
-<span class="fc" id="L39">		response.setContentType(&quot;application/pdf&quot;);</span>
-<span class="fc" id="L40">		response.setContentLength(bytes.length);</span>
+<span class="fc" id="L33">		response.setContentType(&quot;application/pdf&quot;);</span>
+<span class="fc" id="L34">		response.setContentLength(bytes.length);</span>
 
-<span class="fc" id="L42">		response.getOutputStream().write(bytes);</span>
-<span class="fc" id="L43">		response.getOutputStream().flush();</span>
+<span class="fc" id="L36">		response.getOutputStream().write(bytes);</span>
+<span class="fc" id="L37">		response.getOutputStream().flush();</span>
 
-<span class="fc" id="L45">	}</span>
+<span class="fc" id="L39">	}</span>
 
-	public static void generateBrandReportResponse(List&lt;BrandPojo&gt; brand_pojo_list, HttpServletResponse response)
-			throws Exception {
+	public static byte[] generateBrandReportResponse(BrandDataList brand_list) throws Exception {
 
-<span class="fc" id="L50">		List&lt;BrandData&gt; converted_list = ConversionUtil.convert(brand_pojo_list);</span>
-<span class="fc" id="L51">		BrandDataList brand_data_list = new BrandDataList();</span>
-<span class="fc" id="L52">		brand_data_list.setBrand_list(converted_list);</span>
+<span class="nc" id="L43">		XmlUtil.generateXml(new File(&quot;brand_report.xml&quot;), brand_list, BrandDataList.class);</span>
+<span class="nc" id="L44">		byte[] bytes = XmlUtil.generatePDF(new File(&quot;brand_report.xml&quot;), new StreamSource(&quot;brand_report.xsl&quot;));</span>
+<span class="nc" id="L45">		return bytes;</span>
 
-<span class="fc" id="L54">		XmlUtil.generateXmlBrandReport(brand_data_list);</span>
-<span class="fc" id="L55">		byte[] bytes = XmlUtil.generatePDF(new File(&quot;brand_report.xml&quot;), new StreamSource(&quot;brand_report.xsl&quot;));</span>
+	}
 
-<span class="fc" id="L57">		response.setContentType(&quot;application/pdf&quot;);</span>
-<span class="fc" id="L58">		response.setContentLength(bytes.length);</span>
+	public static byte[] generateInventoryReportResponse(InventoryReportList inventory_list) throws Exception {
 
-<span class="fc" id="L60">		response.getOutputStream().write(bytes);</span>
-<span class="fc" id="L61">		response.getOutputStream().flush();</span>
+<span class="nc" id="L51">		XmlUtil.generateXml(new File(&quot;inventory_report.xml&quot;), inventory_list, InventoryReportList.class);</span>
+<span class="nc" id="L52">		byte[] bytes = XmlUtil.generatePDF(new File(&quot;inventory_report.xml&quot;), new StreamSource(&quot;inventory_report.xsl&quot;));</span>
+<span class="nc" id="L53">		return bytes;</span>
 
-<span class="fc" id="L63">	}</span>
+	}
 
-	public static void generateInventoryReportResponse(BrandService brand_service,
-			List&lt;InventoryPojo&gt; inventory_pojo_list, HttpServletResponse response) throws Exception {
-
-<span class="fc" id="L68">		List&lt;InventoryReportData&gt; converted_list = ConversionUtil.createInventoryReportList(brand_service, inventory_pojo_list);</span>
-<span class="fc" id="L69">		InventoryReportList inventory_data_list = new InventoryReportList();</span>
-<span class="fc" id="L70">		inventory_data_list.setInventory_list(converted_list);</span>
-
-<span class="fc" id="L72">		XmlUtil.generateXmlInventoryReport(inventory_data_list);</span>
-<span class="fc" id="L73">		byte[] bytes = XmlUtil.generatePDF(new File(&quot;inventory_report.xml&quot;), new StreamSource(&quot;inventory_report.xsl&quot;));</span>
-
-<span class="fc" id="L75">		response.setContentType(&quot;application/pdf&quot;);</span>
-<span class="fc" id="L76">		response.setContentLength(bytes.length);</span>
-
-<span class="fc" id="L78">		response.getOutputStream().write(bytes);</span>
-<span class="fc" id="L79">		response.getOutputStream().flush();</span>
-
-<span class="fc" id="L81">	}</span>
-
-	public static void generateSalesReportResponse(String brand, String category, List&lt;OrderItemPojo&gt; orderitem_list,
-			HttpServletResponse response) throws Exception {
-
-<span class="fc" id="L86">		List&lt;SalesData&gt; converted_list = ConversionUtil.createSalesList(brand, category, orderitem_list);</span>
-<span class="fc" id="L87">		SalesDataList sales_data_list = new SalesDataList();</span>
-<span class="fc" id="L88">		sales_data_list.setSales_list(converted_list);</span>
-
-<span class="fc" id="L90">		XmlUtil.generateXmlSalesReport(sales_data_list);</span>
-<span class="fc" id="L91">		byte[] bytes = XmlUtil.generatePDF(new File(&quot;sales_report.xml&quot;), new StreamSource(&quot;sales_report.xsl&quot;));</span>
-
-<span class="fc" id="L93">		response.setContentType(&quot;application/pdf&quot;);</span>
-<span class="fc" id="L94">		response.setContentLength(bytes.length);</span>
-
-<span class="fc" id="L96">		response.getOutputStream().write(bytes);</span>
-<span class="fc" id="L97">		response.getOutputStream().flush();</span>
-
-<span class="fc" id="L99">	}</span>
+	public static byte[] generateSalesResponse(SalesDataList sales_data_list) throws Exception {
+<span class="nc" id="L58">		XmlUtil.generateXml(new File(&quot;sales_report.xml&quot;), sales_data_list, SalesDataList.class);</span>
+<span class="nc" id="L59">		byte[] bytes = XmlUtil.generatePDF(new File(&quot;sales_report.xml&quot;), new StreamSource(&quot;sales_report.xsl&quot;));</span>
+<span class="nc" id="L60">		return bytes;</span>
+	}
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

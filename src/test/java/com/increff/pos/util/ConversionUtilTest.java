@@ -11,14 +11,12 @@ import com.increff.pos.model.BrandData;
 import com.increff.pos.model.BrandForm;
 import com.increff.pos.model.InventoryData;
 import com.increff.pos.model.InventoryForm;
-import com.increff.pos.model.InventoryReportData;
 import com.increff.pos.model.InvoiceData;
 import com.increff.pos.model.OrderData;
 import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.model.ProductDetailsData;
 import com.increff.pos.model.ProductDetailsForm;
-import com.increff.pos.model.SalesData;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
@@ -209,15 +207,15 @@ public class ConversionUtilTest extends AbstractUtilTest {
 		assertEquals(id, order_data.getId());
 	}
 	
-	@Test
+	/*@Test
 	public void testCreateInventoryReportList() throws ApiException {
 		List<InventoryPojo> inventory_list = inventory_service.getAll();
 		List<InventoryReportData> inventory_report_list = ConversionUtil.createInventoryReportList(brand_service, inventory_list);
 		List<BrandPojo> brand_list = brand_service.getAll();
 		assertEquals(brand_list.size(),inventory_report_list.size());
-	}
+	}*/
 	
-	@Test
+	/*@Test
 	public void testCreateSalesListNoBrand() {
 		String category = "dairy";
 		List<OrderItemPojo> order_item_list = order_service.getAll();
@@ -249,6 +247,6 @@ public class ConversionUtilTest extends AbstractUtilTest {
 		List<SalesData> sales_list = ConversionUtil.createSalesList(brand, category, order_item_list);
 		assertEquals(1,sales_list.size());
 		assertEquals(sales_list.get(0).getCategory(),category);
-	}
+	}*/
 
 }

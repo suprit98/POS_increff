@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <inventory_items>
     <inventory_item>
-        <brand>amul</brand>
-        <category>dairy</category>
-        <quantity>18</quantity>
+        <brand>samsung</brand>
+        <category>technology</category>
+        <quantity>5</quantity>
     </inventory_item>
     <inventory_item>
         <brand>amul</brand>
         <category>bakery</category>
         <quantity>19</quantity>
+    </inventory_item>
+    <inventory_item>
+        <brand>nestle</brand>
+        <category>dairy</category>
+        <quantity>24</quantity>
+    </inventory_item>
+    <inventory_item>
+        <brand>dabur</brand>
+        <category>health</category>
+        <quantity>12</quantity>
+    </inventory_item>
+    <inventory_item>
+        <brand>amul</brand>
+        <category>dairy</category>
+        <quantity>20</quantity>
     </inventory_item>
 </inventory_items>

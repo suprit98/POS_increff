@@ -1,7 +1,6 @@
 package com.increff.pos.util;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +9,7 @@ import com.increff.pos.model.BrandForm;
 import com.increff.pos.model.InventoryData;
 import com.increff.pos.model.InventoryForm;
 import com.increff.pos.model.InventoryReportData;
+import com.increff.pos.model.InventoryReportList;
 import com.increff.pos.model.InvoiceData;
 import com.increff.pos.model.OrderData;
 import com.increff.pos.model.OrderItemData;
@@ -17,6 +17,7 @@ import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.model.ProductDetailsData;
 import com.increff.pos.model.ProductDetailsForm;
 import com.increff.pos.model.SalesData;
+import com.increff.pos.model.SalesDataList;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
@@ -154,132 +155,38 @@ public class ConversionUtil {
 		return d;
 	}
 
-	public static List<InventoryReportData> createInventoryReportList(BrandService brand_service,
-			List<InventoryPojo> inventory_list) throws ApiException {
-		Map<Integer, Integer> map_brandid_quantity = new HashMap<Integer, Integer>();
-		for (InventoryPojo p : inventory_list) {
-			int brand_id = p.getProductPojo().getBrandPojo().getId();
-			if (map_brandid_quantity.get(brand_id) != null) {
-				int qty = map_brandid_quantity.get(brand_id);
-				qty += p.getQuantity();
-				map_brandid_quantity.put(brand_id, qty);
-			} else {
-				map_brandid_quantity.put(brand_id, p.getQuantity());
-			}
-		}
+	public static InventoryReportList convertInventoryReportList(Map<BrandPojo, Integer> quantityPerBrandPojo) {
 		List<InventoryReportData> inventory_report_list = new ArrayList<InventoryReportData>();
-		for (Integer brand_id : map_brandid_quantity.keySet()) {
+		for (BrandPojo brand_pojo : quantityPerBrandPojo.keySet()) {
 			InventoryReportData d = new InventoryReportData();
-			d.setBrand(brand_service.get(brand_id).getBrand());
-			d.setCategory(brand_service.get(brand_id).getCategory());
-			d.setQuantity(map_brandid_quantity.get(brand_id));
+			d.setBrand(brand_pojo.getBrand());
+			d.setCategory(brand_pojo.getCategory());
+			d.setQuantity(quantityPerBrandPojo.get(brand_pojo));
 			inventory_report_list.add(d);
 		}
-		return inventory_report_list;
+		InventoryReportList inventory_list = new InventoryReportList();
+		inventory_list.setInventory_list(inventory_report_list);
+		return inventory_list;
 	}
+	
 
-	public static List<SalesData> createSalesList(String brand, String category, List<OrderItemPojo> orderitem_list) {
-		//Java Stream for groupby
-		if (brand.isEmpty() && !category.isEmpty()) {
-			int qty = 0;
-			double revenue = 0;
-
-			for (OrderItemPojo order_item_pojo : orderitem_list) {
-				if (order_item_pojo.getProductPojo().getBrandPojo().getCategory().contentEquals(category)) {
-					qty += order_item_pojo.getQuantity();
-					revenue += (order_item_pojo.getQuantity() * order_item_pojo.getSellingPrice());
-				}
-			}
-			List<SalesData> sales_list = new ArrayList<SalesData>();
-			SalesData s = new SalesData();
-			s.setCategory(category);
-			s.setQuantity(qty);
-			s.setRevenue(revenue);
-			sales_list.add(s);
-			return sales_list;
-		} else if (!brand.isEmpty() && category.isEmpty()) {
-			Map<String, Integer> map_quantity = new HashMap<String, Integer>();
-			Map<String, Double> map_revenue = new HashMap<String, Double>();
-
-			for (OrderItemPojo order_item_pojo : orderitem_list) {
-				if (order_item_pojo.getProductPojo().getBrandPojo().getBrand().contentEquals(brand)) {
-					if (map_quantity.get(order_item_pojo.getProductPojo().getBrandPojo().getCategory()) == null) {
-						map_quantity.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(),
-								order_item_pojo.getQuantity());
-						map_revenue.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(),
-								(order_item_pojo.getQuantity() * order_item_pojo.getSellingPrice()));
-					} else {
-						int qty = map_quantity.get(order_item_pojo.getProductPojo().getBrandPojo().getCategory());
-						double revenue = map_quantity
-								.get(order_item_pojo.getProductPojo().getBrandPojo().getCategory());
-						qty += order_item_pojo.getQuantity();
-						revenue += (order_item_pojo.getQuantity() * order_item_pojo.getSellingPrice());
-						map_quantity.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(), qty);
-						map_revenue.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(), revenue);
-					}
-				}
-			}
-			List<SalesData> sales_list = new ArrayList<SalesData>();
-			for (String category_it : map_quantity.keySet()) {
-				SalesData s = new SalesData();
-				s.setCategory(category_it);
-				s.setQuantity(map_quantity.get(category_it));
-				s.setRevenue(map_revenue.get(category_it));
-				sales_list.add(s);
-			}
-			return sales_list;
-		} else if (!brand.isEmpty() && !category.isEmpty()) {
-			int qty = 0;
-			double revenue = 0;
-
-			for (OrderItemPojo order_item_pojo : orderitem_list) {
-				if (order_item_pojo.getProductPojo().getBrandPojo().getCategory().contentEquals(category)
-						&& order_item_pojo.getProductPojo().getBrandPojo().getBrand().contentEquals(brand)) {
-					qty += order_item_pojo.getQuantity();
-					revenue += (order_item_pojo.getQuantity() * order_item_pojo.getSellingPrice());
-				}
-			}
-			List<SalesData> sales_list = new ArrayList<SalesData>();
-			SalesData s = new SalesData();
-			s.setCategory(category);
-			s.setQuantity(qty);
-			s.setRevenue(revenue);
-			sales_list.add(s);
-			return sales_list;
-		} else {
-
-			Map<String, Integer> map_quantity = new HashMap<String, Integer>();
-			Map<String, Double> map_revenue = new HashMap<String, Double>();
-
-			for (OrderItemPojo order_item_pojo : orderitem_list) {
-
-				if (map_quantity.get(order_item_pojo.getProductPojo().getBrandPojo().getCategory()) == null) {
-					map_quantity.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(),
-							order_item_pojo.getQuantity());
-					map_revenue.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(),
-							(order_item_pojo.getQuantity() * order_item_pojo.getSellingPrice()));
-				} else {
-					int qty = map_quantity.get(order_item_pojo.getProductPojo().getBrandPojo().getCategory());
-					double revenue = map_revenue.get(order_item_pojo.getProductPojo().getBrandPojo().getCategory());
-					qty += order_item_pojo.getQuantity();
-					revenue += (order_item_pojo.getQuantity() * order_item_pojo.getSellingPrice());
-					map_quantity.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(), qty);
-					map_revenue.put(order_item_pojo.getProductPojo().getBrandPojo().getCategory(), revenue);
-				}
-
-			}
-			List<SalesData> sales_list = new ArrayList<SalesData>();
-			for (String category_it : map_quantity.keySet()) {
-				SalesData s = new SalesData();
-				s.setCategory(category_it);
-				s.setQuantity(map_quantity.get(category_it));
-				s.setRevenue(map_revenue.get(category_it));
-				sales_list.add(s);
-			}
-			return sales_list;
-
+	public static SalesDataList convertSalesList(Map<BrandPojo, Integer> quantityPerBrandCategory,
+			Map<BrandPojo, Double> revenuePerBrandCategory) {
+		
+		List<SalesData> sales_list = new ArrayList<SalesData>();
+		for(BrandPojo brand: quantityPerBrandCategory.keySet()) {
+			SalesData sales = new SalesData();
+			sales.setBrand(brand.getBrand());
+			sales.setCategory(brand.getCategory());
+			sales.setQuantity(quantityPerBrandCategory.get(brand));
+			sales.setRevenue(revenuePerBrandCategory.get(brand));
+			sales_list.add(sales);
 		}
+		SalesDataList sales_data_list = new SalesDataList();
+		sales_data_list.setSales_list(sales_list);
+		return sales_data_list;
 
 	}
+
 
 }

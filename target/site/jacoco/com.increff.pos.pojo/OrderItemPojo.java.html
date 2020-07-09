@@ -70,6 +70,14 @@ import javax.persistence.Table;
 	public void setSellingPrice(double sellingPrice) {
 <span class="fc" id="L71">		this.sellingPrice = sellingPrice;</span>
 <span class="fc" id="L72">	}</span>
+	
+	public BrandPojo getBrandPojo() {
+<span class="nc" id="L75">		return productPojo.getBrandPojo();</span>
+	}
+	
+	public double getRevenue() {
+<span class="nc" id="L79">		return quantity*sellingPrice;</span>
+	}
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

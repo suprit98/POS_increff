@@ -4,22 +4,14 @@ import java.io.File;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import javax.xml.bind.JAXBException;
 import javax.xml.transform.stream.StreamSource;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.increff.pos.model.BrandData;
-import com.increff.pos.model.BrandDataList;
-import com.increff.pos.model.InventoryReportData;
-import com.increff.pos.model.InventoryReportList;
 import com.increff.pos.model.InvoiceData;
 import com.increff.pos.model.InvoiceDataList;
-import com.increff.pos.model.SalesData;
-import com.increff.pos.model.SalesDataList;
 import com.increff.pos.pojo.BrandPojo;
-import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.ProductDetailsPojo;
 import com.increff.pos.service.ApiException;
@@ -51,25 +43,25 @@ public class XmlUtilTest extends AbstractUtilTest{
 		XmlUtil.generateXmlInvoice(idl);
 	}
 	
-	@Test
+	/*@Test
 	public void testGenerateXmlBrandReport() throws Exception {
 		List<BrandPojo> brand_list = brand_service.getAll();
 		List<BrandData> brand_data_list = ConversionUtil.convert(brand_list);
 		BrandDataList bdl = new BrandDataList();
 		bdl.setBrand_list(brand_data_list);
 		XmlUtil.generateXmlBrandReport(bdl);
-	}
+	}*/
 	
-	@Test
+	/*@Test
 	public void testGenerateXmlInventoryReport() throws Exception {
 		List<InventoryPojo> inventory_list = inventory_service.getAll();
 		List<InventoryReportData> inventory_report_list = ConversionUtil.createInventoryReportList(brand_service, inventory_list);
 		InventoryReportList idl = new InventoryReportList();
 		idl.setInventory_list(inventory_report_list);
 		XmlUtil.generateXmlInventoryReport(idl);
-	}
+	}*/
 	
-	@Test
+	/*@Test
 	public void testGenerateSalesReport() throws JAXBException {
 		String category = "dairy";
 		List<OrderItemPojo> order_item_list = order_service.getAll();
@@ -77,7 +69,7 @@ public class XmlUtilTest extends AbstractUtilTest{
 		SalesDataList sales_data_list = new SalesDataList();
 		sales_data_list.setSales_list(sales_list);
 		XmlUtil.generateXmlSalesReport(sales_data_list);
-	}
+	}*/
 	
 	@Test
 	public void testGeneratePdf() throws Exception {
