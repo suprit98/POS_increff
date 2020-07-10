@@ -15,6 +15,7 @@ import com.increff.pos.model.OrderData;
 import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.pojo.OrderItemPojo;
+import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.OrderService;
 import com.increff.pos.service.ProductDetailsService;
@@ -38,7 +39,7 @@ public class OrderController {
 	public OrderData add(@RequestBody OrderItemForm[] forms, HttpServletResponse response) throws ApiException, Exception {
 		List<OrderItemPojo> lis = ConversionUtil.convertOrderItemForms(product_service, forms);
 		int order_id = order_service.add(lis);
-		return ConversionUtil.setOrderData(order_id);
+		return ConversionUtil.convertOrderPojo(order_service.getOrder(order_id));
 
 	}
 	
@@ -60,6 +61,22 @@ public class OrderController {
 	@RequestMapping(path = "/api/order", method = RequestMethod.GET)
 	public List<OrderItemData> getAll() {
 		List<OrderItemPojo> list = order_service.getAll();
+		List<OrderItemData> list2 = ConversionUtil.convertOrderItemList(list);
+		return list2;
+	}
+	
+	@ApiOperation(value = "Gets list of Orders")
+	@RequestMapping(path = "/api/all_orders", method = RequestMethod.GET)
+	public List<OrderData> getAllOrders() {
+		List<OrderPojo> orders_list = order_service.getAllOrders();
+		List<OrderData> orders_data_list = ConversionUtil.convertOrderList(orders_list);
+		return orders_data_list;
+	}
+	
+	@ApiOperation(value = "Gets list of Order Items of a particular order")
+	@RequestMapping(path = "/api/all_orders/{id}", method = RequestMethod.GET)
+	public List<OrderItemData> getOrderItemsbyOrderId(@PathVariable int id) throws ApiException {
+		List<OrderItemPojo> list = order_service.getOrderItems(id);
 		List<OrderItemData> list2 = ConversionUtil.convertOrderItemList(list);
 		return list2;
 	}

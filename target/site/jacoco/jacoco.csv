@@ -10,7 +10,7 @@ pos,com.increff.pos.service,ApiException,0,4,0,0,0,2,0,1,0,1
 pos,com.increff.pos.service,BrandService,0,166,2,14,0,40,2,16,0,10
 pos,com.increff.pos.service,InventoryService,2,111,1,9,1,31,1,14,0,10
 pos,com.increff.pos.service,ReportService,329,3,36,0,67,1,32,1,14,1
-pos,com.increff.pos.service,OrderService,0,272,1,11,0,61,1,18,0,13
+pos,com.increff.pos.service,OrderService,31,272,3,11,7,61,5,18,3,13
 pos,com.increff.pos.model,OrderItemData,3,14,0,0,1,6,1,4,1,4
 pos,com.increff.pos.model,InventoryData,3,7,0,0,1,3,1,2,1,2
 pos,com.increff.pos.model,InvoiceData,0,31,0,0,0,13,0,9,0,9
@@ -19,7 +19,7 @@ pos,com.increff.pos.model,InvoiceDataList,0,31,0,0,0,13,0,9,0,9
 pos,com.increff.pos.model,BrandDataList,10,0,0,0,4,0,3,0,3,0
 pos,com.increff.pos.model,ProductDetailsData,3,14,0,0,1,6,1,4,1,4
 pos,com.increff.pos.model,SalesDataList,10,0,0,0,4,0,3,0,3,0
-pos,com.increff.pos.model,OrderData,0,10,0,0,0,4,0,3,0,3
+pos,com.increff.pos.model,OrderData,17,0,0,0,7,0,5,0,5,0
 pos,com.increff.pos.model,BrandForm,0,17,0,0,0,7,0,5,0,5
 pos,com.increff.pos.model,ErrorMessage,10,0,0,0,4,0,3,0,3,0
 pos,com.increff.pos.model,ProductDetailsForm,0,31,0,0,0,13,0,9,0,9
@@ -31,11 +31,11 @@ pos,com.increff.pos.model,BrandData,0,10,0,0,0,4,0,3,0,3
 pos,com.increff.pos.model,InventoryReportList,10,0,0,0,4,0,3,0,3,0
 pos,com.increff.pos.controller,ReportController,43,3,0,0,14,1,4,1,4,1
 pos,com.increff.pos.controller,ProductDetailsController,43,3,0,0,13,1,5,1,5,1
-pos,com.increff.pos.controller,UIController,45,3,0,0,11,1,9,1,9,1
+pos,com.increff.pos.controller,UIController,49,3,0,0,12,1,10,1,10,1
 pos,com.increff.pos.controller,AppRestControllerAdvice,10,3,0,0,3,1,1,1,1,1
 pos,com.increff.pos.controller,BrandController,39,3,0,0,13,1,5,1,5,1
 pos,com.increff.pos.controller,InvoiceController,11,3,0,0,3,1,1,1,1,1
-pos,com.increff.pos.controller,OrderController,57,3,0,0,16,1,6,1,6,1
+pos,com.increff.pos.controller,OrderController,79,3,0,0,22,1,8,1,8,1
 pos,com.increff.pos.controller,InventoryController,53,3,0,0,15,1,5,1,5,1
 pos,com.increff.pos.pojo,ProductDetailsPojo,4,34,0,0,2,14,1,10,1,10
 pos,com.increff.pos.pojo,InventoryPojo,8,20,0,0,3,8,2,6,2,6
@@ -45,7 +45,7 @@ pos,com.increff.pos.pojo,OrderPojo,0,17,0,0,0,7,0,5,0,5
 pos,com.increff.pos.util,PdfResponseUtil,60,59,0,0,10,13,4,1,4,1
 pos,com.increff.pos.util,XmlUtil,48,102,0,2,12,25,3,4,3,3
 pos,com.increff.pos.util,BarcodeUtil,3,31,0,2,1,6,1,3,1,2
-pos,com.increff.pos.util,ConversionUtil,106,337,4,12,24,80,5,21,3,15
+pos,com.increff.pos.util,ConversionUtil,149,328,6,12,35,77,8,20,5,14
 pos,com.increff.pos.spring,ControllerConfig,4,112,0,0,2,25,1,7,1,7
 pos,com.increff.pos.spring,WebInitializer,20,0,0,0,4,0,4,0,4,0
 pos,com.increff.pos.spring,SpringConfig,3,0,0,0,1,0,1,0,1,0

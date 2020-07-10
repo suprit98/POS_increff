@@ -1,7 +1,16 @@
 package com.increff.pos.model;
 
 public class OrderData {
-	int id;
+	private int id;
+	private String datetime;
+
+	public String getDatetime() {
+		return datetime;
+	}
+
+	public void setDatetime(String datetime) {
+		this.datetime = datetime;
+	}
 
 	public int getId() {
 		return id;

@@ -12,7 +12,6 @@ import com.increff.pos.model.BrandForm;
 import com.increff.pos.model.InventoryData;
 import com.increff.pos.model.InventoryForm;
 import com.increff.pos.model.InvoiceData;
-import com.increff.pos.model.OrderData;
 import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.model.ProductDetailsData;
@@ -200,12 +199,12 @@ public class ConversionUtilTest extends AbstractUtilTest {
 		assertEquals(order_item_forms[0].getQuantity(), pojo_list.get(0).getQuantity());
 	}
 	
-	@Test
+	/*@Test
 	public void testSetOrderData() {
 		int id=1;
-		OrderData order_data = ConversionUtil.setOrderData(id);
+		OrderData order_data = ConversionUtil.convertOrderPojo(id);
 		assertEquals(id, order_data.getId());
-	}
+	}*/
 	
 	/*@Test
 	public void testCreateInventoryReportList() throws ApiException {

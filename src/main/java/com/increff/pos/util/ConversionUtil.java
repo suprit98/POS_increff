@@ -1,5 +1,6 @@
 package com.increff.pos.util;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import com.increff.pos.model.SalesDataList;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
+import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.pojo.ProductDetailsPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandService;
@@ -149,10 +151,21 @@ public class ConversionUtil {
 		return list2;
 	}
 
-	public static OrderData setOrderData(int order_id) {
+	public static OrderData convertOrderPojo(OrderPojo pojo) {
 		OrderData d = new OrderData();
-		d.setId(order_id);
+		d.setId(pojo.getId());
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		String datetime = pojo.getDatetime().format(formatter);
+		d.setDatetime(datetime);
 		return d;
+	}
+	
+	public static List<OrderData> convertOrderList(List<OrderPojo> list) {
+		List<OrderData> list2 = new ArrayList<OrderData>();
+		for (OrderPojo p : list) {
+			list2.add(convertOrderPojo(p));
+		}
+		return list2;
 	}
 
 	public static InventoryReportList convertInventoryReportList(Map<BrandPojo, Integer> quantityPerBrandPojo) {
