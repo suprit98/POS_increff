@@ -31,7 +31,7 @@ pos,com.increff.pos.model,BrandData,0,10,0,0,0,4,0,3,0,3
 pos,com.increff.pos.model,InventoryReportList,10,0,0,0,4,0,3,0,3,0
 pos,com.increff.pos.controller,ReportController,43,3,0,0,14,1,4,1,4,1
 pos,com.increff.pos.controller,ProductDetailsController,43,3,0,0,13,1,5,1,5,1
-pos,com.increff.pos.controller,UIController,49,3,0,0,12,1,10,1,10,1
+pos,com.increff.pos.controller,UIController,45,3,0,0,11,1,9,1,9,1
 pos,com.increff.pos.controller,AppRestControllerAdvice,10,3,0,0,3,1,1,1,1,1
 pos,com.increff.pos.controller,BrandController,39,3,0,0,13,1,5,1,5,1
 pos,com.increff.pos.controller,InvoiceController,11,3,0,0,3,1,1,1,1,1

@@ -7,6 +7,7 @@ function getBrandUrl(){
 //BUTTON ACTIONS
 function addBrand(event){
 	//Set the values to update
+	$('#add-brand-modal').modal('toggle');
 	var $form = $("#brand-form");
 	var json = toJson($form);
 	var url = getBrandUrl();
@@ -50,8 +51,8 @@ function displayBrandList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button onclick="deleteBrand(' + e.id + ')">delete</button>'
-		buttonHtml += ' <button onclick="displayEditBrand(' + e.id + ')">edit</button>'
+		var buttonHtml = '<button style="padding: 0;border: none;background: none;" onclick="deleteBrand(' + e.id + ')"><span class="material-icons" style="color:red">delete</span></button>'
+		buttonHtml += ' <button style="padding: 0;border: none;background: none;" onclick="displayEditBrand(' + e.id + ')"><span class="material-icons" style="color:#CCCC00">edit</span></button>'
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.brand + '</td>'
@@ -130,6 +131,10 @@ function displayUploadData(){
 	$('#upload-brand-modal').modal('toggle');
 }
 
+function displayAddBrandModal() {
+	$("#add-brand-modal").modal('toggle');
+}
+
 function updateFileName(){
 	var $file = $('#brandFile');
 	var fileName = $file.val();
@@ -142,6 +147,7 @@ function updateFileName(){
 
 //INITIALIZATION CODE
 function init(){
+	$("#open-add-brand").click(displayAddBrandModal);
 	$('#add-brand').click(addBrand);
 	$('#update-brand').click(updateBrand);
 	$('#refresh-data').click(getBrandList);

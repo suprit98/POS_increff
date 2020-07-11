@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <items>
-    <datetime>2020-06-16 20:31</datetime>
+    <datetime>2020-07-11 15:41</datetime>
     <item>
-        <id>1</id>
-        <mrp>599.25</mrp>
-        <name>chyavanprash 500 grams</name>
+        <id>33</id>
+        <mrp>50.0</mrp>
+        <name>milk</name>
         <quantity>2</quantity>
     </item>
-    <order_id>1</order_id>
-    <total>1198.5</total>
+    <item>
+        <id>34</id>
+        <mrp>80.0</mrp>
+        <name>bread</name>
+        <quantity>1</quantity>
+    </item>
+    <order_id>17</order_id>
+    <total>180.0</total>
 </items>

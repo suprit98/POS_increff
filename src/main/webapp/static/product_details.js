@@ -6,6 +6,7 @@ function getProductDetailsUrl(){
 
 //BUTTON ACTIONS
 function addProductDetails(event){
+	$('#add-productdetails-modal').modal('toggle');
 	//Set the values to update
 	var $form = $("#productdetails-form");
 	var json = toJson($form);
@@ -49,8 +50,8 @@ function displayProductDetailsList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button onclick="deleteProductDetails(' + e.id + ')">delete</button>';
-		buttonHtml += ' <button onclick="displayEditProductDetails(' + e.id + ')">edit</button>';
+		var buttonHtml = '<button style="padding: 0;border: none;background: none;" onclick="deleteProductDetails(' + e.id + ')"><span class="material-icons" style="color:red">delete</span></button>';
+		buttonHtml += ' <button style="padding: 0;border: none;background: none;" onclick="displayEditProductDetails(' + e.id + ')"><span class="material-icons" style="color:#CCCC00">edit</span></button>';
 		console.log('brand');
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
@@ -135,6 +136,10 @@ function displayUploadDataProductDetails(){
 	$('#upload-productdetails-modal').modal('toggle');
 }
 
+function displayAddProductDetailsModal() {
+	$('#add-productdetails-modal').modal('toggle');
+}
+
 function updateFileNameProductDetails(){
 	var $file = $('#productdetailsFile');
 	var fileName = $file.val();
@@ -145,6 +150,7 @@ function updateFileNameProductDetails(){
 
 //INITIALIZATION CODE
 function init(){
+	$('#open-add-productdetails').click(displayAddProductDetailsModal);
 	$('#add-productdetails').click(addProductDetails);
 	$('#update-productdetails').click(updateProductDetails);
 	$('#refresh-data-productdetails').click(getProductDetailsList);

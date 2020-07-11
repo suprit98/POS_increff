@@ -49,8 +49,8 @@ function displayInventoryList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button onclick="deleteInventory(' + e.id + ')">delete</button>'
-		buttonHtml += ' <button onclick="displayEditInventory(' + e.id + ')">edit</button>'
+		var buttonHtml = '<button style="padding: 0;border: none;background: none;" onclick="deleteInventory(' + e.id + ')"><span class="material-icons" style="color:red">delete</span></button>'
+		buttonHtml += ' <button style="padding: 0;border: none;background: none;" onclick="displayEditInventory(' + e.id + ')"><span class="material-icons" style="color:#CCCC00">edit</span></button>'
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.barcode + '</td>'

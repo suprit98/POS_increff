@@ -46,20 +46,16 @@ import org.springframework.web.servlet.ModelAndView;
 <span class="nc" id="L46">		return mav(&quot;previousorders.html&quot;);</span>
 	}
 	
-	@RequestMapping(value = &quot;/ui/previous_orders2&quot;)
-	public ModelAndView previous_orders2() {
-<span class="nc" id="L51">		return mav(&quot;previousorders2.html&quot;);</span>
-	}
 	
 	@RequestMapping(value = &quot;/ui/reports&quot;)
 	public ModelAndView reports() {
-<span class="nc" id="L56">		return mav(&quot;reports.html&quot;);</span>
+<span class="nc" id="L52">		return mav(&quot;reports.html&quot;);</span>
 	}
 
 	private ModelAndView mav(String page) {
-<span class="nc" id="L60">		ModelAndView mav = new ModelAndView(page);</span>
-<span class="nc" id="L61">		mav.addObject(&quot;baseUrl&quot;, baseUrl);</span>
-<span class="nc" id="L62">		return mav;</span>
+<span class="nc" id="L56">		ModelAndView mav = new ModelAndView(page);</span>
+<span class="nc" id="L57">		mav.addObject(&quot;baseUrl&quot;, baseUrl);</span>
+<span class="nc" id="L58">		return mav;</span>
 
 	}
 

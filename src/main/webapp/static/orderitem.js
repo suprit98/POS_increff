@@ -114,7 +114,7 @@ function displayOrderItemListFrontend(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button onclick="deleteOrderItem(' + i + ')">delete</button>'
+		var buttonHtml = '<button style="padding: 0;border: none;background: none;" onclick="deleteOrderItem(' + i + ')"><span class="material-icons" style="color:red">delete</span></button>'
 		var row = '<tr>'
 		+ '<td>' + (i) + '</td>'
 		+ '<td>' + e.barcode + '</td>'
@@ -202,8 +202,8 @@ function createOrderItemsHtml(data,id) {
 	table.append(thHtml);
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button onclick="deleteOrderItemFromOrderList(' + e.id + ')">delete</button>';
-		buttonHtml += '<button onclick="displayEditOrderItem(' + e.id + ')">edit</button>';
+		var buttonHtml = '<button style="padding: 0;border: none;background: none;" onclick="deleteOrderItemFromOrderList(' + e.id + ')"><span class="material-icons" style="color:red">delete</span></button>';
+		buttonHtml += '<button style="padding: 0;border: none;background: none;" onclick="displayEditOrderItem(' + e.id + ')"><span class="material-icons" style="color:#CCCC00">edit</span></button>';
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.barcode + '</td>'

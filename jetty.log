@@ -1507,3 +1507,17 @@ Caused by: java.net.ConnectException: Connection refused (Connection refused)
 2020-07-10 16:24:36 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
 2020-07-10 16:24:36 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
 2020-07-10 16:24:36 INFO  FOUserAgent:83 - Rendered page #1.
+2020-07-11 12:06:42 INFO  FOUserAgent:83 - An fo:table  (No context info available) is wider than the available room in inline-progression-dimension. Adjusting end-indent based on overconstrained geometry rules (XSL 1.1, ch. 5.3.4)
+2020-07-11 12:06:42 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2020-07-11 12:06:42 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2020-07-11 12:06:42 INFO  FOUserAgent:83 - Rendered page #1.
+2020-07-11 12:07:02 INFO  FOUserAgent:83 - An fo:table  (No context info available) is wider than the available room in inline-progression-dimension. Adjusting end-indent based on overconstrained geometry rules (XSL 1.1, ch. 5.3.4)
+2020-07-11 12:07:02 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2020-07-11 12:07:02 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2020-07-11 12:07:02 INFO  FOUserAgent:83 - Rendered page #1.
+2020-07-11 12:26:50 WARN  SqlExceptionHelper:137 - SQL Error: 1451, SQLState: 23000
+2020-07-11 12:26:50 ERROR SqlExceptionHelper:142 - Cannot delete or update a parent row: a foreign key constraint fails (`pos`.`inventorypojo`, CONSTRAINT `FKbtsl56vw9dx0fe61ghg5wfxqo` FOREIGN KEY (`product_id`) REFERENCES `productdetailspojo` (`id`))
+2020-07-11 12:26:50 ERROR ExceptionMapperStandardImpl:39 - HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]
+2020-07-11 12:26:56 WARN  SqlExceptionHelper:137 - SQL Error: 1451, SQLState: 23000
+2020-07-11 12:26:56 ERROR SqlExceptionHelper:142 - Cannot delete or update a parent row: a foreign key constraint fails (`pos`.`inventorypojo`, CONSTRAINT `FKbtsl56vw9dx0fe61ghg5wfxqo` FOREIGN KEY (`product_id`) REFERENCES `productdetailspojo` (`id`))
+2020-07-11 12:26:56 ERROR ExceptionMapperStandardImpl:39 - HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]

@@ -6,6 +6,7 @@ function getInventoryUrl(){
 
 //BUTTON ACTIONS
 function addInventory(event){
+	$('#add-inventory-modal').modal('toggle');
 	//Set the values to update
 	var $form = $("#inventory-form");
 	var json = toJson($form);
@@ -49,8 +50,8 @@ function displayInventoryList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button onclick="deleteInventory(' + e.id + ')">delete</button>'
-		buttonHtml += ' <button onclick="displayEditInventory(' + e.id + ')">edit</button>'
+		var buttonHtml = '<button style="padding: 0;border: none;background: none;" onclick="deleteInventory(' + e.id + ')"><span class="material-icons" style="color:red">delete</span></button>'
+		buttonHtml += ' <button style="padding: 0;border: none;background: none;" onclick="displayEditInventory(' + e.id + ')"><span class="material-icons" style="color:#CCCC00">edit</span></button>'
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.barcode + '</td>'
@@ -66,6 +67,10 @@ function displayEditInventory(id){
 	ajaxQuery(url,'GET','',displayInventory);
 }
 
+function openAddInventoryModal() {
+	$('#add-inventory-modal').modal('toggle');
+}
+
 function displayInventory(data){
 	$("#inventory-edit-form input[name=barcode]").val(data.barcode);
 	$("#inventory-edit-form input[name=quantity]").val(data.quantity);
@@ -78,6 +83,7 @@ function displayInventory(data){
 
 //INITIALIZATION CODE
 function init(){
+	$('#open-add-inventory').click(openAddInventoryModal);
 	$('#add-inventory').click(addInventory);
 	$('#update-inventory').click(updateInventory);
 	$('#refresh-data-inventory').click(getInventoryList);
