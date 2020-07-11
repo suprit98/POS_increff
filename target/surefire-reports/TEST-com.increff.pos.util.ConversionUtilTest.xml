@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="14" failures="0" name="com.increff.pos.util.ConversionUtilTest" time="1.276" errors="0" skipped="0">
+<testsuite tests="14" failures="0" name="com.increff.pos.util.ConversionUtilTest" time="1.335" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib"/>
@@ -64,18 +64,18 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testConvertBrandFormToPojo" time="0.693"/>
-  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testOrderItemstoInvoice" time="0.057"/>
-  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testConvertOrderItemFormToPojo" time="0.059"/>
-  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testConvertInventoryFormToPojo" time="0.056"/>
-  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testOrderItemsFormtoPojo" time="0.049"/>
-  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testConvertProductPojoToData" time="0.052"/>
-  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testListInventoryPojoToData" time="0.04"/>
-  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testConvertProductFormToPojo" time="0.041"/>
-  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testListBrandPojoToData" time="0.04"/>
-  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testConvertBrandPojoToData" time="0.037"/>
-  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testListProductPojoToData" time="0.043"/>
-  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testConvertOrderItemPojoToData" time="0.032"/>
-  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testConvertInventoryPojoToData" time="0.035"/>
-  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testOrderItemsPojotoData" time="0.042"/>
+  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testConvertBrandFormToPojo" time="0.698"/>
+  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testOrderItemstoInvoice" time="0.069"/>
+  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testConvertOrderItemFormToPojo" time="0.078"/>
+  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testConvertInventoryFormToPojo" time="0.063"/>
+  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testOrderItemsFormtoPojo" time="0.054"/>
+  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testConvertProductPojoToData" time="0.051"/>
+  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testListInventoryPojoToData" time="0.042"/>
+  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testConvertProductFormToPojo" time="0.043"/>
+  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testListBrandPojoToData" time="0.042"/>
+  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testConvertBrandPojoToData" time="0.038"/>
+  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testListProductPojoToData" time="0.042"/>
+  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testConvertOrderItemPojoToData" time="0.037"/>
+  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testConvertInventoryPojoToData" time="0.04"/>
+  <testcase classname="com.increff.pos.util.ConversionUtilTest" name="testOrderItemsPojotoData" time="0.038"/>
 </testsuite>

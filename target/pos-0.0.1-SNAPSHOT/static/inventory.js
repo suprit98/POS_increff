@@ -6,6 +6,7 @@ function getInventoryUrl(){
 
 //BUTTON ACTIONS
 function addInventory(event){
+	$('#add-inventory-modal').modal('toggle');
 	//Set the values to update
 	var $form = $("#inventory-form");
 	var json = toJson($form);
@@ -66,6 +67,10 @@ function displayEditInventory(id){
 	ajaxQuery(url,'GET','',displayInventory);
 }
 
+function openAddInventoryModal() {
+	$('#add-inventory-modal').modal('toggle');
+}
+
 function displayInventory(data){
 	$("#inventory-edit-form input[name=barcode]").val(data.barcode);
 	$("#inventory-edit-form input[name=quantity]").val(data.quantity);
@@ -78,6 +83,7 @@ function displayInventory(data){
 
 //INITIALIZATION CODE
 function init(){
+	$('#open-add-inventory').click(openAddInventoryModal);
 	$('#add-inventory').click(addInventory);
 	$('#update-inventory').click(updateInventory);
 	$('#refresh-data-inventory').click(getInventoryList);

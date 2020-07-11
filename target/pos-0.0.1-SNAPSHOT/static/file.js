@@ -1,3 +1,23 @@
+var barcodeList = [];
+
+function getProductDetailsUrl(){
+	var baseUrl = $("meta[name=baseUrl]").attr("content");
+	console.log(baseUrl);
+	return baseUrl + "/api/product_details";
+}
+
+function createBarcodeList() {
+	var url = getProductDetailsUrl();
+	ajaxQuery(url,'GET','',formBarcodeList);
+}
+
+function formBarcodeList(data) {
+	for(var i in data){
+		var e = data[i];
+		barcodeList.push(e.barcode);
+	}
+}
+
 function readFileData(file, callback){
 	var config = {
 		header: true,
@@ -46,3 +66,11 @@ function ajaxQuery(url, type, data, successFunction) {
 	   }
 	});
 }
+
+function init() {
+	createBarcodeList();
+	$(".barcode").autocomplete({
+		source: barcodeList
+	});
+}
+$(document).ready(init);
