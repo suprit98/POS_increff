@@ -26,21 +26,21 @@ public class ReportController {
 	@ApiOperation(value = "Gets Brand Report")
 	@RequestMapping(path = "/api/report/brand", method = RequestMethod.GET)
 	public void get(HttpServletResponse response) throws Exception {
-		byte[] bytes = report_service.generateBrandList();
+		byte[] bytes = report_service.generatePdfResponse("brand");
 		createPdfResponse(bytes, response);
 	}
 
 	@ApiOperation(value = "Gets Inventory Report")
 	@RequestMapping(path = "/api/report/inventory", method = RequestMethod.GET)
 	public void getInventory(HttpServletResponse response) throws Exception {
-		byte[] bytes = report_service.generateInventoryList();
+		byte[] bytes = report_service.generatePdfResponse("inventory");
 		createPdfResponse(bytes, response);
 	}
 
 	@ApiOperation(value = "Gets Sales Report")
 	@RequestMapping(path = "/api/report/sales", method = RequestMethod.POST)
 	public void getSales(@RequestBody SalesFilter sales_filter, HttpServletResponse response) throws Exception {
-		byte[] bytes = report_service.generateSalesList(sales_filter);
+		byte[] bytes = report_service.generatePdfResponse("sales", sales_filter);
 		createPdfResponse(bytes, response);
 	}
 

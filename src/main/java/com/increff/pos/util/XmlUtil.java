@@ -17,37 +17,8 @@ import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.MimeConstants;
 
-import com.increff.pos.model.InventoryReportList;
-import com.increff.pos.model.InvoiceData;
-import com.increff.pos.model.InvoiceDataList;
-
 public class XmlUtil {
 
-	public static void generateXmlInvoice(InvoiceDataList idl) throws Exception {
-
-		double total = calculateTotal(idl);
-
-		idl.setTotal(total);
-
-		File file = new File("invoice.xml");
-		JAXBContext context = JAXBContext.newInstance(InvoiceDataList.class);
-		Marshaller m = context.createMarshaller();
-		// for pretty-print XML in JAXB
-		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-		m.marshal(idl, file);
-	}
-
-	
-	public static void generateXmlInventoryReport(InventoryReportList idl) throws Exception {
-
-
-		File file = new File("inventory_report.xml");
-		JAXBContext context = JAXBContext.newInstance(InventoryReportList.class);
-		Marshaller m = context.createMarshaller();
-		// for pretty-print XML in JAXB
-		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-		m.marshal(idl, file);
-	}
 
 	public static byte[] generatePDF(File xml_file, StreamSource xsl_source) throws Exception {
 		FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
@@ -73,14 +44,6 @@ public class XmlUtil {
 
 		return bytes;
 
-	}
-
-	private static double calculateTotal(InvoiceDataList idl) {
-		double total = 0;
-		for (InvoiceData i : idl.getInvoiceLis()) {
-			total += (i.getMrp() * i.getQuantity());
-		}
-		return total;
 	}
 
 	public static void generateXml(File file,Object list,Class<?> class_type) throws JAXBException {

@@ -19,7 +19,6 @@
 /Users/supritbhattacharjee/java_repositories/pos/src/main/java/com/increff/pos/App.java
 /Users/supritbhattacharjee/java_repositories/pos/src/main/java/com/increff/pos/spring/ControllerConfig.java
 /Users/supritbhattacharjee/java_repositories/pos/src/main/java/com/increff/pos/dao/InventoryDao.java
-/Users/supritbhattacharjee/java_repositories/pos/src/main/java/com/increff/pos/util/PdfResponseUtil.java
 /Users/supritbhattacharjee/java_repositories/pos/src/main/java/com/increff/pos/model/BrandForm.java
 /Users/supritbhattacharjee/java_repositories/pos/src/main/java/com/increff/pos/model/OrderItemData.java
 /Users/supritbhattacharjee/java_repositories/pos/src/main/java/com/increff/pos/model/SalesFilter.java

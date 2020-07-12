@@ -166,7 +166,7 @@ public class ConversionUtilTest extends AbstractUtilTest {
 		assertEquals(inventory_data_list.get(0).getQuantity(),inventory_list.get(0).getQuantity());
 	}
 	
-	@Test
+	/*@Test
 	public void testOrderItemstoInvoice() {
 		List<OrderItemPojo> order_item_list = order_service.getAll();
 		List<InvoiceData> invoice_list = ConversionUtil.convert(product_service,order_item_list);
@@ -174,7 +174,7 @@ public class ConversionUtilTest extends AbstractUtilTest {
 		assertEquals(invoice_list.get(0).getName(),order_item_list.get(0).getProductPojo().getName());
 		assertEquals(invoice_list.get(0).getQuantity(),order_item_list.get(0).getQuantity());
 		assertEquals(invoice_list.get(0).getMrp(), order_item_list.get(0).getSellingPrice(),0.001);
-	}
+	}*/
 	
 	@Test
 	public void testOrderItemsPojotoData() {

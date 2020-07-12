@@ -49,7 +49,7 @@ public static final String PACKAGE_POJO = "com.increff.pos.pojo";
 		bean.setMinIdle(2);
 		bean.setValidationQuery("Select 1");
 		bean.setTestWhileIdle(true);
-		bean.setTimeBetweenEvictionRunsMillis(10 * 60 * 100);
+		bean.setTimeBetweenEvictionRunsMillis(60000);
 		return bean;
 	}
 	

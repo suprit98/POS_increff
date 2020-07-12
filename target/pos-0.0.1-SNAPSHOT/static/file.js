@@ -1,4 +1,12 @@
 var barcodeList = [];
+var brandList = [];
+var categoryList = [];
+
+function getBrandUrl(){
+	var baseUrl = $("meta[name=baseUrl]").attr("content");
+	console.log(baseUrl);
+	return baseUrl + "/api/brand";
+}
 
 function getProductDetailsUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content");
@@ -11,10 +19,23 @@ function createBarcodeList() {
 	ajaxQuery(url,'GET','',formBarcodeList);
 }
 
+function createBrandCategoryList() {
+	var url = getBrandUrl();
+	ajaxQuery(url,'GET','',formBrandCategoryList);
+}
+
 function formBarcodeList(data) {
 	for(var i in data){
 		var e = data[i];
 		barcodeList.push(e.barcode);
+	}
+}
+
+function formBrandCategoryList(data) {
+	for(var i in data){
+		var e = data[i];
+		brandList.push(e.brand);
+		categoryList.push(e.category);
 	}
 }
 
@@ -69,8 +90,16 @@ function ajaxQuery(url, type, data, successFunction) {
 
 function init() {
 	createBarcodeList();
+	createBrandCategoryList();
+	console.log(barcodeList);
 	$(".barcode").autocomplete({
 		source: barcodeList
+	});
+	$(".brand").autocomplete({
+		source: brandList
+	});
+	$(".category").autocomplete({
+		source: categoryList
 	});
 }
 $(document).ready(init);

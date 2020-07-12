@@ -26,21 +26,21 @@ import io.swagger.annotations.ApiOperation;
 	@ApiOperation(value = &quot;Gets Brand Report&quot;)
 	@RequestMapping(path = &quot;/api/report/brand&quot;, method = RequestMethod.GET)
 	public void get(HttpServletResponse response) throws Exception {
-<span class="nc" id="L29">		byte[] bytes = report_service.generateBrandList();</span>
+<span class="nc" id="L29">		byte[] bytes = report_service.generatePdfResponse(&quot;brand&quot;);</span>
 <span class="nc" id="L30">		createPdfResponse(bytes, response);</span>
 <span class="nc" id="L31">	}</span>
 
 	@ApiOperation(value = &quot;Gets Inventory Report&quot;)
 	@RequestMapping(path = &quot;/api/report/inventory&quot;, method = RequestMethod.GET)
 	public void getInventory(HttpServletResponse response) throws Exception {
-<span class="nc" id="L36">		byte[] bytes = report_service.generateInventoryList();</span>
+<span class="nc" id="L36">		byte[] bytes = report_service.generatePdfResponse(&quot;inventory&quot;);</span>
 <span class="nc" id="L37">		createPdfResponse(bytes, response);</span>
 <span class="nc" id="L38">	}</span>
 
 	@ApiOperation(value = &quot;Gets Sales Report&quot;)
 	@RequestMapping(path = &quot;/api/report/sales&quot;, method = RequestMethod.POST)
 	public void getSales(@RequestBody SalesFilter sales_filter, HttpServletResponse response) throws Exception {
-<span class="nc" id="L43">		byte[] bytes = report_service.generateSalesList(sales_filter);</span>
+<span class="nc" id="L43">		byte[] bytes = report_service.generatePdfResponse(&quot;sales&quot;, sales_filter);</span>
 <span class="nc" id="L44">		createPdfResponse(bytes, response);</span>
 <span class="nc" id="L45">	}</span>
 

@@ -3,13 +3,13 @@
     <sales_item>
         <brand>nestle</brand>
         <category>dairy</category>
-        <quantity>4</quantity>
-        <revenue>118.0</revenue>
+        <quantity>13</quantity>
+        <revenue>637.0</revenue>
     </sales_item>
     <sales_item>
-        <brand>amul</brand>
-        <category>dairy</category>
-        <quantity>2</quantity>
-        <revenue>200.0</revenue>
+        <brand>dabur</brand>
+        <category>health</category>
+        <quantity>1</quantity>
+        <revenue>599.25</revenue>
     </sales_item>
 </sales_items>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="17" failures="0" name="com.increff.pos.service.ProductDetailsServiceTest" time="0.144" errors="0" skipped="0">
+<testsuite tests="17" failures="0" name="com.increff.pos.service.ProductDetailsServiceTest" time="0.149" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib"/>
@@ -64,21 +64,21 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testGetByIdNotExisting" time="0.008"/>
-  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testAdd" time="0.009"/>
-  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testUpdateWrong" time="0.008"/>
-  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testCheckIfExistsIdWrong" time="0.006"/>
-  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testValidate" time="0.01"/>
-  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testAddWrong" time="0.01"/>
-  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testGetById" time="0.009"/>
-  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testCheckIfExistsBarcodeWrong" time="0.009"/>
-  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testCheckIfExistsId" time="0.008"/>
+  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testGetByIdNotExisting" time="0.011"/>
+  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testAdd" time="0.007"/>
+  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testUpdateWrong" time="0.009"/>
+  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testCheckIfExistsIdWrong" time="0.005"/>
+  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testValidate" time="0.035"/>
+  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testAddWrong" time="0.006"/>
+  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testGetById" time="0.008"/>
+  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testCheckIfExistsBarcodeWrong" time="0.005"/>
+  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testCheckIfExistsId" time="0.007"/>
   <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testGetByBarcodeNotExisting" time="0.004"/>
   <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testNormalize" time="0.006"/>
-  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testValidateWrong" time="0.006"/>
+  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testValidateWrong" time="0.007"/>
   <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testCheckIfExistsBarcode" time="0.01"/>
-  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testDelete" time="0.015"/>
-  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testGetAll" time="0.006"/>
-  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testGetByBarcode" time="0.01"/>
-  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testUpdate" time="0.01"/>
+  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testDelete" time="0.008"/>
+  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testGetAll" time="0.004"/>
+  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testGetByBarcode" time="0.009"/>
+  <testcase classname="com.increff.pos.service.ProductDetailsServiceTest" name="testUpdate" time="0.008"/>
 </testsuite>

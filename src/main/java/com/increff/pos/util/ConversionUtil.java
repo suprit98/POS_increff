@@ -12,6 +12,7 @@ import com.increff.pos.model.InventoryForm;
 import com.increff.pos.model.InventoryReportData;
 import com.increff.pos.model.InventoryReportList;
 import com.increff.pos.model.InvoiceData;
+import com.increff.pos.model.InvoiceDataList;
 import com.increff.pos.model.OrderData;
 import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
@@ -97,7 +98,7 @@ public class ConversionUtil {
 		return d;
 	}
 
-	public static List<InvoiceData> convert(ProductDetailsService product_service, List<OrderItemPojo> lis) {
+	public static InvoiceDataList convert(ProductDetailsService product_service, List<OrderItemPojo> lis) {
 		List<InvoiceData> invoiceLis = new ArrayList<InvoiceData>();
 		for (OrderItemPojo p : lis) {
 			InvoiceData i = new InvoiceData();
@@ -107,7 +108,9 @@ public class ConversionUtil {
 			i.setQuantity(p.getQuantity());
 			invoiceLis.add(i);
 		}
-		return invoiceLis;
+		InvoiceDataList idl = new InvoiceDataList();
+		idl.setInvoiceLis(invoiceLis);
+		return idl;
 	}
 
 	public static List<BrandData> convert(List<BrandPojo> list) {
