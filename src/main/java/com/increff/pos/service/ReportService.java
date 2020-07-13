@@ -31,40 +31,38 @@ public class ReportService {
 
 	@Autowired
 	private OrderService order_service;
-	
+
 	@Autowired
 	private BrandService brand_service;
-	
+
 	@Autowired
 	private ProductDetailsService product_service;
 
 	@Autowired
 	private InventoryService inventory_service;
-	
-	public byte[] generatePdfResponse(String type,Object ...obj) throws Exception {
-		if(type.contentEquals("brand")) {
+
+	public byte[] generatePdfResponse(String type, Object... obj) throws Exception {
+		if (type.contentEquals("brand")) {
 			BrandDataList brand_list = generateBrandList();
 			XmlUtil.generateXml(new File("brand_report.xml"), brand_list, BrandDataList.class);
 			return XmlUtil.generatePDF(new File("brand_report.xml"), new StreamSource("brand_report.xsl"));
-		}
-		else if(type.contentEquals("inventory")) {
+		} else if (type.contentEquals("inventory")) {
 			InventoryReportList inventory_list = generateInventoryList();
 			XmlUtil.generateXml(new File("inventory_report.xml"), inventory_list, InventoryReportList.class);
 			return XmlUtil.generatePDF(new File("inventory_report.xml"), new StreamSource("inventory_report.xsl"));
-		}
-		else if(type.contentEquals("sales")) {
-			SalesDataList sales_data_list = generateSalesList((SalesFilter)obj[0]);
+		} else if (type.contentEquals("sales")) {
+			SalesDataList sales_data_list = generateSalesList((SalesFilter) obj[0]);
 			XmlUtil.generateXml(new File("sales_report.xml"), sales_data_list, SalesDataList.class);
 			return XmlUtil.generatePDF(new File("sales_report.xml"), new StreamSource("sales_report.xsl"));
-		}
-		else {
-			InvoiceDataList idl = generateInvoiceList((Integer)obj[0]);
-			XmlUtil.generateXml(new File("invoice.xml"),idl,InvoiceDataList.class);
+		} else {
+			InvoiceDataList idl = generateInvoiceList((Integer) obj[0]);
+			XmlUtil.generateXml(new File("invoice.xml"), idl, InvoiceDataList.class);
 			return XmlUtil.generatePDF(new File("invoice.xml"), new StreamSource("invoice.xsl"));
 		}
 	}
-	
-	public byte[] generateXmlPdf(File xml_file, Object list,Class<?> class_type, StreamSource xsl_source) throws Exception {
+
+	public byte[] generateXmlPdf(File xml_file, Object list, Class<?> class_type, StreamSource xsl_source)
+			throws Exception {
 		XmlUtil.generateXml(xml_file, list, class_type);
 		return XmlUtil.generatePDF(xml_file, xsl_source);
 	}
@@ -81,12 +79,12 @@ public class ReportService {
 		List<InventoryPojo> inventory_pojo_list = inventory_service.getAll();
 		Map<BrandPojo, Integer> quantityPerBrandPojo = GroupByBrandCategory(inventory_pojo_list);
 		return ConversionUtil.convertInventoryReportList(quantityPerBrandPojo);
-		
+
 	}
 
 	public Map<BrandPojo, Integer> GroupByBrandCategory(List<InventoryPojo> inventory_pojo_list) {
-		Map<BrandPojo, Integer> quantityPerBrandPojo = inventory_pojo_list.stream()
-				.collect(Collectors.groupingBy(InventoryPojo::getBrandPojo, Collectors.summingInt(InventoryPojo::getQuantity)));
+		Map<BrandPojo, Integer> quantityPerBrandPojo = inventory_pojo_list.stream().collect(
+				Collectors.groupingBy(InventoryPojo::getBrandPojo, Collectors.summingInt(InventoryPojo::getQuantity)));
 		return quantityPerBrandPojo;
 	}
 
@@ -96,8 +94,7 @@ public class ReportService {
 		List<OrderItemPojo> filtered_orderitem_list = FilterByDate(sales_filter, order_list);
 		Map<BrandPojo, Integer> quantityPerBrandCategory = getMapQuantity(sales_filter, filtered_orderitem_list);
 		Map<BrandPojo, Double> revenuePerBrandCategory = getMapRevenue(sales_filter, filtered_orderitem_list);
-		return ConversionUtil.convertSalesList(quantityPerBrandCategory,
-				revenuePerBrandCategory);
+		return ConversionUtil.convertSalesList(quantityPerBrandCategory, revenuePerBrandCategory);
 	}
 
 	public List<OrderItemPojo> FilterByDate(SalesFilter sales_filter, List<OrderItemPojo> orderitem_list) {
@@ -112,55 +109,27 @@ public class ReportService {
 	}
 
 	public Map<BrandPojo, Integer> getMapQuantity(SalesFilter sales_filter, List<OrderItemPojo> orderitem_list) {
-		Map<BrandPojo, Integer> quantityPerBrandCategory;
-		if (sales_filter.getBrand().isEmpty() && !sales_filter.getCategory().isEmpty()) {
-			quantityPerBrandCategory = orderitem_list.stream().filter(
-					order_item -> order_item.getBrandPojo().getCategory().contentEquals(sales_filter.getCategory()))
-					.collect(Collectors.groupingBy(OrderItemPojo::getBrandPojo,
-							Collectors.summingInt(OrderItemPojo::getQuantity)));
-		} else if (!sales_filter.getBrand().isEmpty() && sales_filter.getCategory().isEmpty()) {
-			quantityPerBrandCategory = orderitem_list.stream()
-					.filter(order_item -> order_item.getBrandPojo().getBrand().contentEquals(sales_filter.getBrand()))
-					.collect(Collectors.groupingBy(OrderItemPojo::getBrandPojo,
-							Collectors.summingInt(OrderItemPojo::getQuantity)));
-		} else if (!sales_filter.getBrand().isEmpty() && !sales_filter.getCategory().isEmpty()) {
-			quantityPerBrandCategory = orderitem_list.stream()
-					.filter(order_item -> order_item.getBrandPojo().getBrand().contentEquals(sales_filter.getBrand())
-							&& order_item.getBrandPojo().getCategory().contentEquals(sales_filter.getCategory()))
-					.collect(Collectors.groupingBy(OrderItemPojo::getBrandPojo,
-							Collectors.summingInt(OrderItemPojo::getQuantity)));
-		} else {
-			quantityPerBrandCategory = orderitem_list.stream().collect(Collectors
-					.groupingBy(OrderItemPojo::getBrandPojo, Collectors.summingInt(OrderItemPojo::getQuantity)));
-		}
+		Map<BrandPojo, Integer> quantityPerBrandCategory = orderitem_list.stream()
+				.filter(order_item -> Equals(order_item.getBrandPojo().getBrand(), sales_filter.getBrand())
+						&& Equals(order_item.getBrandPojo().getCategory(), sales_filter.getCategory()))
+				.collect(Collectors.groupingBy(OrderItemPojo::getBrandPojo,
+						Collectors.summingInt(OrderItemPojo::getQuantity)));
 		return quantityPerBrandCategory;
 	}
 
 	public Map<BrandPojo, Double> getMapRevenue(SalesFilter sales_filter, List<OrderItemPojo> orderitem_list) {
-		Map<BrandPojo, Double> revenuePerBrandCategory;
-		if (sales_filter.getBrand().isEmpty() && !sales_filter.getCategory().isEmpty()) {
-			revenuePerBrandCategory = orderitem_list.stream().filter(
-					order_item -> order_item.getBrandPojo().getCategory().contentEquals(sales_filter.getCategory()))
-					.collect(Collectors.groupingBy(OrderItemPojo::getBrandPojo,
-							Collectors.summingDouble(OrderItemPojo::getRevenue)));
-		} else if (!sales_filter.getBrand().isEmpty() && sales_filter.getCategory().isEmpty()) {
-			revenuePerBrandCategory = orderitem_list.stream()
-					.filter(order_item -> order_item.getBrandPojo().getBrand().contentEquals(sales_filter.getBrand()))
-					.collect(Collectors.groupingBy(OrderItemPojo::getBrandPojo,
-							Collectors.summingDouble(OrderItemPojo::getRevenue)));
-		} else if (!sales_filter.getBrand().isEmpty() && !sales_filter.getCategory().isEmpty()) {
-			revenuePerBrandCategory = orderitem_list.stream()
-					.filter(order_item -> order_item.getBrandPojo().getBrand().contentEquals(sales_filter.getBrand())
-							&& order_item.getBrandPojo().getCategory().contentEquals(sales_filter.getCategory()))
-					.collect(Collectors.groupingBy(OrderItemPojo::getBrandPojo,
-							Collectors.summingDouble(OrderItemPojo::getRevenue)));
-		} else {
-			revenuePerBrandCategory = orderitem_list.stream().collect(Collectors.groupingBy(OrderItemPojo::getBrandPojo,
-					Collectors.summingDouble(OrderItemPojo::getRevenue)));
-		}
+		Map<BrandPojo, Double> revenuePerBrandCategory = orderitem_list.stream()
+				.filter(order_item -> Equals(order_item.getBrandPojo().getBrand(), sales_filter.getBrand())
+						&& Equals(order_item.getBrandPojo().getCategory(), sales_filter.getCategory()))
+				.collect(Collectors.groupingBy(OrderItemPojo::getBrandPojo,
+						Collectors.summingDouble(OrderItemPojo::getRevenue)));;
 		return revenuePerBrandCategory;
 	}
-	
+
+	protected Boolean Equals(String a, String b) {
+		return (a.contentEquals(b) || b.isEmpty());
+	}
+
 	public InvoiceDataList generateInvoiceList(int order_id) throws Exception {
 		List<OrderItemPojo> lis = order_service.getOrderItems(order_id);
 		InvoiceDataList idl = ConversionUtil.convert(product_service, lis);
@@ -171,7 +140,7 @@ public class ReportService {
 		idl.setTotal(total);
 		return idl;
 	}
-	
+
 	private static double calculateTotal(InvoiceDataList idl) {
 		double total = 0;
 		for (InvoiceData i : idl.getInvoiceLis()) {

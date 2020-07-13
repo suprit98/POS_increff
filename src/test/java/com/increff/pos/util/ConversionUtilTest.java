@@ -2,7 +2,10 @@ package com.increff.pos.util;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,14 +14,18 @@ import com.increff.pos.model.BrandData;
 import com.increff.pos.model.BrandForm;
 import com.increff.pos.model.InventoryData;
 import com.increff.pos.model.InventoryForm;
-import com.increff.pos.model.InvoiceData;
+import com.increff.pos.model.InventoryReportList;
+import com.increff.pos.model.InvoiceDataList;
+import com.increff.pos.model.OrderData;
 import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.model.ProductDetailsData;
 import com.increff.pos.model.ProductDetailsForm;
+import com.increff.pos.model.SalesDataList;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
+import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.pojo.ProductDetailsPojo;
 import com.increff.pos.service.ApiException;
 
@@ -166,15 +173,15 @@ public class ConversionUtilTest extends AbstractUtilTest {
 		assertEquals(inventory_data_list.get(0).getQuantity(),inventory_list.get(0).getQuantity());
 	}
 	
-	/*@Test
+	@Test
 	public void testOrderItemstoInvoice() {
 		List<OrderItemPojo> order_item_list = order_service.getAll();
-		List<InvoiceData> invoice_list = ConversionUtil.convert(product_service,order_item_list);
-		assertEquals(order_item_list.size(),invoice_list.size());
-		assertEquals(invoice_list.get(0).getName(),order_item_list.get(0).getProductPojo().getName());
-		assertEquals(invoice_list.get(0).getQuantity(),order_item_list.get(0).getQuantity());
-		assertEquals(invoice_list.get(0).getMrp(), order_item_list.get(0).getSellingPrice(),0.001);
-	}*/
+		InvoiceDataList invoice_list = ConversionUtil.convert(product_service,order_item_list);
+		assertEquals(order_item_list.size(),invoice_list.getInvoiceLis().size());
+		assertEquals(invoice_list.getInvoiceLis().get(0).getName(),order_item_list.get(0).getProductPojo().getName());
+		assertEquals(invoice_list.getInvoiceLis().get(0).getQuantity(),order_item_list.get(0).getQuantity());
+		assertEquals(invoice_list.getInvoiceLis().get(0).getMrp(), order_item_list.get(0).getSellingPrice(),0.001);
+	}
 	
 	@Test
 	public void testOrderItemsPojotoData() {
@@ -199,53 +206,54 @@ public class ConversionUtilTest extends AbstractUtilTest {
 		assertEquals(order_item_forms[0].getQuantity(), pojo_list.get(0).getQuantity());
 	}
 	
-	/*@Test
-	public void testSetOrderData() {
-		int id=1;
-		OrderData order_data = ConversionUtil.convertOrderPojo(id);
-		assertEquals(id, order_data.getId());
-	}*/
-	
-	/*@Test
-	public void testCreateInventoryReportList() throws ApiException {
-		List<InventoryPojo> inventory_list = inventory_service.getAll();
-		List<InventoryReportData> inventory_report_list = ConversionUtil.createInventoryReportList(brand_service, inventory_list);
-		List<BrandPojo> brand_list = brand_service.getAll();
-		assertEquals(brand_list.size(),inventory_report_list.size());
-	}*/
-	
-	/*@Test
-	public void testCreateSalesListNoBrand() {
-		String category = "dairy";
-		List<OrderItemPojo> order_item_list = order_service.getAll();
-		List<SalesData> sales_list = ConversionUtil.createSalesList("", category, order_item_list);
-		assertEquals(1,sales_list.size());
-		assertEquals(sales_list.get(0).getCategory(),category);
+	@Test
+	public void testConvertOrderPojoToData() {
+		OrderPojo pojo = getOrderPojo();
+		OrderData order_data = ConversionUtil.convertOrderPojo(pojo);
+		assertEquals(pojo.getId(), order_data.getId());
 	}
 	
 	@Test
-	public void testCreateSalesListNoCategory() {
-		String brand = "amul";
-		List<OrderItemPojo> order_item_list = order_service.getAll();
-		List<SalesData> sales_list = ConversionUtil.createSalesList(brand, "", order_item_list);
-		assertEquals(2,sales_list.size());
+	public void testListOrderPojoToData() {
+		OrderPojo pojo = getOrderPojo();
+		List<OrderPojo> order_list = new ArrayList<OrderPojo>();
+		order_list.add(pojo);
+		List<OrderData> order_data_list = ConversionUtil.convertOrderList(order_list);
+		assertEquals(order_list.size(),order_data_list.size());
+		assertEquals(order_list.get(0).getId(),order_data_list.get(0).getId());
 	}
 	
 	@Test
-	public void testCreateSalesListNoBrandNoCategory() {
-		List<OrderItemPojo> order_item_list = order_service.getAll();
-		List<SalesData> sales_list = ConversionUtil.createSalesList("", "", order_item_list);
-		assertEquals(2,sales_list.size());
+	public void testConvertInventoryReportList() throws ApiException {
+		Map<BrandPojo, Integer> quantityPerBrandPojo = new HashMap<BrandPojo,Integer>();
+		BrandPojo b1 = new BrandPojo();
+		b1.setBrand("brand1");
+		b1.setCategory("category1");
+		BrandPojo b2 = new BrandPojo();
+		b2.setBrand("brand2");
+		b2.setCategory("category2");
+		quantityPerBrandPojo.put(b1, 1);
+		quantityPerBrandPojo.put(b2, 2);
+		InventoryReportList inv_list = ConversionUtil.convertInventoryReportList(quantityPerBrandPojo);
+		assertEquals(2,inv_list.getInventory_list().size());
 	}
 	
 	@Test
-	public void testCreateSalesList() {
-		String brand = "amul";
-		String category = "bakery";
-		List<OrderItemPojo> order_item_list = order_service.getAll();
-		List<SalesData> sales_list = ConversionUtil.createSalesList(brand, category, order_item_list);
-		assertEquals(1,sales_list.size());
-		assertEquals(sales_list.get(0).getCategory(),category);
-	}*/
+	public void testConvertSalesList() {
+		Map<BrandPojo, Integer> quantityPerBrandPojo = new HashMap<BrandPojo,Integer>();
+		Map<BrandPojo, Double> revenuePerBrandCategory = new HashMap<BrandPojo,Double>();
+		BrandPojo b1 = new BrandPojo();
+		b1.setBrand("brand1");
+		b1.setCategory("category1");
+		BrandPojo b2 = new BrandPojo();
+		b2.setBrand("brand2");
+		b2.setCategory("category2");
+		quantityPerBrandPojo.put(b1, 1);
+		quantityPerBrandPojo.put(b2, 2);
+		revenuePerBrandCategory.put(b1, 100.00);
+		revenuePerBrandCategory.put(b2, 200.00);
+		SalesDataList sales_list = ConversionUtil.convertSalesList(quantityPerBrandPojo, revenuePerBrandCategory);
+		assertEquals(2,sales_list.getSales_list().size());
+	}
 
 }

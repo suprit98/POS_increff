@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <items>
-    <datetime>2020-07-11 12:08</datetime>
+    <datetime>2020-07-13 12:22</datetime>
     <item>
-        <id>76</id>
-        <mrp>70000.0</mrp>
-        <name>samsung galaxynote 10</name>
+        <id>43</id>
+        <mrp>50.0</mrp>
+        <name>milk</name>
+        <quantity>2</quantity>
+    </item>
+    <item>
+        <id>44</id>
+        <mrp>80.0</mrp>
+        <name>bread</name>
         <quantity>1</quantity>
     </item>
-    <order_id>53</order_id>
-    <total>70000.0</total>
+    <order_id>22</order_id>
+    <total>180.0</total>
 </items>

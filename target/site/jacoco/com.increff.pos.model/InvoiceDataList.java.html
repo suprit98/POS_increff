@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = &quot;items&quot;)
-<span class="nc" id="L9">public class InvoiceDataList {</span>
+<span class="fc" id="L9">public class InvoiceDataList {</span>
 	
 	
 	private int order_id;
@@ -15,41 +15,41 @@ import javax.xml.bind.annotation.XmlRootElement;
 	
 	@XmlElement(name=&quot;total&quot;)
 	public double getTotal() {
-<span class="nc" id="L18">		return total;</span>
+<span class="fc" id="L18">		return total;</span>
 	}
 
 	public void setTotal(double total) {
-<span class="nc" id="L22">		this.total = total;</span>
-<span class="nc" id="L23">	}</span>
+<span class="fc" id="L22">		this.total = total;</span>
+<span class="fc" id="L23">	}</span>
 
 	@XmlElement(name=&quot;order_id&quot;)
 	public int getOrder_id() {
-<span class="nc" id="L27">		return order_id;</span>
+<span class="fc" id="L27">		return order_id;</span>
 	}
 
 	public void setOrder_id(int order_id) {
-<span class="nc" id="L31">		this.order_id = order_id;</span>
-<span class="nc" id="L32">	}</span>
+<span class="fc" id="L31">		this.order_id = order_id;</span>
+<span class="fc" id="L32">	}</span>
 	
 	@XmlElement(name=&quot;datetime&quot;)
 	public String getDatetime() {
-<span class="nc" id="L36">		return datetime;</span>
+<span class="fc" id="L36">		return datetime;</span>
 	}
 
 	public void setDatetime(String datetime) {
-<span class="nc" id="L40">		this.datetime = datetime;</span>
-<span class="nc" id="L41">	}</span>
+<span class="fc" id="L40">		this.datetime = datetime;</span>
+<span class="fc" id="L41">	}</span>
 
 	private List&lt;InvoiceData&gt; invoiceLis;
 
 	@XmlElement(name=&quot;item&quot;)
 	public List&lt;InvoiceData&gt; getInvoiceLis() {
-<span class="nc" id="L47">		return invoiceLis;</span>
+<span class="fc" id="L47">		return invoiceLis;</span>
 	}
 
 	public void setInvoiceLis(List&lt;InvoiceData&gt; invoiceLis) {
-<span class="nc" id="L51">		this.invoiceLis = invoiceLis;</span>
-<span class="nc" id="L52">	}</span>
+<span class="fc" id="L51">		this.invoiceLis = invoiceLis;</span>
+<span class="fc" id="L52">	}</span>
 	
 	
 

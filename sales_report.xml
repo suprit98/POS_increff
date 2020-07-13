@@ -1,15 +1,2 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<sales_items>
-    <sales_item>
-        <brand>nestle</brand>
-        <category>dairy</category>
-        <quantity>13</quantity>
-        <revenue>637.0</revenue>
-    </sales_item>
-    <sales_item>
-        <brand>dabur</brand>
-        <category>health</category>
-        <quantity>1</quantity>
-        <revenue>599.25</revenue>
-    </sales_item>
-</sales_items>
+<sales_items/>
