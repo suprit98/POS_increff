@@ -86,4 +86,21 @@ public class ReportServiceTest extends AbstractUnitTest{
 		assertEquals(2,idl.getInvoiceLis().size());
 		assertEquals(200,idl.getTotal(),0.001);
 	}
+	
+	@Test
+	public void testPdfResponse() throws Exception {
+		report_service.generatePdfResponse("brand");
+		
+		report_service.generatePdfResponse("inventory");
+		
+		SalesFilter sales_filter = new SalesFilter();
+		sales_filter.setBrand("");
+		sales_filter.setCategory("category"+0);
+		sales_filter.setStartDate("2020-01-01");
+		sales_filter.setEndDate("2020-12-31");
+		report_service.generatePdfResponse("sales", sales_filter);
+		
+		report_service.generatePdfResponse("invoice", order_id);
+		
+	}
 }

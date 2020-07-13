@@ -88,6 +88,24 @@ function ajaxQuery(url, type, data, successFunction) {
 	});
 }
 
+function ajaxQueryRecur(url, type, data, successFunction,recurFunction) {
+	$.ajax({
+	   url: url,
+	   type: type,
+	   data: data,
+	   headers: {
+       	'Content-Type': 'application/json'
+       },
+	   success: function(response) {
+	   		successFunction(response);
+	   },
+	   error: function(response){
+	   		handleAjaxError(response);
+				recurFunction();
+	   }
+	});
+}
+
 function init() {
 	createBarcodeList();
 	createBrandCategoryList();

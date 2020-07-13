@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.List;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,13 +21,21 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 
 	@Autowired
 	private ProductDetailsService product_service;
+	
+	@Before
+	public void init() throws ApiException {
+		insertPojos();
+	}
 
 	@Test()
 	public void testAdd() throws ApiException {
 
 		BrandPojo b = getBrandPojo();
 		ProductDetailsPojo p = getProductDetailsPojo(b);
+		List<ProductDetailsPojo> product_list_before = product_service.getAll();
 		product_service.add(p);
+		List<ProductDetailsPojo> product_list_after = product_service.getAll();
+		assertEquals(product_list_before.size()+1,product_list_after.size());
 		assertEquals(p.getBarcode(),product_service.get(p.getId()).getBarcode());
 		assertEquals(p.getName(),product_service.get(p.getId()).getName());
 		assertEquals(p.getMrp(),product_service.get(p.getId()).getMrp(),0.001);
@@ -53,8 +64,11 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 		BrandPojo b = getBrandPojo();
 		ProductDetailsPojo p = getProductDetailsPojo(b);
 		product_service.add(p);
-
+		
+		List<ProductDetailsPojo> product_list_before = product_service.getAll();
 		product_service.delete(p.getId());
+		List<ProductDetailsPojo> product_list_after = product_service.getAll();
+		assertEquals(product_list_before.size()-1,product_list_after.size());
 		try {
 			product_service.get(p.getId());
 			fail("ApiException did not occur");
@@ -82,10 +96,10 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 	@Test()
 	public void testGetByIdNotExisting() throws ApiException {
 		try {
-			product_service.get(5);
+			product_service.get(100);
 			fail("ApiException did not occur");
 		} catch (ApiException e) {
-			assertEquals(e.getMessage(),"ProductDetails with given ID does not exist, id: " + 5);
+			assertEquals(e.getMessage(),"ProductDetails with given ID does not exist, id: " + 100);
 		}
 		
 
@@ -121,7 +135,8 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 
 	@Test
 	public void testGetAll() {
-		product_service.getAll();
+		List<ProductDetailsPojo> product_list = product_service.getAll();
+		assertEquals(2,product_list.size());
 	}
 
 	@Test

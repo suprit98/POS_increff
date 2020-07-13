@@ -11,7 +11,12 @@ function addInventory(event){
 	var $form = $("#inventory-form");
 	var json = toJson($form);
 	var url = getInventoryUrl();
-	ajaxQuery(url,'POST',json,getInventoryList);
+
+	var check = validateInventory(json);
+	if(check){
+		ajaxQuery(url,'POST',json,getInventoryList);
+	}
+
 
 	return false;
 }
@@ -25,7 +30,10 @@ function updateInventory(event){
 
 	var $form = $("#inventory-edit-form");
 	var json = toJson($form);
-	ajaxQuery(url,'PUT',json,getInventoryList);
+	var check = validateInventory(json);
+	if(check){
+		ajaxQuery(url,'PUT',json,getInventoryList);
+	}
 	return false;
 
 }
@@ -78,7 +86,18 @@ function displayInventory(data){
 	$('#edit-inventory-modal').modal('toggle');
 }
 
-
+function validateInventory(json) {
+	json = JSON.parse(json);
+	if(isBlank(json.barcode)) {
+		alert("Barcode field must not be empty");
+		return false;
+	}
+	if(isBlank(json.quantity) || isNaN(parseInt(json.quantity))) {
+		alert("Quantity field must not be empty and must be an integer value");
+		return false;
+	}
+	return true;
+}
 
 
 //INITIALIZATION CODE

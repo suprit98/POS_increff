@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <items>
-    <datetime>2020-07-13 12:22</datetime>
+    <datetime>2020-07-13 17:39</datetime>
     <item>
-        <id>43</id>
+        <id>164</id>
         <mrp>50.0</mrp>
-        <name>milk</name>
+        <name>product0</name>
         <quantity>2</quantity>
     </item>
     <item>
-        <id>44</id>
-        <mrp>80.0</mrp>
-        <name>bread</name>
-        <quantity>1</quantity>
+        <id>165</id>
+        <mrp>50.0</mrp>
+        <name>product1</name>
+        <quantity>2</quantity>
     </item>
-    <order_id>22</order_id>
-    <total>180.0</total>
+    <order_id>90</order_id>
+    <total>200.0</total>
 </items>

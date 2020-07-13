@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.List;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,6 +25,11 @@ public class InventoryServiceTest extends AbstractUnitTest {
 
 	@Autowired
 	private InventoryService inventory_service;
+	
+	@Before
+	public void init() throws ApiException {
+		insertPojos();
+	}
 
 	@Test()
 	public void testAdd() throws ApiException {
@@ -29,7 +37,10 @@ public class InventoryServiceTest extends AbstractUnitTest {
 		BrandPojo b = getBrandPojo();
 		ProductDetailsPojo p = getProductDetailsPojo(b);
 		InventoryPojo i = getInventoryPojo(p);
+		List<InventoryPojo> inv_list_before = inventory_service.getAll();
 		inventory_service.add(i);
+		List<InventoryPojo> inv_list_after = inventory_service.getAll();
+		assertEquals(inv_list_before.size()+1,inv_list_after.size());
 		assertEquals(i.getProductPojo(), inventory_service.get(i.getId()).getProductPojo());
 		assertEquals(i.getQuantity(), inventory_service.get(i.getId()).getQuantity());
 
@@ -76,7 +87,10 @@ public class InventoryServiceTest extends AbstractUnitTest {
 		ProductDetailsPojo p = getProductDetailsPojo(b);
 		InventoryPojo i = getInventoryPojo(p);
 		inventory_service.add(i);
+		List<InventoryPojo> inv_list_before = inventory_service.getAll();
 		inventory_service.delete(i.getId());
+		List<InventoryPojo> inv_list_after = inventory_service.getAll();
+		assertEquals(inv_list_before.size()-1,inv_list_after.size());
 		try {
 			inventory_service.get(i.getId());
 			fail("ApiException did not occur");
@@ -130,7 +144,8 @@ public class InventoryServiceTest extends AbstractUnitTest {
 	@Test()
 	public void testGetAll() throws ApiException {
 
-		inventory_service.getAll();
+		List<InventoryPojo> inv_list = inventory_service.getAll();
+		assertEquals(2,inv_list.size());
 
 	}
 

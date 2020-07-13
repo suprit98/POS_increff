@@ -61,11 +61,6 @@ public class ReportService {
 		}
 	}
 
-	public byte[] generateXmlPdf(File xml_file, Object list, Class<?> class_type, StreamSource xsl_source)
-			throws Exception {
-		XmlUtil.generateXml(xml_file, list, class_type);
-		return XmlUtil.generatePDF(xml_file, xsl_source);
-	}
 
 	public BrandDataList generateBrandList() throws Exception {
 		List<BrandPojo> brand_pojo_list = brand_service.getAll();

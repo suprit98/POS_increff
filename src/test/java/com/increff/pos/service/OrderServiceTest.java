@@ -3,11 +3,10 @@ package com.increff.pos.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -31,6 +30,11 @@ public class OrderServiceTest extends AbstractUnitTest {
 
 	@Autowired
 	private InventoryService inventory_service;
+	
+	@Before
+	public void init() throws ApiException {
+		insertPojos();
+	}
 
 	@Test
 	public void testAdd() throws ApiException {
@@ -40,8 +44,15 @@ public class OrderServiceTest extends AbstractUnitTest {
 		OrderItemPojo order_item = getOrderItemPojo(p, 5);
 		List<OrderItemPojo> lis = new ArrayList<OrderItemPojo>();
 		lis.add(order_item);
+		List<OrderPojo> order_list_before = order_service.getAllOrders();
+		List<OrderItemPojo> orderitem_list_before = order_service.getAll();
 		order_service.add(lis);
+		List<OrderPojo> order_list_after = order_service.getAllOrders();
+		List<OrderItemPojo> orderitem_list_after = order_service.getAll();
+		
 
+		assertEquals(order_list_before.size()+1,order_list_after.size());
+		assertEquals(orderitem_list_before.size()+1,orderitem_list_after.size());
 		List<OrderItemPojo> db_orderitem_list = order_service.getOrderItems(order_item.getOrderPojo().getId());
 		assertEquals(lis.size(), db_orderitem_list.size());
 		assertEquals(order_item.getOrderPojo(), db_orderitem_list.get(0).getOrderPojo());
@@ -85,6 +96,48 @@ public class OrderServiceTest extends AbstractUnitTest {
 		assertEquals(order_item.getQuantity(), db_orderitem_pojo.getQuantity());
 		assertEquals(order_item.getSellingPrice(), db_orderitem_pojo.getSellingPrice(), 0.001);
 	}
+	
+	@Test
+	public void testGetOrder() throws ApiException {
+		BrandPojo b = getBrandPojo();
+		ProductDetailsPojo p = getProductDetailsPojo(b);
+		getInventoryPojo(p);
+		OrderItemPojo order_item = getOrderItemPojo(p, 5);
+		List<OrderItemPojo> lis = new ArrayList<OrderItemPojo>();
+		lis.add(order_item);
+		int order_id = order_service.add(lis);
+
+		OrderPojo db_order_pojo = order_service.getOrder(order_id);
+		assertEquals(order_id, db_order_pojo.getId());
+	}
+	
+	@Test
+	public void testGetOrderItemsByOrderId() throws ApiException {
+		BrandPojo b = getBrandPojo();
+		ProductDetailsPojo p = getProductDetailsPojo(b);
+		getInventoryPojo(p);
+		OrderItemPojo order_item = getOrderItemPojo(p, 5);
+		List<OrderItemPojo> lis = new ArrayList<OrderItemPojo>();
+		lis.add(order_item);
+		int order_id = order_service.add(lis);
+
+		List<OrderItemPojo> orderitem_list = order_service.getOrderItems(order_id);
+		assertEquals(1,orderitem_list.size());
+	}
+	
+	@Test
+	public void testGetAllOrders() throws ApiException {
+		BrandPojo b = getBrandPojo();
+		ProductDetailsPojo p = getProductDetailsPojo(b);
+		getInventoryPojo(p);
+		OrderItemPojo order_item = getOrderItemPojo(p, 5);
+		List<OrderItemPojo> lis = new ArrayList<OrderItemPojo>();
+		lis.add(order_item);
+		order_service.add(lis);
+
+		List<OrderPojo> orderitem_list = order_service.getAllOrders();
+		assertEquals(2,orderitem_list.size());
+	}
 
 	@Test
 	public void testGetAll() throws ApiException {
@@ -96,7 +149,8 @@ public class OrderServiceTest extends AbstractUnitTest {
 		lis.add(order_item);
 		order_service.add(lis);
 
-		order_service.getAll();
+		List<OrderItemPojo> orderitem_list = order_service.getAll();
+		assertEquals(3,orderitem_list.size());
 	}
 
 	@Test
@@ -107,11 +161,17 @@ public class OrderServiceTest extends AbstractUnitTest {
 		OrderItemPojo order_item = getOrderItemPojo(p, 5);
 		List<OrderItemPojo> lis = new ArrayList<OrderItemPojo>();
 		lis.add(order_item);
+		
 		order_service.add(lis);
 
 		int id = order_item.getId();
+		List<OrderPojo> order_list_before = order_service.getAllOrders();
+		List<OrderItemPojo> orderitem_list_before = order_service.getAll();
 		order_service.delete(id);
-
+		List<OrderPojo> order_list_after = order_service.getAllOrders();
+		List<OrderItemPojo> orderitem_list_after = order_service.getAll();
+		assertEquals(order_list_before.size()-1,order_list_after.size());
+		assertEquals(orderitem_list_before.size()-1,orderitem_list_after.size());
 		try {
 			order_service.get(id);
 			fail("ApiException did not occur");
@@ -120,24 +180,6 @@ public class OrderServiceTest extends AbstractUnitTest {
 		}
 	}
 
-	@Test
-	public void testGetByDate() throws ApiException {
-		BrandPojo b = getBrandPojo();
-		ProductDetailsPojo p = getProductDetailsPojo(b);
-		getInventoryPojo(p);
-		OrderItemPojo order_item = getOrderItemPojo(p, 5);
-		List<OrderItemPojo> lis = new ArrayList<OrderItemPojo>();
-		lis.add(order_item);
-		order_service.add(lis);
-
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		String startdate = formatter.format(LocalDateTime.now().minusDays(1));
-		String enddate = formatter.format(LocalDateTime.now().plusDays(1));
-		List<OrderPojo> order_list = order_service.getByDate(startdate, enddate);
-		assertEquals(order_list.size(), 1);
-		assertEquals(order_item.getOrderPojo().getId(), order_list.get(0).getId());
-		assertEquals(order_item.getOrderPojo().getDatetime(), order_list.get(0).getDatetime());
-	}
 
 	@Test
 	public void testUpdate() throws ApiException {

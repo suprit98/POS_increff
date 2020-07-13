@@ -4,9 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,13 +17,21 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	@Autowired
 	private BrandService brand_service;
+	
+	@Before
+	public void init() throws ApiException {
+		insertPojos();
+	}
 
 	@Test()
 	public void testAdd() throws ApiException {
 
 		BrandPojo p = getBrandPojo();
+		List<BrandPojo> brand_list_before = brand_service.getAll();
 		brand_service.add(p);
+		List<BrandPojo> brand_list_after = brand_service.getAll();
 		
+		assertEquals(brand_list_before.size()+1,brand_list_after.size());
 		assertEquals(p.getBrand(),brand_service.get(p.getId()).getBrand());
 		assertEquals(p.getCategory(),brand_service.get(p.getId()).getCategory());
 
@@ -65,10 +73,12 @@ public class BrandServiceTest extends AbstractUnitTest {
 		BrandPojo p = getBrandPojo();
 		brand_service.add(p);
 
+		List<BrandPojo> brand_list_before = brand_service.getAll();
 		int id = p.getId();
 		brand_service.delete(id);
+		List<BrandPojo> brand_list_after = brand_service.getAll();
 		
-		//brand_service.delete(id);
+		assertEquals(brand_list_before.size()-1,brand_list_after.size());
 		
 		try {
 			brand_service.get(id);
@@ -145,12 +155,8 @@ public class BrandServiceTest extends AbstractUnitTest {
 	@Test()
 	public void testGetAll() throws ApiException {
 		
-		List<BrandPojo> brand_list = getMultipleBrandPojo();
-		for(BrandPojo brand:brand_list) {
-			brand_service.add(brand);
-		}
 		List<BrandPojo> get_brand_list = brand_service.getAll();
-		assertEquals(brand_list.size(),get_brand_list.size());
+		assertEquals(2,get_brand_list.size());
 
 	}
 
@@ -170,7 +176,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 	@Test()
 	public void testCheckIfExistsNotExisting() throws ApiException {
 
-		int id = 5;
+		int id = 100;
 		try{
 			brand_service.checkIfExists(id);
 			fail("Api Exception did not occur");
@@ -251,16 +257,6 @@ public class BrandServiceTest extends AbstractUnitTest {
 		return p;
 	}
 	
-	private List<BrandPojo> getMultipleBrandPojo() {
-		List<BrandPojo> brand_list = new ArrayList<BrandPojo>();
-		for(int i=0; i<5; i++) {
-			BrandPojo brand = new BrandPojo();
-			brand.setBrand("brand"+i);
-			brand.setCategory("category"+i);
-			brand_list.add(brand);
-		}
-		return brand_list;
-	}
 
 	private BrandPojo getNewBrandPojo() {
 		BrandPojo p = new BrandPojo();

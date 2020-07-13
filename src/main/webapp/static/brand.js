@@ -10,10 +10,11 @@ function addBrand(event){
 	$('#add-brand-modal').modal('toggle');
 	var $form = $("#brand-form");
 	var json = toJson($form);
-	var url = getBrandUrl();
-
-	ajaxQuery(url,'POST',json,getBrandList);
-
+	var check = validateBrand(json);
+	if(check) {
+		var url = getBrandUrl();
+		ajaxQuery(url,'POST',json,getBrandList);
+	}
 	return false;
 }
 
@@ -27,7 +28,11 @@ function updateBrand(event){
 	var $form = $("#brand-edit-form");
 	var json = toJson($form);
 
-	ajaxQuery(url,'PUT',json,getBrandList);
+	var check = validate(json);
+	if(check) {
+		ajaxQuery(url,'PUT',json,getBrandList);
+	}
+
 	return false;
 
 }
@@ -109,21 +114,7 @@ function uploadRows(){
 	var url = getBrandUrl();
 
 	//Make ajax call
-	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },
-	   success: function(response) {
-	   		uploadRows();
-	   },
-	   error: function(response){
-			 	handleAjaxError(response);
-	   		uploadRows();
-	   }
-	});
+	ajaxQueryRecur(url,'POST',json,uploadRows,uploadRows);
 
 }
 
@@ -141,8 +132,18 @@ function updateFileName(){
 	$('#brandFileName').html(fileName);
 }
 
-
-
+function validateBrand(json) {
+	json = JSON.parse(json);
+	if(isBlank(json.brand)) {
+		alert("Brand field must not be empty");
+		return false;
+	}
+	if(isBlank(json.category)) {
+		alert("Category field must not be empty");
+		return false;
+	}
+	return true;
+}
 
 
 //INITIALIZATION CODE

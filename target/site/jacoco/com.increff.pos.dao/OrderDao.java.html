@@ -38,15 +38,15 @@ import com.increff.pos.pojo.OrderPojo;
 	
 	
 	public List&lt;OrderPojo&gt; selectAll() {
-<span class="nc" id="L41">		TypedQuery&lt;OrderPojo&gt; query = getQuery(select_all);</span>
-<span class="nc" id="L42">		return query.getResultList();</span>
+<span class="fc" id="L41">		TypedQuery&lt;OrderPojo&gt; query = getQuery(select_all);</span>
+<span class="fc" id="L42">		return query.getResultList();</span>
 	}
 	
 	public List&lt;OrderPojo&gt; selectByDate(LocalDateTime startdate, LocalDateTime enddate) {
-<span class="fc" id="L46">		TypedQuery&lt;OrderPojo&gt; query = getQuery(select_date_filter);</span>
-<span class="fc" id="L47">		query.setParameter(&quot;startdate&quot;, startdate);</span>
-<span class="fc" id="L48">		query.setParameter(&quot;enddate&quot;, enddate);</span>
-<span class="fc" id="L49">		return query.getResultList();</span>
+<span class="nc" id="L46">		TypedQuery&lt;OrderPojo&gt; query = getQuery(select_date_filter);</span>
+<span class="nc" id="L47">		query.setParameter(&quot;startdate&quot;, startdate);</span>
+<span class="nc" id="L48">		query.setParameter(&quot;enddate&quot;, enddate);</span>
+<span class="nc" id="L49">		return query.getResultList();</span>
 	}
 	
 	public void update(OrderPojo p) {

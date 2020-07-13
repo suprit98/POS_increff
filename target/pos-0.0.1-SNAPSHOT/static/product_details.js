@@ -10,6 +10,7 @@ function addProductDetails(event){
 	//Set the values to update
 	var $form = $("#productdetails-form");
 	var json = toJson($form);
+	console.log(json);
 	var url = getProductDetailsUrl();
 	ajaxQuery(url,'POST',json,getProductDetailsList);
 

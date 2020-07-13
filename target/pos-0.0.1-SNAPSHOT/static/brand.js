@@ -109,21 +109,7 @@ function uploadRows(){
 	var url = getBrandUrl();
 
 	//Make ajax call
-	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },
-	   success: function(response) {
-	   		uploadRows();
-	   },
-	   error: function(response){
-			 	handleAjaxError(response);
-	   		uploadRows();
-	   }
-	});
+	ajaxQueryRecur(url,'POST',json,uploadRows,uploadRows);
 
 }
 

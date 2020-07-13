@@ -27,7 +27,11 @@ function getInvoiceUrl(){
 function addOrderItemToList(event) {
 	var $form = $("#orderitem-form");
 	var json = toJson($form);
-	orderitemList.push(JSON.parse(json));
+	var check = validateOrderItem(json);
+	if(check) {
+		orderitemList.push(JSON.parse(json));
+	}
+
 	console.log(orderitemList);
 	getOrderItemList();
 
@@ -67,7 +71,11 @@ function updateOrder(event){
 	var $form = $("#orderitem-edit-form");
 	var json = toJson($form);
 
-	ajaxQuery(url,'PUT',json,getOrderList);
+	var check = validateOrderItem(json);
+	if(check){
+		ajaxQuery(url,'PUT',json,getOrderList);
+	}
+
 	return false;
 
 }
@@ -220,6 +228,19 @@ function initializeDropdown(id) {
 	console.log("Orderitems toggle");
 	var orderitem_row = '.orderitemrows' + id;
   $(orderitem_row).toggle();
+}
+
+function validateOrderItem(json) {
+	json = JSON.parse(json);
+	if(isBlank(json.barcode)) {
+		alert("Barcode field must not be empty");
+		return false;
+	}
+	if(isBlank(json.quantity) || isNaN(parseInt(json.quantity))) {
+		alert("Quantity field must not be empty and must be an integer value");
+		return false;
+	}
+	return true;
 }
 
 

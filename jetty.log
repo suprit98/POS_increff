@@ -4675,3 +4675,26 @@ Caused by: java.sql.SQLException: Already closed.
 2020-07-13 12:27:02 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
 2020-07-13 12:27:02 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
 2020-07-13 12:27:02 INFO  FOUserAgent:83 - Rendered page #1.
+2020-07-13 16:30:12 WARN  SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-07-13 16:30:12 ERROR SqlExceptionHelper:142 - Field 'brand' doesn't have a default value
+2020-07-13 16:30:53 WARN  SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-07-13 16:30:53 ERROR SqlExceptionHelper:142 - Field 'brand' doesn't have a default value
+2020-07-13 16:33:09 WARN  SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-07-13 16:33:09 ERROR SqlExceptionHelper:142 - Field 'brand' doesn't have a default value
+2020-07-13 16:36:26 WARN  SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-07-13 16:36:26 ERROR SqlExceptionHelper:142 - Field 'brand' doesn't have a default value
+2020-07-13 17:28:17 WARN  SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-07-13 17:28:17 ERROR SqlExceptionHelper:142 - Field 'brand' doesn't have a default value
+2020-07-13 17:31:46 WARN  SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-07-13 17:31:46 ERROR SqlExceptionHelper:142 - Field 'brand' doesn't have a default value
+2020-07-13 17:33:28 WARN  SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-07-13 17:33:28 ERROR SqlExceptionHelper:142 - Field 'brand' doesn't have a default value
+2020-07-13 17:34:15 WARN  SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-07-13 17:34:15 ERROR SqlExceptionHelper:142 - Field 'brand' doesn't have a default value
+2020-07-13 17:40:11 WARN  SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-07-13 17:40:11 ERROR SqlExceptionHelper:142 - Field 'brand' doesn't have a default value
+2020-07-13 17:48:20 WARN  SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-07-13 17:48:20 ERROR SqlExceptionHelper:142 - Field 'brand' doesn't have a default value
+2020-07-13 18:18:58 WARN  SqlExceptionHelper:137 - SQL Error: 1451, SQLState: 23000
+2020-07-13 18:18:58 ERROR SqlExceptionHelper:142 - Cannot delete or update a parent row: a foreign key constraint fails (`pos`.`productdetailspojo`, CONSTRAINT `FKns548lnbwmecn3x7evbu2mikd` FOREIGN KEY (`brand_category`) REFERENCES `brandpojo` (`id`))
+2020-07-13 18:18:58 ERROR ExceptionMapperStandardImpl:39 - HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]
