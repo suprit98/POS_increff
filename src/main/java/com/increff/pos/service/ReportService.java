@@ -92,7 +92,7 @@ public class ReportService {
 		return ConversionUtil.convertSalesList(quantityPerBrandCategory, revenuePerBrandCategory);
 	}
 
-	public List<OrderItemPojo> FilterByDate(SalesFilter sales_filter, List<OrderItemPojo> orderitem_list) {
+	public static List<OrderItemPojo> FilterByDate(SalesFilter sales_filter, List<OrderItemPojo> orderitem_list) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDateTime startDate = LocalDate.parse(sales_filter.getStartDate(), formatter).atStartOfDay();
 		LocalDateTime endDate = LocalDate.parse(sales_filter.getEndDate(), formatter).atStartOfDay();
@@ -103,7 +103,7 @@ public class ReportService {
 		return filtered_date_list;
 	}
 
-	public Map<BrandPojo, Integer> getMapQuantity(SalesFilter sales_filter, List<OrderItemPojo> orderitem_list) {
+	public static Map<BrandPojo, Integer> getMapQuantity(SalesFilter sales_filter, List<OrderItemPojo> orderitem_list) {
 		Map<BrandPojo, Integer> quantityPerBrandCategory = orderitem_list.stream()
 				.filter(order_item -> Equals(order_item.getBrandPojo().getBrand(), sales_filter.getBrand())
 						&& Equals(order_item.getBrandPojo().getCategory(), sales_filter.getCategory()))
@@ -121,7 +121,7 @@ public class ReportService {
 		return revenuePerBrandCategory;
 	}
 
-	protected Boolean Equals(String a, String b) {
+	protected static Boolean Equals(String a, String b) {
 		return (a.contentEquals(b) || b.isEmpty());
 	}
 

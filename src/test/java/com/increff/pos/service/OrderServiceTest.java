@@ -33,9 +33,11 @@ public class OrderServiceTest extends AbstractUnitTest {
 	
 	@Before
 	public void init() throws ApiException {
+		//Inserting initial pojos
 		insertPojos();
 	}
 
+	//Testing adding of order
 	@Test
 	public void testAdd() throws ApiException {
 		BrandPojo b = getBrandPojo();
@@ -62,6 +64,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 
 	}
 
+	//Testing adding of invalid order. Exception should be thrown
 	@Test
 	public void testAddWrong() throws ApiException {
 		BrandPojo b = getBrandPojo();
@@ -80,6 +83,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 
 	}
 
+	//Testing Get for order items 
 	@Test
 	public void testGet() throws ApiException {
 		BrandPojo b = getBrandPojo();
@@ -97,6 +101,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		assertEquals(order_item.getSellingPrice(), db_orderitem_pojo.getSellingPrice(), 0.001);
 	}
 	
+	//Testing Get for order
 	@Test
 	public void testGetOrder() throws ApiException {
 		BrandPojo b = getBrandPojo();
@@ -111,6 +116,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		assertEquals(order_id, db_order_pojo.getId());
 	}
 	
+	//Testing getting all order items for a particular order
 	@Test
 	public void testGetOrderItemsByOrderId() throws ApiException {
 		BrandPojo b = getBrandPojo();
@@ -125,6 +131,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		assertEquals(1,orderitem_list.size());
 	}
 	
+	//Testing getting all orders
 	@Test
 	public void testGetAllOrders() throws ApiException {
 		BrandPojo b = getBrandPojo();
@@ -139,6 +146,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		assertEquals(2,orderitem_list.size());
 	}
 
+	//Testing getting all order items
 	@Test
 	public void testGetAll() throws ApiException {
 		BrandPojo b = getBrandPojo();
@@ -153,6 +161,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		assertEquals(3,orderitem_list.size());
 	}
 
+	//Testing deletion of order items
 	@Test
 	public void testDelete() throws ApiException {
 		BrandPojo b = getBrandPojo();
@@ -180,7 +189,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		}
 	}
 
-
+	//Testing updation of order items
 	@Test
 	public void testUpdate() throws ApiException {
 		BrandPojo b = getBrandPojo();
@@ -198,6 +207,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		assertEquals(order_item.getSellingPrice(), new_order_item.getSellingPrice(), 0.001);
 	}
 
+	//Testing addition of order item to an existing order
 	@Test
 	public void testAddOrderItem() throws ApiException {
 		BrandPojo b = getBrandPojo();
@@ -217,6 +227,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		assertEquals(2, order_service.getOrderItems(order_id).size());
 	}
 
+	//Testing checkifexists for an order item
 	@Test
 	public void testCheckIfExists() throws ApiException {
 		BrandPojo b = getBrandPojo();
@@ -234,6 +245,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		assertEquals(order_item.getSellingPrice(), db_orderitem_pojo.getSellingPrice(), 0.001);
 	}
 
+	//Testing checkifexists for a non-existent order item. Should throw exception
 	@Test
 	public void testCheckIfExistsWrong() throws ApiException {
 		int orderitem_id = 5;
@@ -246,7 +258,36 @@ public class OrderServiceTest extends AbstractUnitTest {
 		}
 
 	}
+	
+	//Testing checkifexists for Order
+	@Test
+	public void testCheckIfExistsOrder() throws ApiException {
+		BrandPojo b = getBrandPojo();
+		ProductDetailsPojo p = getProductDetailsPojo(b);
+		getInventoryPojo(p);
+		OrderItemPojo order_item = getOrderItemPojo(p, 5);
+		List<OrderItemPojo> lis = new ArrayList<OrderItemPojo>();
+		lis.add(order_item);
+		int order_id = order_service.add(lis);
 
+		OrderPojo db_order_pojo = order_service.checkIfExistsOrder(order_id);
+		assertEquals(order_id, db_order_pojo.getId());
+	}
+	
+	//Testing checkifexists for a non-existent order. Should throw exception
+	@Test
+	public void testCheckIfExistsOrderWrong() throws ApiException {
+
+		try {
+			order_service.checkIfExistsOrder(100);
+			fail("ApiException did not occur");
+		} catch (ApiException e) {
+			assertEquals(e.getMessage(),"Order with given ID does not exist, id: " + 100);
+		}
+		
+	}
+
+	//Testing updation of inventory
 	@Test
 	public void testUpdateInventory() throws ApiException {
 		BrandPojo b = getBrandPojo();
@@ -261,6 +302,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		assertEquals(original_quantity - order_item.getQuantity(), i.getQuantity());
 	}
 
+	//Testing updation of inventory when quantity is greater than existing quantity. Should throw exception
 	@Test
 	public void testUpdateInventoryExceeding() throws ApiException {
 		BrandPojo b = getBrandPojo();
@@ -281,6 +323,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 
 	}
 
+	//Testing updation of inventory during editing of order items
 	@Test
 	public void testUpdateInventoryDuringEdit() throws ApiException {
 		BrandPojo b = getBrandPojo();
@@ -299,6 +342,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		assertEquals(i.getQuantity(), original_quantity + old_quantity - new_quantity);
 	}
 
+	//Testing updation of inventory during edit when quantity is greater than existing quantity. Should throw exception
 	@Test
 	public void testUpdateInventoryDuringEditExceeding() throws ApiException {
 		BrandPojo b = getBrandPojo();

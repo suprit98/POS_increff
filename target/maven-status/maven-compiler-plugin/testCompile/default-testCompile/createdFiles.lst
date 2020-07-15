@@ -10,5 +10,6 @@ com/increff/pos/service/BrandServiceTest.class
 com/increff/pos/util/AbstractUtilTest.class
 com/increff/pos/service/ProductDetailsServiceTest.class
 com/increff/pos/util/BarcodeUtilTest.class
+com/increff/pos/model/ErrorMessageTest.class
 com/increff/pos/model/BrandDataTest.class
 com/increff/pos/spring/AbstractUnitTest.class

@@ -37,12 +37,12 @@ import com.increff.pos.pojo.InventoryPojo;
 	@Transactional
 	public InventoryPojo getByProductId(int product_id) throws ApiException {
 <span class="fc" id="L39">		List&lt;InventoryPojo&gt; lis = getAll();</span>
-<span class="pc bpc" id="L40" title="1 of 2 branches missed.">		for (InventoryPojo ip : lis) {</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">		for (InventoryPojo ip : lis) {</span>
 <span class="fc bfc" id="L41" title="All 2 branches covered.">			if (ip.getProductPojo().getId() == product_id) {</span>
 <span class="fc" id="L42">				return ip;</span>
 			}
 <span class="fc" id="L44">		}</span>
-<span class="nc" id="L45">		return null;</span>
+<span class="fc" id="L45">		return null;</span>
 	}
 
 	@Transactional

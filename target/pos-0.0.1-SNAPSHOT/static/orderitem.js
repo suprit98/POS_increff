@@ -27,7 +27,11 @@ function getInvoiceUrl(){
 function addOrderItemToList(event) {
 	var $form = $("#orderitem-form");
 	var json = toJson($form);
-	orderitemList.push(JSON.parse(json));
+	var check = validateOrderItem(json);
+	if(check) {
+		orderitemList.push(JSON.parse(json));
+	}
+
 	console.log(orderitemList);
 	getOrderItemList();
 
@@ -67,7 +71,11 @@ function updateOrder(event){
 	var $form = $("#orderitem-edit-form");
 	var json = toJson($form);
 
-	ajaxQuery(url,'PUT',json,getOrderList);
+	var check = validateOrderItem(json);
+	if(check){
+		ajaxQuery(url,'PUT',json,getOrderList);
+	}
+
 	return false;
 
 }
@@ -131,7 +139,7 @@ function displayOrdersList(data) {
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button onclick="initializeDropdown(' + e.id + ')">Show OrderItems</button>';
+		var buttonHtml = '<button style="padding: 0;border: none;background: none;" onclick="initializeDropdown(' + e.id + ')"><span class="material-icons">keyboard_arrow_down</span></button>';
 		var row = '<tr class="order-header">'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>'  + e.datetime + '</td>'
@@ -213,13 +221,26 @@ function createOrderItemsHtml(data,id) {
 		+ '</tr>';
 		table.append(row);
 	}
-	table.append('<tr><td colspan="3"><button onclick="downloadPDF('+id +')">Download Invoice PDF</button></td><td colspan="2"><button onclick="displayAddOrderItemModal(' + id + ')">Add Order Item</button></td></tr>');
+	table.append('<tr><td colspan="3"><button class="btn btn-primary" onclick="downloadPDF('+id +')">Download Invoice PDF</button></td><td colspan="2"><button class="btn btn-primary" onclick="displayAddOrderItemModal(' + id + ')">Add Order Item</button></td></tr>');
 }
 
 function initializeDropdown(id) {
 	console.log("Orderitems toggle");
 	var orderitem_row = '.orderitemrows' + id;
   $(orderitem_row).toggle();
+}
+
+function validateOrderItem(json) {
+	json = JSON.parse(json);
+	if(isBlank(json.barcode)) {
+		alert("Barcode field must not be empty");
+		return false;
+	}
+	if(isBlank(json.quantity) || isNaN(parseInt(json.quantity))) {
+		alert("Quantity field must not be empty and must be an integer value");
+		return false;
+	}
+	return true;
 }
 
 

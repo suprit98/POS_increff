@@ -72,7 +72,7 @@ import com.increff.pos.pojo.OrderPojo;
 <span class="fc" id="L72">		int order_id = order_item_dao.select(id).getOrderPojo().getId();</span>
 <span class="fc" id="L73">		order_item_dao.delete(id);</span>
 <span class="fc" id="L74">		List&lt;OrderItemPojo&gt; lis = order_item_dao.selectOrder(order_id);</span>
-<span class="pc bpc" id="L75" title="1 of 2 branches missed.">		if (lis.size() == 0) {</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">		if (lis.isEmpty()) {</span>
 <span class="fc" id="L76">			order_dao.delete(order_id);</span>
 		}
 <span class="fc" id="L78">	}</span>
@@ -108,10 +108,10 @@ import com.increff.pos.pojo.OrderPojo;
 	}
 	
 	@Transactional(rollbackFor = ApiException.class)
-	private OrderPojo checkIfExistsOrder(int id) throws ApiException {
+	public OrderPojo checkIfExistsOrder(int id) throws ApiException {
 <span class="fc" id="L112">		OrderPojo p = order_dao.select(id);</span>
-<span class="pc bpc" id="L113" title="1 of 2 branches missed.">		if (p == null) {</span>
-<span class="nc" id="L114">			throw new ApiException(&quot;Order with given ID does not exist, id: &quot; + id);</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">		if (p == null) {</span>
+<span class="fc" id="L114">			throw new ApiException(&quot;Order with given ID does not exist, id: &quot; + id);</span>
 		}
 <span class="fc" id="L116">		return p;</span>
 	}
@@ -125,11 +125,11 @@ import com.increff.pos.pojo.OrderPojo;
 <span class="fc" id="L125">			throw new ApiException(</span>
 					&quot;Inventory does not contain this much quantity of product. Existing quantity in inventory: &quot;
 							+ quantityInInventory);
-		} else {
-<span class="fc" id="L129">			InventoryPojo new_ip = new InventoryPojo();</span>
-<span class="fc" id="L130">			new_ip.setQuantity(quantityInInventory - quantity);</span>
-<span class="fc" id="L131">			inventory_service.update(inventory_service.getByProductId(p.getProductPojo().getId()).getId(), new_ip);</span>
-		}
+		} 
+<span class="fc" id="L129">		InventoryPojo new_ip = new InventoryPojo();</span>
+<span class="fc" id="L130">		new_ip.setQuantity(quantityInInventory - quantity);</span>
+<span class="fc" id="L131">		inventory_service.update(inventory_service.getByProductId(p.getProductPojo().getId()).getId(), new_ip);</span>
+		
 
 <span class="fc" id="L134">	}</span>
 
@@ -142,11 +142,11 @@ import com.increff.pos.pojo.OrderPojo;
 <span class="fc" id="L142">			throw new ApiException(</span>
 					&quot;Inventory does not contain this much quantity of product. Existing quantity in inventory: &quot;
 							+ quantityInInventory);
-		} else {
+		} 
 <span class="fc" id="L146">			InventoryPojo new_ip = new InventoryPojo();</span>
 <span class="fc" id="L147">			new_ip.setQuantity(quantityInInventory - quantity);</span>
 <span class="fc" id="L148">			inventory_service.update(inventory_service.getByProductId(p.getProductPojo().getId()).getId(), new_ip);</span>
-		}
+		
 
 <span class="fc" id="L151">	}</span>
 

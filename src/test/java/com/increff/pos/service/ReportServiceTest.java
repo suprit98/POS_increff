@@ -22,9 +22,11 @@ public class ReportServiceTest extends AbstractUnitTest{
 	
 	@Before
 	public void init() throws ApiException {
+		//Insert initial pojos
 		insertPojos();
 	}
 	
+	//Testing generation of brand list for report
 	@Test
 	public void testGenerateBrandList() throws Exception {
 		BrandDataList brand_list = report_service.generateBrandList();
@@ -38,6 +40,7 @@ public class ReportServiceTest extends AbstractUnitTest{
 		}
 	}
 	
+	//Testing generation of inventory list for report
 	@Test
 	public void testGenerateInventoryList() throws Exception {
 		InventoryReportList inv_list = report_service.generateInventoryList();
@@ -48,6 +51,7 @@ public class ReportServiceTest extends AbstractUnitTest{
 		}
 	}
 	
+	//Testing generation of sales list for report
 	@Test
 	public void testGenerateSalesList() throws Exception {
 		SalesFilter sales_filter = new SalesFilter();
@@ -80,6 +84,7 @@ public class ReportServiceTest extends AbstractUnitTest{
 		assertEquals(2,sales_list.getSales_list().size());
 	}
 	
+	//Testing generation of invoice list for report
 	@Test
 	public void testGenerateInvoiceList() throws Exception {
 		InvoiceDataList idl = report_service.generateInvoiceList(order_id);
@@ -87,6 +92,7 @@ public class ReportServiceTest extends AbstractUnitTest{
 		assertEquals(200,idl.getTotal(),0.001);
 	}
 	
+	//Testing the general method of Pdf response
 	@Test
 	public void testPdfResponse() throws Exception {
 		report_service.generatePdfResponse("brand");

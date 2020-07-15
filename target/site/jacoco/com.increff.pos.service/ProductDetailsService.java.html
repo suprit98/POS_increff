@@ -84,8 +84,8 @@ import com.increff.pos.util.BarcodeUtil;
 <span class="fc bfc" id="L84" title="All 2 branches covered.">		if(p.getName().isEmpty()) {</span>
 <span class="fc" id="L85">			throw new ApiException(&quot;The name of product must not be empty&quot;);</span>
 		}
-<span class="pc bpc" id="L87" title="1 of 2 branches missed.">		if(p.getMrp()&lt;=0) {</span>
-<span class="nc" id="L88">			throw new ApiException(&quot;Mrp value should be positive&quot;);</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">		if(p.getMrp()&lt;=0) {</span>
+<span class="fc" id="L88">			throw new ApiException(&quot;Mrp value should be positive&quot;);</span>
 		}
 <span class="fc" id="L90">	}</span>
 

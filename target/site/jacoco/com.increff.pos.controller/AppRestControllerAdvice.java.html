@@ -19,12 +19,12 @@ import com.increff.pos.service.ApiException;
 <span class="nc" id="L19">		return data;</span>
 	}
 
-	/*@ExceptionHandler(Throwable.class)
+	@ExceptionHandler(Throwable.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ErrorMessage handle(Throwable e) {
-		ErrorMessage data = new ErrorMessage();
-		data.setMessage(&quot;An unknown error has occurred - &quot; + e.getMessage());
-		return data;
-	}*/
+<span class="nc" id="L25">		ErrorMessage data = new ErrorMessage();</span>
+<span class="nc" id="L26">		data.setMessage(&quot;An unknown error has occurred - &quot; + e.getMessage());</span>
+<span class="nc" id="L27">		return data;</span>
+	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -20,9 +20,11 @@ public class BrandServiceTest extends AbstractUnitTest {
 	
 	@Before
 	public void init() throws ApiException {
+		//Inserting some initial pojos
 		insertPojos();
 	}
 
+	//Testing Adding of brand
 	@Test()
 	public void testAdd() throws ApiException {
 
@@ -31,12 +33,14 @@ public class BrandServiceTest extends AbstractUnitTest {
 		brand_service.add(p);
 		List<BrandPojo> brand_list_after = brand_service.getAll();
 		
+		//Number of brands should increase
 		assertEquals(brand_list_before.size()+1,brand_list_after.size());
 		assertEquals(p.getBrand(),brand_service.get(p.getId()).getBrand());
 		assertEquals(p.getCategory(),brand_service.get(p.getId()).getCategory());
 
 	}
 
+	//Testing Adding of duplicates. Exception should be thrown
 	@Test()
 	public void testAddDuplicate() throws ApiException {
 
@@ -53,6 +57,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
+	//Testing adding of invalid brand pojo. Exception should be thrown
 	@Test()
 	public void testAddWrong() throws ApiException {
 
@@ -67,6 +72,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
+	//Testing deletion of an existing brand pojo
 	@Test()
 	public void testDelete() throws ApiException {
 
@@ -78,6 +84,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 		brand_service.delete(id);
 		List<BrandPojo> brand_list_after = brand_service.getAll();
 		
+		//Number of brand pojos should decrease by one
 		assertEquals(brand_list_before.size()-1,brand_list_after.size());
 		
 		try {
@@ -89,6 +96,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
+	//Testing Get for brand pojo
 	@Test()
 	public void testGet() throws ApiException {
 
@@ -102,6 +110,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 	
+	//Testing Get for a non-existent pojo. Should throw exception
 	@Test()
 	public void testGetNotExisting() throws ApiException {
 
@@ -116,6 +125,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
+	//Testing update
 	@Test()
 	public void testUpdate() throws ApiException {
 
@@ -131,6 +141,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
+	//Testing update with invalid brand pojo. Exception should be thrown
 	@Test()
 	public void testUpdateWrong() throws ApiException {
 
@@ -151,7 +162,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 	}
 
 	
-
+	//Testing get all brand pojos
 	@Test()
 	public void testGetAll() throws ApiException {
 		
@@ -160,6 +171,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
+	//Testing checkifexists
 	@Test()
 	public void testCheckIfExists() throws ApiException {
 
@@ -173,6 +185,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
+	//Testing checkifexists for a non-existent pojo
 	@Test()
 	public void testCheckIfExistsNotExisting() throws ApiException {
 
@@ -187,6 +200,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
+	//Testing getting of brand id based on brand and category
 	@Test()
 	public void testGetId() throws ApiException {
 
@@ -199,6 +213,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
+	//Testing getting of brand id based on a brand and category that does not exist. Should throw an exception
 	@Test()
 	public void testGetIdNotExisting() throws ApiException {
 
@@ -214,6 +229,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
+	//Testing normalize
 	@Test
 	public void testNormalize() throws ApiException {
 		BrandPojo p = getBrandPojo();
@@ -224,6 +240,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 		assertEquals("biscuits", p.getCategory());
 	}
 
+	//Testing Validate
 	@Test
 	public void testValidate() throws ApiException {
 		BrandPojo p = getBrandPojo();
@@ -233,22 +250,6 @@ public class BrandServiceTest extends AbstractUnitTest {
 		assertTrue(!p.getCategory().isEmpty());
 	}
 
-	@Test()
-	public void testValidateAlreadyExists() throws ApiException {
-		BrandPojo p = getBrandPojo();
-		brand_service.add(p);
-
-		BrandPojo np = getBrandPojo();
-		np.setId(2);
-		
-		try {
-			brand_service.validate(p);
-			fail("Api Exception did not occur");
-		} catch(ApiException e) {
-			assertEquals(e.getMessage(),"Brand and category values entered already exists");
-		}
-		
-	}
 
 	private BrandPojo getBrandPojo() {
 		BrandPojo p = new BrandPojo();

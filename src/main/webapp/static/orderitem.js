@@ -139,7 +139,7 @@ function displayOrdersList(data) {
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button onclick="initializeDropdown(' + e.id + ')">Show OrderItems</button>';
+		var buttonHtml = '<button style="padding: 0;border: none;background: none;" onclick="initializeDropdown(' + e.id + ')"><span class="material-icons">keyboard_arrow_down</span></button>';
 		var row = '<tr class="order-header">'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>'  + e.datetime + '</td>'
@@ -221,7 +221,7 @@ function createOrderItemsHtml(data,id) {
 		+ '</tr>';
 		table.append(row);
 	}
-	table.append('<tr><td colspan="3"><button onclick="downloadPDF('+id +')">Download Invoice PDF</button></td><td colspan="2"><button onclick="displayAddOrderItemModal(' + id + ')">Add Order Item</button></td></tr>');
+	table.append('<tr><td colspan="3"><button class="btn btn-primary" onclick="downloadPDF('+id +')">Download Invoice PDF</button></td><td colspan="2"><button class="btn btn-primary" onclick="displayAddOrderItemModal(' + id + ')">Add Order Item</button></td></tr>');
 }
 
 function initializeDropdown(id) {

@@ -72,7 +72,7 @@ public class OrderService {
 		int order_id = order_item_dao.select(id).getOrderPojo().getId();
 		order_item_dao.delete(id);
 		List<OrderItemPojo> lis = order_item_dao.selectOrder(order_id);
-		if (lis.size() == 0) {
+		if (lis.isEmpty()) {
 			order_dao.delete(order_id);
 		}
 	}
@@ -108,7 +108,7 @@ public class OrderService {
 	}
 	
 	@Transactional(rollbackFor = ApiException.class)
-	private OrderPojo checkIfExistsOrder(int id) throws ApiException {
+	public OrderPojo checkIfExistsOrder(int id) throws ApiException {
 		OrderPojo p = order_dao.select(id);
 		if (p == null) {
 			throw new ApiException("Order with given ID does not exist, id: " + id);
@@ -125,11 +125,11 @@ public class OrderService {
 			throw new ApiException(
 					"Inventory does not contain this much quantity of product. Existing quantity in inventory: "
 							+ quantityInInventory);
-		} else {
-			InventoryPojo new_ip = new InventoryPojo();
-			new_ip.setQuantity(quantityInInventory - quantity);
-			inventory_service.update(inventory_service.getByProductId(p.getProductPojo().getId()).getId(), new_ip);
-		}
+		} 
+		InventoryPojo new_ip = new InventoryPojo();
+		new_ip.setQuantity(quantityInInventory - quantity);
+		inventory_service.update(inventory_service.getByProductId(p.getProductPojo().getId()).getId(), new_ip);
+		
 
 	}
 
@@ -142,11 +142,11 @@ public class OrderService {
 			throw new ApiException(
 					"Inventory does not contain this much quantity of product. Existing quantity in inventory: "
 							+ quantityInInventory);
-		} else {
+		} 
 			InventoryPojo new_ip = new InventoryPojo();
 			new_ip.setQuantity(quantityInInventory - quantity);
 			inventory_service.update(inventory_service.getByProductId(p.getProductPojo().getId()).getId(), new_ip);
-		}
+		
 
 	}
 

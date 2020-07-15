@@ -19,11 +19,11 @@ public class AppRestControllerAdvice {
 		return data;
 	}
 
-	/*@ExceptionHandler(Throwable.class)
+	@ExceptionHandler(Throwable.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ErrorMessage handle(Throwable e) {
 		ErrorMessage data = new ErrorMessage();
 		data.setMessage("An unknown error has occurred - " + e.getMessage());
 		return data;
-	}*/
+	}
 }

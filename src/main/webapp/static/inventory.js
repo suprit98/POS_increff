@@ -48,9 +48,74 @@ function deleteInventory(id){
 	ajaxQuery(url,'DELETE','',getInventoryList);
 }
 
+//FILE METHODS
+
+var fileData = [];
+var errorData = [];
+var rowsProcessed = 0;
+
+function processDataInventory(){
+	var file = $('#inventoryFile')[0].files[0];
+	readFileData(file, readFileDataCallback);
+}
+
+function readFileDataCallback(results){
+	fileData = results.data;
+	uploadRowsInventory();
+}
+
+function uploadRowsInventory(){
+
+	//If everything processed then return
+	if(rowsProcessed==fileData.length){
+		getInventoryList();
+		return;
+	}
+
+	//Process next row
+	var row = fileData[rowsProcessed];
+	console.log(row);
+	rowsProcessed++;
+
+	var json = JSON.stringify(row);
+
+	var url = getInventoryUrl();
+
+	$.ajax({
+	   url: url,
+	   type: 'POST',
+	   data: json,
+	   headers: {
+       	'Content-Type': 'application/json'
+       },
+	   success: function(response) {
+	   		uploadRowsInventory(response);
+	   },
+	   error: function(response){
+				errorData.push(JSON.parse(response.responseText));
+				uploadRowsInventory();
+	   }
+	});
+
+}
+
+function downloadErrors(){
+	writeFileData(errorData);
+}
 
 
 //UI DISPLAY METHODS
+
+function displayUploadDataInventory(){
+	resetUploadDialogInventory();
+	$('#upload-inventory-modal').modal('toggle');
+}
+
+function updateFileNameInventory(){
+	var $file = $('#inventoryFile');
+	var fileName = $file.val();
+	$('#inventoryFileName').html(fileName);
+}
 
 function displayInventoryList(data){
 	console.log('Printing Inventory data');
@@ -86,6 +151,17 @@ function displayInventory(data){
 	$('#edit-inventory-modal').modal('toggle');
 }
 
+function resetUploadDialogInventory(){
+
+	var $file = $('#inventorysFile');
+	$file.val('');
+	$('#inventoryFileName').html("Choose File");
+
+	processCount = 0;
+	fileData = [];
+	errorData = [];
+}
+
 function validateInventory(json) {
 	json = JSON.parse(json);
 	if(isBlank(json.barcode)) {
@@ -106,6 +182,10 @@ function init(){
 	$('#add-inventory').click(addInventory);
 	$('#update-inventory').click(updateInventory);
 	$('#refresh-data-inventory').click(getInventoryList);
+	$('#upload-data-inventory').click(displayUploadDataInventory);
+	$('#process-data-inventory').click(processDataInventory);
+	$('#inventoryFile').on('change', updateFileNameInventory);
+	$('#download-errors-inventory').click(downloadErrors);
 }
 
 $(document).ready(init);

@@ -51,6 +51,28 @@ function readFileData(file, callback){
 	Papa.parse(file, config);
 }
 
+function writeFileData(arr){
+	var config = {
+		quoteChar: '',
+		escapeChar: '',
+		delimiter: "\t"
+	};
+
+	var data = Papa.unparse(arr, config);
+    var blob = new Blob([data], {type: 'text/tsv;charset=utf-8;'});
+    var fileUrl =  null;
+
+    if (navigator.msSaveBlob) {
+        fileUrl = navigator.msSaveBlob(blob, 'download.tsv');
+    } else {
+        fileUrl = window.URL.createObjectURL(blob);
+    }
+    var tempLink = document.createElement('a');
+    tempLink.href = fileUrl;
+    tempLink.setAttribute('download', 'download.tsv');
+    tempLink.click();
+}
+
 function handleAjaxError(response) {
 	console.log(response.responseText);
 	var response = JSON.parse(response.responseText);
@@ -106,17 +128,24 @@ function ajaxQueryRecur(url, type, data, successFunction,recurFunction) {
 	});
 }
 
+function isBlank(str) {
+    return (!str || /^\s*$/.test(str));
+}
+
 function init() {
 	createBarcodeList();
 	createBrandCategoryList();
 	console.log(barcodeList);
 	$(".barcode").autocomplete({
+		minLength:0,
 		source: barcodeList
 	});
 	$(".brand").autocomplete({
+		minLength:0,
 		source: brandList
 	});
 	$(".category").autocomplete({
+		minLength:0,
 		source: categoryList
 	});
 }

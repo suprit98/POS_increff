@@ -92,7 +92,7 @@ import com.increff.pos.util.XmlUtil;
 <span class="fc" id="L92">		return ConversionUtil.convertSalesList(quantityPerBrandCategory, revenuePerBrandCategory);</span>
 	}
 
-	public List&lt;OrderItemPojo&gt; FilterByDate(SalesFilter sales_filter, List&lt;OrderItemPojo&gt; orderitem_list) {
+	public static List&lt;OrderItemPojo&gt; FilterByDate(SalesFilter sales_filter, List&lt;OrderItemPojo&gt; orderitem_list) {
 <span class="fc" id="L96">		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);</span>
 <span class="fc" id="L97">		LocalDateTime startDate = LocalDate.parse(sales_filter.getStartDate(), formatter).atStartOfDay();</span>
 <span class="fc" id="L98">		LocalDateTime endDate = LocalDate.parse(sales_filter.getEndDate(), formatter).atStartOfDay();</span>
@@ -103,7 +103,7 @@ import com.increff.pos.util.XmlUtil;
 <span class="fc" id="L103">		return filtered_date_list;</span>
 	}
 
-	public Map&lt;BrandPojo, Integer&gt; getMapQuantity(SalesFilter sales_filter, List&lt;OrderItemPojo&gt; orderitem_list) {
+	public static Map&lt;BrandPojo, Integer&gt; getMapQuantity(SalesFilter sales_filter, List&lt;OrderItemPojo&gt; orderitem_list) {
 <span class="fc" id="L107">		Map&lt;BrandPojo, Integer&gt; quantityPerBrandCategory = orderitem_list.stream()</span>
 <span class="pc bpc" id="L108" title="1 of 2 branches missed.">				.filter(order_item -&gt; Equals(order_item.getBrandPojo().getBrand(), sales_filter.getBrand())</span>
 <span class="fc bfc" id="L109" title="All 2 branches covered.">						&amp;&amp; Equals(order_item.getBrandPojo().getCategory(), sales_filter.getCategory()))</span>
@@ -121,7 +121,7 @@ import com.increff.pos.util.XmlUtil;
 <span class="fc" id="L121">		return revenuePerBrandCategory;</span>
 	}
 
-	protected Boolean Equals(String a, String b) {
+	protected static Boolean Equals(String a, String b) {
 <span class="fc bfc" id="L125" title="All 4 branches covered.">		return (a.contentEquals(b) || b.isEmpty());</span>
 	}
 

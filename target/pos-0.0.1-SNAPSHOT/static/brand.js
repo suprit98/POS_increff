@@ -10,10 +10,11 @@ function addBrand(event){
 	$('#add-brand-modal').modal('toggle');
 	var $form = $("#brand-form");
 	var json = toJson($form);
-	var url = getBrandUrl();
-
-	ajaxQuery(url,'POST',json,getBrandList);
-
+	var check = validateBrand(json);
+	if(check) {
+		var url = getBrandUrl();
+		ajaxQuery(url,'POST',json,getBrandList);
+	}
 	return false;
 }
 
@@ -27,7 +28,11 @@ function updateBrand(event){
 	var $form = $("#brand-edit-form");
 	var json = toJson($form);
 
-	ajaxQuery(url,'PUT',json,getBrandList);
+	var check = validateBrand(json);
+	if(check) {
+		ajaxQuery(url,'PUT',json,getBrandList);
+	}
+
 	return false;
 
 }
@@ -79,6 +84,7 @@ function displayBrand(data){
 //FILE METHODS
 
 var fileData = [];
+var errorData = [];
 var rowsProcessed = 0;
 
 function processData(){
@@ -109,16 +115,46 @@ function uploadRows(){
 	var url = getBrandUrl();
 
 	//Make ajax call
-	ajaxQueryRecur(url,'POST',json,uploadRows,uploadRows);
+	$.ajax({
+	   url: url,
+	   type: 'POST',
+	   data: json,
+	   headers: {
+       	'Content-Type': 'application/json'
+       },
+	   success: function(response) {
+	   		uploadRows(response);
+	   },
+	   error: function(response){
+				errorData.push(JSON.parse(response.responseText));
+				uploadRows();
+	   }
+	});
 
 }
 
+function downloadErrors(){
+	writeFileData(errorData);
+}
+
 function displayUploadData(){
+	resetUploadDialog();
 	$('#upload-brand-modal').modal('toggle');
 }
 
 function displayAddBrandModal() {
 	$("#add-brand-modal").modal('toggle');
+}
+
+function resetUploadDialog(){
+
+	var $file = $('#brandFile');
+	$file.val('');
+	$('#brandFileName').html("Choose File");
+
+	processCount = 0;
+	fileData = [];
+	errorData = [];
 }
 
 function updateFileName(){
@@ -127,8 +163,18 @@ function updateFileName(){
 	$('#brandFileName').html(fileName);
 }
 
-
-
+function validateBrand(json) {
+	json = JSON.parse(json);
+	if(isBlank(json.brand)) {
+		alert("Brand field must not be empty");
+		return false;
+	}
+	if(isBlank(json.category)) {
+		alert("Category field must not be empty");
+		return false;
+	}
+	return true;
+}
 
 
 //INITIALIZATION CODE
@@ -138,6 +184,7 @@ function init(){
 	$('#update-brand').click(updateBrand);
 	$('#refresh-data').click(getBrandList);
 	$('#upload-data').click(displayUploadData);
+	$('#download-errors').click(downloadErrors);
 	$('#process-data').click(processData);
 	$('#brandFile').on('change', updateFileName);
 }

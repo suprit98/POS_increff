@@ -4698,3 +4698,52 @@ Caused by: java.sql.SQLException: Already closed.
 2020-07-13 18:18:58 WARN  SqlExceptionHelper:137 - SQL Error: 1451, SQLState: 23000
 2020-07-13 18:18:58 ERROR SqlExceptionHelper:142 - Cannot delete or update a parent row: a foreign key constraint fails (`pos`.`productdetailspojo`, CONSTRAINT `FKns548lnbwmecn3x7evbu2mikd` FOREIGN KEY (`brand_category`) REFERENCES `brandpojo` (`id`))
 2020-07-13 18:18:58 ERROR ExceptionMapperStandardImpl:39 - HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]
+2020-07-14 18:13:53 WARN  SqlExceptionHelper:137 - SQL Error: 1451, SQLState: 23000
+2020-07-14 18:13:53 ERROR SqlExceptionHelper:142 - Cannot delete or update a parent row: a foreign key constraint fails (`pos`.`inventorypojo`, CONSTRAINT `FKbtsl56vw9dx0fe61ghg5wfxqo` FOREIGN KEY (`product_id`) REFERENCES `productdetailspojo` (`id`))
+2020-07-14 18:13:53 ERROR ExceptionMapperStandardImpl:39 - HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]
+2020-07-14 18:34:00 INFO  FOUserAgent:83 - An fo:table  (No context info available) is wider than the available room in inline-progression-dimension. Adjusting end-indent based on overconstrained geometry rules (XSL 1.1, ch. 5.3.4)
+2020-07-14 18:34:00 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2020-07-14 18:34:00 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2020-07-14 18:34:00 INFO  FOUserAgent:83 - Rendered page #1.
+2020-07-14 18:34:11 INFO  FOUserAgent:83 - An fo:table  (No context info available) is wider than the available room in inline-progression-dimension. Adjusting end-indent based on overconstrained geometry rules (XSL 1.1, ch. 5.3.4)
+2020-07-14 18:34:11 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2020-07-14 18:34:11 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2020-07-14 18:34:11 INFO  FOUserAgent:83 - Rendered page #1.
+2020-07-14 18:34:21 INFO  FOUserAgent:83 - An fo:table  (No context info available) is wider than the available room in inline-progression-dimension. Adjusting end-indent based on overconstrained geometry rules (XSL 1.1, ch. 5.3.4)
+2020-07-14 18:34:21 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2020-07-14 18:34:21 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2020-07-14 18:34:22 INFO  FOUserAgent:83 - Rendered page #1.
+2020-07-14 18:34:47 INFO  FOUserAgent:83 - An fo:table  (No context info available) is wider than the available room in inline-progression-dimension. Adjusting end-indent based on overconstrained geometry rules (XSL 1.1, ch. 5.3.4)
+2020-07-14 18:34:47 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2020-07-14 18:34:47 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2020-07-14 18:34:47 INFO  FOUserAgent:83 - Rendered page #1.
+2020-07-14 18:44:33 INFO  FOUserAgent:83 - An fo:table  (No context info available) is wider than the available room in inline-progression-dimension. Adjusting end-indent based on overconstrained geometry rules (XSL 1.1, ch. 5.3.4)
+2020-07-14 18:44:33 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2020-07-14 18:44:33 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2020-07-14 18:44:33 INFO  FOUserAgent:83 - Rendered page #1.
+2020-07-14 18:50:55 INFO  FOUserAgent:83 - An fo:table  (No context info available) is wider than the available room in inline-progression-dimension. Adjusting end-indent based on overconstrained geometry rules (XSL 1.1, ch. 5.3.4)
+2020-07-14 18:50:55 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2020-07-14 18:50:55 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2020-07-14 18:50:55 INFO  FOUserAgent:83 - Rendered page #1.
+2020-07-14 19:12:46 INFO  FOUserAgent:83 - An fo:table  (No context info available) is wider than the available room in inline-progression-dimension. Adjusting end-indent based on overconstrained geometry rules (XSL 1.1, ch. 5.3.4)
+2020-07-14 19:12:46 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2020-07-14 19:12:46 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2020-07-14 19:12:46 INFO  FOUserAgent:83 - Rendered page #1.
+2020-07-14 19:15:02 INFO  FOUserAgent:83 - An fo:table  (No context info available) is wider than the available room in inline-progression-dimension. Adjusting end-indent based on overconstrained geometry rules (XSL 1.1, ch. 5.3.4)
+2020-07-14 19:15:02 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2020-07-14 19:15:02 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2020-07-14 19:15:02 INFO  FOUserAgent:83 - Rendered page #1.
+2020-07-15 17:34:19 INFO  FOUserAgent:83 - An fo:table  (No context info available) is wider than the available room in inline-progression-dimension. Adjusting end-indent based on overconstrained geometry rules (XSL 1.1, ch. 5.3.4)
+2020-07-15 17:34:19 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2020-07-15 17:34:19 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2020-07-15 17:34:19 INFO  FOUserAgent:83 - Rendered page #1.
+2020-07-15 17:39:44 WARN  SqlExceptionHelper:137 - SQL Error: 1451, SQLState: 23000
+2020-07-15 17:39:44 ERROR SqlExceptionHelper:142 - Cannot delete or update a parent row: a foreign key constraint fails (`pos`.`inventorypojo`, CONSTRAINT `FKbtsl56vw9dx0fe61ghg5wfxqo` FOREIGN KEY (`product_id`) REFERENCES `productdetailspojo` (`id`))
+2020-07-15 17:39:44 ERROR ExceptionMapperStandardImpl:39 - HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]
+2020-07-15 17:45:29 INFO  FOUserAgent:83 - An fo:table  (No context info available) is wider than the available room in inline-progression-dimension. Adjusting end-indent based on overconstrained geometry rules (XSL 1.1, ch. 5.3.4)
+2020-07-15 17:45:29 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2020-07-15 17:45:29 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2020-07-15 17:45:29 INFO  FOUserAgent:83 - Rendered page #1.
+2020-07-15 17:50:16 WARN  SqlExceptionHelper:137 - SQL Error: 1451, SQLState: 23000
+2020-07-15 17:50:16 ERROR SqlExceptionHelper:142 - Cannot delete or update a parent row: a foreign key constraint fails (`pos`.`inventorypojo`, CONSTRAINT `FKbtsl56vw9dx0fe61ghg5wfxqo` FOREIGN KEY (`product_id`) REFERENCES `productdetailspojo` (`id`))
+2020-07-15 17:50:16 ERROR ExceptionMapperStandardImpl:39 - HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]

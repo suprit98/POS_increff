@@ -93,6 +93,7 @@ function displayProductDetails(data){
 //FILE METHODS
 
 var fileData = [];
+var errorData = [];
 var rowsProcessed = 0;
 
 function processDataProductDetails(){
@@ -122,11 +123,30 @@ function uploadRowsProductDetails(){
 
 	var url = getProductDetailsUrl();
 
-	ajaxQueryRecur(url,'POST',json,uploadRowsProductDetails,uploadRowsProductDetails);
+	$.ajax({
+	   url: url,
+	   type: 'POST',
+	   data: json,
+	   headers: {
+       	'Content-Type': 'application/json'
+       },
+	   success: function(response) {
+	   		uploadRowsProductDetails(response);
+	   },
+	   error: function(response){
+				errorData.push(JSON.parse(response.responseText));
+				uploadRowsProductDetails();
+	   }
+	});
 
 }
 
+function downloadErrors(){
+	writeFileData(errorData);
+}
+
 function displayUploadDataProductDetails(){
+	resetUploadDialogProduct();
 	$('#upload-productdetails-modal').modal('toggle');
 }
 
@@ -138,6 +158,17 @@ function updateFileNameProductDetails(){
 	var $file = $('#productdetailsFile');
 	var fileName = $file.val();
 	$('#productdetailsFileName').html(fileName);
+}
+
+function resetUploadDialogProduct(){
+
+	var $file = $('#productdetailsFile');
+	$file.val('');
+	$('#productdetailsFileName').html("Choose File");
+
+	processCount = 0;
+	fileData = [];
+	errorData = [];
 }
 
 function validateProduct(json) {
@@ -172,6 +203,7 @@ function init(){
 	$('#update-productdetails').click(updateProductDetails);
 	$('#refresh-data-productdetails').click(getProductDetailsList);
 	$('#upload-data-productdetails').click(displayUploadDataProductDetails);
+	$('#download-errors-productdetails').click(downloadErrors);
 	$('#process-data-productdetails').click(processDataProductDetails);
 	$('#productdetailsFile').on('change', updateFileNameProductDetails);
 }
