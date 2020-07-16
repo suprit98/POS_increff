@@ -81,6 +81,11 @@ function updateOrder(event){
 }
 
 function deleteOrderItemFromOrderList(id) {
+	var url = getOrderItemUrl() + "/" + id;
+	ajaxQuery(url,'DELETE','',getOrderList);
+}
+
+function deleteOrder(id) {
 	var url = getOrderUrl() + "/" + id;
 	ajaxQuery(url,'DELETE','',getOrderList);
 }
@@ -140,6 +145,7 @@ function displayOrdersList(data) {
 	for(var i in data){
 		var e = data[i];
 		var buttonHtml = '<button style="padding: 0;border: none;background: none;" onclick="initializeDropdown(' + e.id + ')"><span class="material-icons">keyboard_arrow_down</span></button>';
+		buttonHtml += '<button style="padding: 0;border: none;background: none;" onclick="deleteOrder(' + e.id + ')"><span class="material-icons" style="color:red">delete</span></button>';
 		var row = '<tr class="order-header">'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>'  + e.datetime + '</td>'
@@ -203,8 +209,9 @@ function createOrderItemsHtml(data,id) {
 	var thHtml = '<tr>';
 	thHtml += '<th scope="col">ID</th>';
 	thHtml += '<th scope="col">Barcode</th>';
+	thHtml += '<th scope="col">Name</th>';
 	thHtml += '<th scope="col">Quantity</th>';
-	thHtml += '<th scope="col">Order Id</th>';
+	thHtml += '<th scope="col">Mrp</th>';
 	thHtml += '<th scope="col">Actions</th>';
 	thHtml += '</tr>';
 	table.append(thHtml);
@@ -215,13 +222,14 @@ function createOrderItemsHtml(data,id) {
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.barcode + '</td>'
+		+ '<td>' + e.name + '</td>'
 		+ '<td>'  + e.quantity + '</td>'
-		+ '<td>'  + e.orderId + '</td>'
+		+ '<td>' + e.mrp + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
 		table.append(row);
 	}
-	table.append('<tr><td colspan="3"><button class="btn btn-primary" onclick="downloadPDF('+id +')">Download Invoice PDF</button></td><td colspan="2"><button class="btn btn-primary" onclick="displayAddOrderItemModal(' + id + ')">Add Order Item</button></td></tr>');
+	table.append('<tr><td colspan="4"><button class="btn btn-primary" onclick="downloadPDF('+id +')">Download Invoice PDF</button></td><td colspan="2"><button class="btn btn-primary" onclick="displayAddOrderItemModal(' + id + ')">Add Order Item</button></td></tr>');
 }
 
 function initializeDropdown(id) {

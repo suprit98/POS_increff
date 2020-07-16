@@ -76,6 +76,15 @@ public class OrderService {
 			order_dao.delete(order_id);
 		}
 	}
+	
+	@Transactional
+	public void deleteOrder(int order_id) throws ApiException {
+		List<OrderItemPojo> orderitem_list = getOrderItems(order_id);
+		for(OrderItemPojo orderitem_pojo:orderitem_list) {
+			order_item_dao.delete(orderitem_pojo.getId());
+		}
+		order_dao.delete(order_id);
+	}
 
 
 	@Transactional(rollbackFor = ApiException.class)

@@ -61,6 +61,12 @@ public class OrderController {
 		OrderItemPojo p = order_service.get(id);
 		return ConversionUtil.convert(p);
 	}
+	
+	@ApiOperation(value = "Deletes an Order by id")
+	@RequestMapping(path = "/api/order/{id}", method = RequestMethod.DELETE)
+	public void deleteOrder(@PathVariable int id) throws ApiException {
+		order_service.deleteOrder(id);
+	}
 
 	@ApiOperation(value = "Gets list of Order Items")
 	@RequestMapping(path = "/api/order", method = RequestMethod.GET)
@@ -87,7 +93,7 @@ public class OrderController {
 	}
 
 	@ApiOperation(value = "Deletes Order Item record")
-	@RequestMapping(path = "/api/order/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(path = "/api/order_item/{id}", method = RequestMethod.DELETE)
 	public void delete(@PathVariable int id) {
 		order_service.delete(id);
 	}

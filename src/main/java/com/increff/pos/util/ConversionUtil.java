@@ -92,6 +92,8 @@ public class ConversionUtil {
 		d.setBarcode(p.getProductPojo().getBarcode());
 		d.setQuantity(p.getQuantity());
 		d.setOrderId(p.getOrderPojo().getId());
+		d.setName(p.getProductPojo().getName());
+		d.setMrp(p.getSellingPrice());
 		return d;
 	}
 

@@ -76,86 +76,95 @@ import com.increff.pos.pojo.OrderPojo;
 <span class="fc" id="L76">			order_dao.delete(order_id);</span>
 		}
 <span class="fc" id="L78">	}</span>
+	
+	@Transactional
+	public void deleteOrder(int order_id) throws ApiException {
+<span class="nc" id="L82">		List&lt;OrderItemPojo&gt; orderitem_list = getOrderItems(order_id);</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">		for(OrderItemPojo orderitem_pojo:orderitem_list) {</span>
+<span class="nc" id="L84">			order_item_dao.delete(orderitem_pojo.getId());</span>
+<span class="nc" id="L85">		}</span>
+<span class="nc" id="L86">		order_dao.delete(order_id);</span>
+<span class="nc" id="L87">	}</span>
 
 
 	@Transactional(rollbackFor = ApiException.class)
 	public void update(int id, OrderItemPojo p) throws ApiException {
 
-<span class="fc" id="L84">		OrderItemPojo ex = checkIfExists(id);</span>
-<span class="fc" id="L85">		int old_qty = ex.getQuantity();</span>
-<span class="fc" id="L86">		ex.setQuantity(p.getQuantity());</span>
-<span class="fc" id="L87">		ex.setProductPojo(p.getProductPojo());</span>
-<span class="fc" id="L88">		ex.setSellingPrice(p.getSellingPrice());</span>
-<span class="fc" id="L89">		order_item_dao.update(p);</span>
-<span class="fc" id="L90">		updateInventory(old_qty, p);</span>
-<span class="fc" id="L91">	}</span>
+<span class="fc" id="L93">		OrderItemPojo ex = checkIfExists(id);</span>
+<span class="fc" id="L94">		int old_qty = ex.getQuantity();</span>
+<span class="fc" id="L95">		ex.setQuantity(p.getQuantity());</span>
+<span class="fc" id="L96">		ex.setProductPojo(p.getProductPojo());</span>
+<span class="fc" id="L97">		ex.setSellingPrice(p.getSellingPrice());</span>
+<span class="fc" id="L98">		order_item_dao.update(p);</span>
+<span class="fc" id="L99">		updateInventory(old_qty, p);</span>
+<span class="fc" id="L100">	}</span>
 
 	@Transactional(rollbackFor = ApiException.class)
 	public void addOrderItem(int order_id, OrderItemPojo p) throws ApiException {
 
-<span class="fc" id="L96">		p.setOrderPojo(order_dao.select(order_id));</span>
-<span class="fc" id="L97">		order_item_dao.insert(p);</span>
-<span class="fc" id="L98">		updateInventory(p);</span>
-<span class="fc" id="L99">	}</span>
+<span class="fc" id="L105">		p.setOrderPojo(order_dao.select(order_id));</span>
+<span class="fc" id="L106">		order_item_dao.insert(p);</span>
+<span class="fc" id="L107">		updateInventory(p);</span>
+<span class="fc" id="L108">	}</span>
 
 	@Transactional(rollbackFor = ApiException.class)
 	public OrderItemPojo checkIfExists(int id) throws ApiException {
-<span class="fc" id="L103">		OrderItemPojo p = order_item_dao.select(id);</span>
-<span class="fc bfc" id="L104" title="All 2 branches covered.">		if (p == null) {</span>
-<span class="fc" id="L105">			throw new ApiException(&quot;OrderItem with given ID does not exist, id: &quot; + id);</span>
+<span class="fc" id="L112">		OrderItemPojo p = order_item_dao.select(id);</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">		if (p == null) {</span>
+<span class="fc" id="L114">			throw new ApiException(&quot;OrderItem with given ID does not exist, id: &quot; + id);</span>
 		}
-<span class="fc" id="L107">		return p;</span>
+<span class="fc" id="L116">		return p;</span>
 	}
 	
 	@Transactional(rollbackFor = ApiException.class)
 	public OrderPojo checkIfExistsOrder(int id) throws ApiException {
-<span class="fc" id="L112">		OrderPojo p = order_dao.select(id);</span>
-<span class="fc bfc" id="L113" title="All 2 branches covered.">		if (p == null) {</span>
-<span class="fc" id="L114">			throw new ApiException(&quot;Order with given ID does not exist, id: &quot; + id);</span>
+<span class="fc" id="L121">		OrderPojo p = order_dao.select(id);</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">		if (p == null) {</span>
+<span class="fc" id="L123">			throw new ApiException(&quot;Order with given ID does not exist, id: &quot; + id);</span>
 		}
-<span class="fc" id="L116">		return p;</span>
+<span class="fc" id="L125">		return p;</span>
 	}
 
 	private void updateInventory(OrderItemPojo p) throws ApiException {
-<span class="fc" id="L120">		int quantity = p.getQuantity();</span>
+<span class="fc" id="L129">		int quantity = p.getQuantity();</span>
 
-<span class="fc" id="L122">		int quantityInInventory = inventory_service.getByProductId(p.getProductPojo().getId()).getQuantity();</span>
+<span class="fc" id="L131">		int quantityInInventory = inventory_service.getByProductId(p.getProductPojo().getId()).getQuantity();</span>
 
-<span class="fc bfc" id="L124" title="All 2 branches covered.">		if (quantity &gt; quantityInInventory) {</span>
-<span class="fc" id="L125">			throw new ApiException(</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">		if (quantity &gt; quantityInInventory) {</span>
+<span class="fc" id="L134">			throw new ApiException(</span>
 					&quot;Inventory does not contain this much quantity of product. Existing quantity in inventory: &quot;
 							+ quantityInInventory);
 		} 
-<span class="fc" id="L129">		InventoryPojo new_ip = new InventoryPojo();</span>
-<span class="fc" id="L130">		new_ip.setQuantity(quantityInInventory - quantity);</span>
-<span class="fc" id="L131">		inventory_service.update(inventory_service.getByProductId(p.getProductPojo().getId()).getId(), new_ip);</span>
+<span class="fc" id="L138">		InventoryPojo new_ip = new InventoryPojo();</span>
+<span class="fc" id="L139">		new_ip.setQuantity(quantityInInventory - quantity);</span>
+<span class="fc" id="L140">		inventory_service.update(inventory_service.getByProductId(p.getProductPojo().getId()).getId(), new_ip);</span>
 		
 
-<span class="fc" id="L134">	}</span>
+<span class="fc" id="L143">	}</span>
 
 	private void updateInventory(int old_qty, OrderItemPojo p) throws ApiException {
-<span class="fc" id="L137">		int quantity = p.getQuantity();</span>
+<span class="fc" id="L146">		int quantity = p.getQuantity();</span>
 
-<span class="fc" id="L139">		int quantityInInventory = inventory_service.getByProductId(p.getProductPojo().getId()).getQuantity() + old_qty;</span>
+<span class="fc" id="L148">		int quantityInInventory = inventory_service.getByProductId(p.getProductPojo().getId()).getQuantity() + old_qty;</span>
 
-<span class="fc bfc" id="L141" title="All 2 branches covered.">		if (quantity &gt; quantityInInventory) {</span>
-<span class="fc" id="L142">			throw new ApiException(</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">		if (quantity &gt; quantityInInventory) {</span>
+<span class="fc" id="L151">			throw new ApiException(</span>
 					&quot;Inventory does not contain this much quantity of product. Existing quantity in inventory: &quot;
 							+ quantityInInventory);
 		} 
-<span class="fc" id="L146">			InventoryPojo new_ip = new InventoryPojo();</span>
-<span class="fc" id="L147">			new_ip.setQuantity(quantityInInventory - quantity);</span>
-<span class="fc" id="L148">			inventory_service.update(inventory_service.getByProductId(p.getProductPojo().getId()).getId(), new_ip);</span>
+<span class="fc" id="L155">			InventoryPojo new_ip = new InventoryPojo();</span>
+<span class="fc" id="L156">			new_ip.setQuantity(quantityInInventory - quantity);</span>
+<span class="fc" id="L157">			inventory_service.update(inventory_service.getByProductId(p.getProductPojo().getId()).getId(), new_ip);</span>
 		
 
-<span class="fc" id="L151">	}</span>
+<span class="fc" id="L160">	}</span>
 
 	private void validate(OrderItemPojo p) throws ApiException {
-<span class="fc bfc" id="L154" title="All 2 branches covered.">		if (p.getQuantity() &lt;= 0) {</span>
-<span class="fc" id="L155">			throw new ApiException(&quot;Quantity must be positive&quot;);</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">		if (p.getQuantity() &lt;= 0) {</span>
+<span class="fc" id="L164">			throw new ApiException(&quot;Quantity must be positive&quot;);</span>
 		}
 
-<span class="fc" id="L158">	}</span>
+<span class="fc" id="L167">	}</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
