@@ -26,8 +26,6 @@ import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.pojo.ProductDetailsPojo;
 import com.increff.pos.service.ApiException;
-import com.increff.pos.service.BrandService;
-import com.increff.pos.service.ProductDetailsService;
 
 public class ConversionUtil {
 
@@ -46,12 +44,11 @@ public class ConversionUtil {
 		return d;
 	}
 
-	public static ProductDetailsPojo convert(BrandService brand_service, ProductDetailsForm f) throws ApiException {
+	public static ProductDetailsPojo convert(BrandPojo brand_pojo, ProductDetailsForm f) throws ApiException {
 		ProductDetailsPojo p = new ProductDetailsPojo();
 		p.setName(f.getName());
 		p.setMrp(f.getMrp());
-		int brand_id = brand_service.getId(f.getBrand(), f.getCategory());
-		p.setBrandPojo(brand_service.get(brand_id));
+		p.setBrandPojo(brand_pojo);
 		return p;
 	}
 
@@ -81,11 +78,11 @@ public class ConversionUtil {
 		return d;
 	}
 
-	public static OrderItemPojo convert(ProductDetailsService product_service, OrderItemForm f) throws ApiException {
+	public static OrderItemPojo convert(ProductDetailsPojo product_pojo, OrderItemForm f) throws ApiException {
 		OrderItemPojo p = new OrderItemPojo();
-		p.setProductPojo(product_service.get(f.getBarcode()));
+		p.setProductPojo(product_pojo);
 		p.setQuantity(f.getQuantity());
-		p.setSellingPrice(product_service.get(f.getBarcode()).getMrp());
+		p.setSellingPrice(product_pojo.getMrp());
 		return p;
 	}
 
@@ -98,7 +95,7 @@ public class ConversionUtil {
 		return d;
 	}
 
-	public static InvoiceDataList convert(ProductDetailsService product_service, List<OrderItemPojo> lis) {
+	public static InvoiceDataList convertToInvoiceDataList(List<OrderItemPojo> lis) {
 		List<InvoiceData> invoiceLis = new ArrayList<InvoiceData>();
 		for (OrderItemPojo p : lis) {
 			InvoiceData i = new InvoiceData();
@@ -145,11 +142,11 @@ public class ConversionUtil {
 		return list2;
 	}
 
-	public static List<OrderItemPojo> convertOrderItemForms(ProductDetailsService product_service,
+	public static List<OrderItemPojo> convertOrderItemForms(Map<String,ProductDetailsPojo> barcode_product,
 			OrderItemForm[] forms) throws ApiException {
 		List<OrderItemPojo> list2 = new ArrayList<OrderItemPojo>();
 		for (OrderItemForm f : forms) {
-			list2.add(convert(product_service, f));
+			list2.add(convert(barcode_product.get(f.getBarcode()), f));
 		}
 		return list2;
 	}

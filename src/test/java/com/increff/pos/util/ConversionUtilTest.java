@@ -31,13 +31,17 @@ import com.increff.pos.service.ApiException;
 
 public class ConversionUtilTest extends AbstractUtilTest {
 
+	private static BrandPojo brand1;
+	private static BrandPojo brand2;
+	private static ProductDetailsPojo product1;
+	private static ProductDetailsPojo product2;
 
 	@Before
 	public void init() throws ApiException {
-		BrandPojo brand = getBrandPojo();
-		BrandPojo brand2 = getAnotherBrandPojo();
-		ProductDetailsPojo product1 = getProductDetailsPojo(brand);
-		ProductDetailsPojo product2 = getAnotherProductDetailsPojo(brand2);
+		brand1 = getBrandPojo();
+		brand2 = getAnotherBrandPojo();
+		product1 = getProductDetailsPojo(brand1);
+		product2 = getAnotherProductDetailsPojo(brand2);
 		getInventoryPojo(product1);
 		getInventoryPojo(product2);
 		getOrderItemPojo();
@@ -74,7 +78,7 @@ public class ConversionUtilTest extends AbstractUtilTest {
 		form.setCategory("dairy");
 		form.setMrp(50);
 		form.setName("milk");
-		ProductDetailsPojo product_pojo = ConversionUtil.convert(brand_service,form);
+		ProductDetailsPojo product_pojo = ConversionUtil.convert(brand1,form);
 		assertEquals(form.getBrand(), product_pojo.getBrandPojo().getBrand());
 		assertEquals(form.getCategory(), product_pojo.getBrandPojo().getCategory());
 		assertEquals(form.getName(),product_pojo.getName());
@@ -86,7 +90,7 @@ public class ConversionUtilTest extends AbstractUtilTest {
 
 		ProductDetailsPojo product_pojo = new ProductDetailsPojo();
 		product_pojo.setBarcode("abcdefgh");
-		product_pojo.setBrandPojo(brand_service.get(brand_service.getId("amul", "dairy")));
+		product_pojo.setBrandPojo(brand1);
 		product_pojo.setMrp(50);
 		product_pojo.setName("milk");
 		ProductDetailsData product_data = ConversionUtil.convert(product_pojo);
@@ -124,7 +128,7 @@ public class ConversionUtilTest extends AbstractUtilTest {
 		OrderItemForm form = new OrderItemForm();
 		form.setBarcode(barcode_item1);
 		form.setQuantity(2);
-		OrderItemPojo pojo = ConversionUtil.convert(product_service,form);
+		OrderItemPojo pojo = ConversionUtil.convert(product1,form);
 		assertEquals(form.getBarcode(),pojo.getProductPojo().getBarcode());
 		assertEquals(form.getQuantity(),pojo.getQuantity());
 	}
@@ -176,7 +180,7 @@ public class ConversionUtilTest extends AbstractUtilTest {
 	@Test
 	public void testOrderItemstoInvoice() {
 		List<OrderItemPojo> order_item_list = order_service.getAll();
-		InvoiceDataList invoice_list = ConversionUtil.convert(product_service,order_item_list);
+		InvoiceDataList invoice_list = ConversionUtil.convertToInvoiceDataList(order_item_list);
 		assertEquals(order_item_list.size(),invoice_list.getInvoiceLis().size());
 		assertEquals(invoice_list.getInvoiceLis().get(0).getName(),order_item_list.get(0).getProductPojo().getName());
 		assertEquals(invoice_list.getInvoiceLis().get(0).getQuantity(),order_item_list.get(0).getQuantity());
@@ -200,7 +204,11 @@ public class ConversionUtilTest extends AbstractUtilTest {
 		form1.setBarcode(barcode_item1);
 		form1.setQuantity(2);
 		order_item_forms[0] = form1;
-		List<OrderItemPojo> pojo_list = ConversionUtil.convertOrderItemForms(product_service, order_item_forms);
+		Map<String,ProductDetailsPojo> barcode_product = new HashMap<String, ProductDetailsPojo>();
+		barcode_product.put(barcode_item1, product1);
+		barcode_product.put(barcode_item2, product2);
+		
+		List<OrderItemPojo> pojo_list = ConversionUtil.convertOrderItemForms(barcode_product, order_item_forms);
 		assertEquals(1,pojo_list.size());
 		assertEquals(order_item_forms[0].getBarcode(), pojo_list.get(0).getProductPojo().getBarcode());
 		assertEquals(order_item_forms[0].getQuantity(), pojo_list.get(0).getQuantity());

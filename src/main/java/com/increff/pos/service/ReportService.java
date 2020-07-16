@@ -36,9 +36,6 @@ public class ReportService {
 	private BrandService brand_service;
 
 	@Autowired
-	private ProductDetailsService product_service;
-
-	@Autowired
 	private InventoryService inventory_service;
 
 	public byte[] generatePdfResponse(String type, Object... obj) throws Exception {
@@ -127,7 +124,7 @@ public class ReportService {
 
 	public InvoiceDataList generateInvoiceList(int order_id) throws Exception {
 		List<OrderItemPojo> lis = order_service.getOrderItems(order_id);
-		InvoiceDataList idl = ConversionUtil.convert(product_service, lis);
+		InvoiceDataList idl = ConversionUtil.convertToInvoiceDataList(lis);
 		idl.setOrder_id(lis.get(0).getOrderPojo().getId());
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		idl.setDatetime(lis.get(0).getOrderPojo().getDatetime().format(formatter));

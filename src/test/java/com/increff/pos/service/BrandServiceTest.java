@@ -207,9 +207,9 @@ public class BrandServiceTest extends AbstractUnitTest {
 		BrandPojo p = getBrandPojo();
 		brand_service.add(p);
 
-		int id = brand_service.getId(p.getBrand(), p.getCategory());
-		assertEquals(brand_service.get(id).getBrand(), p.getBrand());
-		assertEquals(brand_service.get(id).getCategory(), p.getCategory());
+		BrandPojo brand_pojo = brand_service.getBrandPojo(p.getBrand(), p.getCategory());
+		assertEquals(brand_pojo.getBrand(), p.getBrand());
+		assertEquals(brand_pojo.getCategory(), p.getCategory());
 
 	}
 
@@ -220,7 +220,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 		BrandPojo p = getBrandPojo();
 		brand_service.add(p);
 		try {
-			brand_service.getId("samplebrand", "samplecategory");
+			brand_service.getBrandPojo("samplebrand", "samplecategory");
 			fail("Api Exception did not occur");
 		} catch(ApiException e) {
 			assertEquals(e.getMessage(),"The brand name and category given does not exist " + "samplebrand" + " " + "samplecategory");

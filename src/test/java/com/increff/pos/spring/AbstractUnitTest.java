@@ -27,6 +27,8 @@ import com.increff.pos.service.ProductDetailsService;
 @WebAppConfiguration("src/test/webapp")
 @Transactional
 public abstract class AbstractUnitTest {
+	
+	
 	@Autowired
 	protected BrandService brand_service;
 
@@ -41,8 +43,10 @@ public abstract class AbstractUnitTest {
 	
 	protected int order_id;
 	
+	protected List<String> barcodes;
+	
 	protected void insertPojos() throws ApiException {
-		List<String> barcodes = new ArrayList<String>();
+		barcodes = new ArrayList<String>();
 		for(int i=0; i<2; i++) {
 			BrandPojo brand = new BrandPojo();
 			brand.setBrand("brand");

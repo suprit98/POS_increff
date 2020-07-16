@@ -36,112 +36,109 @@ import com.increff.pos.util.XmlUtil;
 	private BrandService brand_service;
 
 	@Autowired
-	private ProductDetailsService product_service;
-
-	@Autowired
 	private InventoryService inventory_service;
 
 	public byte[] generatePdfResponse(String type, Object... obj) throws Exception {
-<span class="fc bfc" id="L45" title="All 2 branches covered.">		if (type.contentEquals(&quot;brand&quot;)) {</span>
-<span class="fc" id="L46">			BrandDataList brand_list = generateBrandList();</span>
-<span class="fc" id="L47">			XmlUtil.generateXml(new File(&quot;brand_report.xml&quot;), brand_list, BrandDataList.class);</span>
-<span class="fc" id="L48">			return XmlUtil.generatePDF(new File(&quot;brand_report.xml&quot;), new StreamSource(&quot;brand_report.xsl&quot;));</span>
-<span class="fc bfc" id="L49" title="All 2 branches covered.">		} else if (type.contentEquals(&quot;inventory&quot;)) {</span>
-<span class="fc" id="L50">			InventoryReportList inventory_list = generateInventoryList();</span>
-<span class="fc" id="L51">			XmlUtil.generateXml(new File(&quot;inventory_report.xml&quot;), inventory_list, InventoryReportList.class);</span>
-<span class="fc" id="L52">			return XmlUtil.generatePDF(new File(&quot;inventory_report.xml&quot;), new StreamSource(&quot;inventory_report.xsl&quot;));</span>
-<span class="fc bfc" id="L53" title="All 2 branches covered.">		} else if (type.contentEquals(&quot;sales&quot;)) {</span>
-<span class="fc" id="L54">			SalesDataList sales_data_list = generateSalesList((SalesFilter) obj[0]);</span>
-<span class="fc" id="L55">			XmlUtil.generateXml(new File(&quot;sales_report.xml&quot;), sales_data_list, SalesDataList.class);</span>
-<span class="fc" id="L56">			return XmlUtil.generatePDF(new File(&quot;sales_report.xml&quot;), new StreamSource(&quot;sales_report.xsl&quot;));</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">		if (type.contentEquals(&quot;brand&quot;)) {</span>
+<span class="fc" id="L43">			BrandDataList brand_list = generateBrandList();</span>
+<span class="fc" id="L44">			XmlUtil.generateXml(new File(&quot;brand_report.xml&quot;), brand_list, BrandDataList.class);</span>
+<span class="fc" id="L45">			return XmlUtil.generatePDF(new File(&quot;brand_report.xml&quot;), new StreamSource(&quot;brand_report.xsl&quot;));</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">		} else if (type.contentEquals(&quot;inventory&quot;)) {</span>
+<span class="fc" id="L47">			InventoryReportList inventory_list = generateInventoryList();</span>
+<span class="fc" id="L48">			XmlUtil.generateXml(new File(&quot;inventory_report.xml&quot;), inventory_list, InventoryReportList.class);</span>
+<span class="fc" id="L49">			return XmlUtil.generatePDF(new File(&quot;inventory_report.xml&quot;), new StreamSource(&quot;inventory_report.xsl&quot;));</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">		} else if (type.contentEquals(&quot;sales&quot;)) {</span>
+<span class="fc" id="L51">			SalesDataList sales_data_list = generateSalesList((SalesFilter) obj[0]);</span>
+<span class="fc" id="L52">			XmlUtil.generateXml(new File(&quot;sales_report.xml&quot;), sales_data_list, SalesDataList.class);</span>
+<span class="fc" id="L53">			return XmlUtil.generatePDF(new File(&quot;sales_report.xml&quot;), new StreamSource(&quot;sales_report.xsl&quot;));</span>
 		} else {
-<span class="fc" id="L58">			InvoiceDataList idl = generateInvoiceList((Integer) obj[0]);</span>
-<span class="fc" id="L59">			XmlUtil.generateXml(new File(&quot;invoice.xml&quot;), idl, InvoiceDataList.class);</span>
-<span class="fc" id="L60">			return XmlUtil.generatePDF(new File(&quot;invoice.xml&quot;), new StreamSource(&quot;invoice.xsl&quot;));</span>
+<span class="fc" id="L55">			InvoiceDataList idl = generateInvoiceList((Integer) obj[0]);</span>
+<span class="fc" id="L56">			XmlUtil.generateXml(new File(&quot;invoice.xml&quot;), idl, InvoiceDataList.class);</span>
+<span class="fc" id="L57">			return XmlUtil.generatePDF(new File(&quot;invoice.xml&quot;), new StreamSource(&quot;invoice.xsl&quot;));</span>
 		}
 	}
 
 
 	public BrandDataList generateBrandList() throws Exception {
-<span class="fc" id="L66">		List&lt;BrandPojo&gt; brand_pojo_list = brand_service.getAll();</span>
-<span class="fc" id="L67">		List&lt;BrandData&gt; brand_data_list = ConversionUtil.convert(brand_pojo_list);</span>
-<span class="fc" id="L68">		BrandDataList brand_list = new BrandDataList();</span>
-<span class="fc" id="L69">		brand_list.setBrand_list(brand_data_list);</span>
-<span class="fc" id="L70">		return brand_list;</span>
+<span class="fc" id="L63">		List&lt;BrandPojo&gt; brand_pojo_list = brand_service.getAll();</span>
+<span class="fc" id="L64">		List&lt;BrandData&gt; brand_data_list = ConversionUtil.convert(brand_pojo_list);</span>
+<span class="fc" id="L65">		BrandDataList brand_list = new BrandDataList();</span>
+<span class="fc" id="L66">		brand_list.setBrand_list(brand_data_list);</span>
+<span class="fc" id="L67">		return brand_list;</span>
 	}
 
 	public InventoryReportList generateInventoryList() throws Exception {
-<span class="fc" id="L74">		List&lt;InventoryPojo&gt; inventory_pojo_list = inventory_service.getAll();</span>
-<span class="fc" id="L75">		Map&lt;BrandPojo, Integer&gt; quantityPerBrandPojo = GroupByBrandCategory(inventory_pojo_list);</span>
-<span class="fc" id="L76">		return ConversionUtil.convertInventoryReportList(quantityPerBrandPojo);</span>
+<span class="fc" id="L71">		List&lt;InventoryPojo&gt; inventory_pojo_list = inventory_service.getAll();</span>
+<span class="fc" id="L72">		Map&lt;BrandPojo, Integer&gt; quantityPerBrandPojo = GroupByBrandCategory(inventory_pojo_list);</span>
+<span class="fc" id="L73">		return ConversionUtil.convertInventoryReportList(quantityPerBrandPojo);</span>
 
 	}
 
 	public Map&lt;BrandPojo, Integer&gt; GroupByBrandCategory(List&lt;InventoryPojo&gt; inventory_pojo_list) {
-<span class="fc" id="L81">		Map&lt;BrandPojo, Integer&gt; quantityPerBrandPojo = inventory_pojo_list.stream().collect(</span>
-<span class="fc" id="L82">				Collectors.groupingBy(InventoryPojo::getBrandPojo, Collectors.summingInt(InventoryPojo::getQuantity)));</span>
-<span class="fc" id="L83">		return quantityPerBrandPojo;</span>
+<span class="fc" id="L78">		Map&lt;BrandPojo, Integer&gt; quantityPerBrandPojo = inventory_pojo_list.stream().collect(</span>
+<span class="fc" id="L79">				Collectors.groupingBy(InventoryPojo::getBrandPojo, Collectors.summingInt(InventoryPojo::getQuantity)));</span>
+<span class="fc" id="L80">		return quantityPerBrandPojo;</span>
 	}
 
 	public SalesDataList generateSalesList(SalesFilter sales_filter) throws Exception {
 
-<span class="fc" id="L88">		List&lt;OrderItemPojo&gt; order_list = order_service.getAll();</span>
-<span class="fc" id="L89">		List&lt;OrderItemPojo&gt; filtered_orderitem_list = FilterByDate(sales_filter, order_list);</span>
-<span class="fc" id="L90">		Map&lt;BrandPojo, Integer&gt; quantityPerBrandCategory = getMapQuantity(sales_filter, filtered_orderitem_list);</span>
-<span class="fc" id="L91">		Map&lt;BrandPojo, Double&gt; revenuePerBrandCategory = getMapRevenue(sales_filter, filtered_orderitem_list);</span>
-<span class="fc" id="L92">		return ConversionUtil.convertSalesList(quantityPerBrandCategory, revenuePerBrandCategory);</span>
+<span class="fc" id="L85">		List&lt;OrderItemPojo&gt; order_list = order_service.getAll();</span>
+<span class="fc" id="L86">		List&lt;OrderItemPojo&gt; filtered_orderitem_list = FilterByDate(sales_filter, order_list);</span>
+<span class="fc" id="L87">		Map&lt;BrandPojo, Integer&gt; quantityPerBrandCategory = getMapQuantity(sales_filter, filtered_orderitem_list);</span>
+<span class="fc" id="L88">		Map&lt;BrandPojo, Double&gt; revenuePerBrandCategory = getMapRevenue(sales_filter, filtered_orderitem_list);</span>
+<span class="fc" id="L89">		return ConversionUtil.convertSalesList(quantityPerBrandCategory, revenuePerBrandCategory);</span>
 	}
 
 	public static List&lt;OrderItemPojo&gt; FilterByDate(SalesFilter sales_filter, List&lt;OrderItemPojo&gt; orderitem_list) {
-<span class="fc" id="L96">		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);</span>
-<span class="fc" id="L97">		LocalDateTime startDate = LocalDate.parse(sales_filter.getStartDate(), formatter).atStartOfDay();</span>
-<span class="fc" id="L98">		LocalDateTime endDate = LocalDate.parse(sales_filter.getEndDate(), formatter).atStartOfDay();</span>
-<span class="fc" id="L99">		List&lt;OrderItemPojo&gt; filtered_date_list = orderitem_list.stream()</span>
-<span class="pc bpc" id="L100" title="1 of 2 branches missed.">				.filter(orderitem -&gt; orderitem.getOrderPojo().getDatetime().isAfter(startDate)</span>
-<span class="pc bpc" id="L101" title="1 of 2 branches missed.">						&amp;&amp; orderitem.getOrderPojo().getDatetime().isBefore(endDate))</span>
-<span class="fc" id="L102">				.collect(Collectors.toList());</span>
-<span class="fc" id="L103">		return filtered_date_list;</span>
+<span class="fc" id="L93">		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);</span>
+<span class="fc" id="L94">		LocalDateTime startDate = LocalDate.parse(sales_filter.getStartDate(), formatter).atStartOfDay();</span>
+<span class="fc" id="L95">		LocalDateTime endDate = LocalDate.parse(sales_filter.getEndDate(), formatter).atStartOfDay();</span>
+<span class="fc" id="L96">		List&lt;OrderItemPojo&gt; filtered_date_list = orderitem_list.stream()</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">				.filter(orderitem -&gt; orderitem.getOrderPojo().getDatetime().isAfter(startDate)</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">						&amp;&amp; orderitem.getOrderPojo().getDatetime().isBefore(endDate))</span>
+<span class="fc" id="L99">				.collect(Collectors.toList());</span>
+<span class="fc" id="L100">		return filtered_date_list;</span>
 	}
 
 	public static Map&lt;BrandPojo, Integer&gt; getMapQuantity(SalesFilter sales_filter, List&lt;OrderItemPojo&gt; orderitem_list) {
-<span class="fc" id="L107">		Map&lt;BrandPojo, Integer&gt; quantityPerBrandCategory = orderitem_list.stream()</span>
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">				.filter(order_item -&gt; Equals(order_item.getBrandPojo().getBrand(), sales_filter.getBrand())</span>
-<span class="fc bfc" id="L109" title="All 2 branches covered.">						&amp;&amp; Equals(order_item.getBrandPojo().getCategory(), sales_filter.getCategory()))</span>
-<span class="fc" id="L110">				.collect(Collectors.groupingBy(OrderItemPojo::getBrandPojo,</span>
-<span class="fc" id="L111">						Collectors.summingInt(OrderItemPojo::getQuantity)));</span>
-<span class="fc" id="L112">		return quantityPerBrandCategory;</span>
+<span class="fc" id="L104">		Map&lt;BrandPojo, Integer&gt; quantityPerBrandCategory = orderitem_list.stream()</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">				.filter(order_item -&gt; Equals(order_item.getBrandPojo().getBrand(), sales_filter.getBrand())</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">						&amp;&amp; Equals(order_item.getBrandPojo().getCategory(), sales_filter.getCategory()))</span>
+<span class="fc" id="L107">				.collect(Collectors.groupingBy(OrderItemPojo::getBrandPojo,</span>
+<span class="fc" id="L108">						Collectors.summingInt(OrderItemPojo::getQuantity)));</span>
+<span class="fc" id="L109">		return quantityPerBrandCategory;</span>
 	}
 
 	public Map&lt;BrandPojo, Double&gt; getMapRevenue(SalesFilter sales_filter, List&lt;OrderItemPojo&gt; orderitem_list) {
-<span class="fc" id="L116">		Map&lt;BrandPojo, Double&gt; revenuePerBrandCategory = orderitem_list.stream()</span>
-<span class="pc bpc" id="L117" title="1 of 2 branches missed.">				.filter(order_item -&gt; Equals(order_item.getBrandPojo().getBrand(), sales_filter.getBrand())</span>
-<span class="fc bfc" id="L118" title="All 2 branches covered.">						&amp;&amp; Equals(order_item.getBrandPojo().getCategory(), sales_filter.getCategory()))</span>
-<span class="fc" id="L119">				.collect(Collectors.groupingBy(OrderItemPojo::getBrandPojo,</span>
-<span class="fc" id="L120">						Collectors.summingDouble(OrderItemPojo::getRevenue)));;</span>
-<span class="fc" id="L121">		return revenuePerBrandCategory;</span>
+<span class="fc" id="L113">		Map&lt;BrandPojo, Double&gt; revenuePerBrandCategory = orderitem_list.stream()</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">				.filter(order_item -&gt; Equals(order_item.getBrandPojo().getBrand(), sales_filter.getBrand())</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">						&amp;&amp; Equals(order_item.getBrandPojo().getCategory(), sales_filter.getCategory()))</span>
+<span class="fc" id="L116">				.collect(Collectors.groupingBy(OrderItemPojo::getBrandPojo,</span>
+<span class="fc" id="L117">						Collectors.summingDouble(OrderItemPojo::getRevenue)));;</span>
+<span class="fc" id="L118">		return revenuePerBrandCategory;</span>
 	}
 
 	protected static Boolean Equals(String a, String b) {
-<span class="fc bfc" id="L125" title="All 4 branches covered.">		return (a.contentEquals(b) || b.isEmpty());</span>
+<span class="fc bfc" id="L122" title="All 4 branches covered.">		return (a.contentEquals(b) || b.isEmpty());</span>
 	}
 
 	public InvoiceDataList generateInvoiceList(int order_id) throws Exception {
-<span class="fc" id="L129">		List&lt;OrderItemPojo&gt; lis = order_service.getOrderItems(order_id);</span>
-<span class="fc" id="L130">		InvoiceDataList idl = ConversionUtil.convert(product_service, lis);</span>
-<span class="fc" id="L131">		idl.setOrder_id(lis.get(0).getOrderPojo().getId());</span>
-<span class="fc" id="L132">		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd HH:mm&quot;);</span>
-<span class="fc" id="L133">		idl.setDatetime(lis.get(0).getOrderPojo().getDatetime().format(formatter));</span>
-<span class="fc" id="L134">		double total = calculateTotal(idl);</span>
-<span class="fc" id="L135">		idl.setTotal(total);</span>
-<span class="fc" id="L136">		return idl;</span>
+<span class="fc" id="L126">		List&lt;OrderItemPojo&gt; lis = order_service.getOrderItems(order_id);</span>
+<span class="fc" id="L127">		InvoiceDataList idl = ConversionUtil.convertToInvoiceDataList(lis);</span>
+<span class="fc" id="L128">		idl.setOrder_id(lis.get(0).getOrderPojo().getId());</span>
+<span class="fc" id="L129">		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd HH:mm&quot;);</span>
+<span class="fc" id="L130">		idl.setDatetime(lis.get(0).getOrderPojo().getDatetime().format(formatter));</span>
+<span class="fc" id="L131">		double total = calculateTotal(idl);</span>
+<span class="fc" id="L132">		idl.setTotal(total);</span>
+<span class="fc" id="L133">		return idl;</span>
 	}
 
 	private static double calculateTotal(InvoiceDataList idl) {
-<span class="fc" id="L140">		double total = 0;</span>
-<span class="fc bfc" id="L141" title="All 2 branches covered.">		for (InvoiceData i : idl.getInvoiceLis()) {</span>
-<span class="fc" id="L142">			total += (i.getMrp() * i.getQuantity());</span>
-<span class="fc" id="L143">		}</span>
-<span class="fc" id="L144">		return total;</span>
+<span class="fc" id="L137">		double total = 0;</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">		for (InvoiceData i : idl.getInvoiceLis()) {</span>
+<span class="fc" id="L139">			total += (i.getMrp() * i.getQuantity());</span>
+<span class="fc" id="L140">		}</span>
+<span class="fc" id="L141">		return total;</span>
 	}
 
 }

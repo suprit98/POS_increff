@@ -1,6 +1,8 @@
 package com.increff.pos.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,16 @@ public class ProductDetailsService {
 	@Transactional
 	public List<ProductDetailsPojo> getAll() {
 		return productdetails_dao.selectAll();
+	}
+	
+	@Transactional
+	public Map<String,ProductDetailsPojo> getAllProductPojosByBarcode() {
+		List<ProductDetailsPojo> product_list = getAll();
+		Map<String,ProductDetailsPojo> barcode_product = new HashMap<String,ProductDetailsPojo>();
+		for(ProductDetailsPojo product:product_list) {
+			barcode_product.put(product.getBarcode(), product);
+		}
+		return barcode_product;
 	}
 	
 	@Transactional(rollbackFor = ApiException.class)

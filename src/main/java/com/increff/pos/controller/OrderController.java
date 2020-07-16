@@ -1,6 +1,7 @@
 package com.increff.pos.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,6 +17,7 @@ import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.OrderPojo;
+import com.increff.pos.pojo.ProductDetailsPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.OrderService;
 import com.increff.pos.service.ProductDetailsService;
@@ -36,17 +38,20 @@ public class OrderController {
 
 	@ApiOperation(value = "Adds Order Details")
 	@RequestMapping(path = "/api/order", method = RequestMethod.POST)
-	public OrderData add(@RequestBody OrderItemForm[] forms, HttpServletResponse response) throws ApiException, Exception {
-		List<OrderItemPojo> lis = ConversionUtil.convertOrderItemForms(product_service, forms);
+	public OrderData add(@RequestBody OrderItemForm[] forms, HttpServletResponse response)
+			throws ApiException, Exception {
+		Map<String,ProductDetailsPojo> barcode_product = product_service.getAllProductPojosByBarcode();
+		List<OrderItemPojo> lis = ConversionUtil.convertOrderItemForms(barcode_product, forms);
 		int order_id = order_service.add(lis);
 		return ConversionUtil.convertOrderPojo(order_service.getOrder(order_id));
 
 	}
-	
+
 	@ApiOperation(value = "Adds an OrderItem to an existing order")
 	@RequestMapping(path = "/api/order_item/{order_id}", method = RequestMethod.POST)
 	public void addOrderItem(@PathVariable int order_id, @RequestBody OrderItemForm f) throws ApiException {
-		OrderItemPojo p = ConversionUtil.convert(product_service,f);
+		ProductDetailsPojo product_pojo = product_service.get(f.getBarcode());
+		OrderItemPojo p = ConversionUtil.convert(product_pojo, f);
 		order_service.addOrderItem(order_id, p);
 	}
 
@@ -64,7 +69,7 @@ public class OrderController {
 		List<OrderItemData> list2 = ConversionUtil.convertOrderItemList(list);
 		return list2;
 	}
-	
+
 	@ApiOperation(value = "Gets list of Orders")
 	@RequestMapping(path = "/api/all_orders", method = RequestMethod.GET)
 	public List<OrderData> getAllOrders() {
@@ -72,7 +77,7 @@ public class OrderController {
 		List<OrderData> orders_data_list = ConversionUtil.convertOrderList(orders_list);
 		return orders_data_list;
 	}
-	
+
 	@ApiOperation(value = "Gets list of Order Items of a particular order")
 	@RequestMapping(path = "/api/all_orders/{id}", method = RequestMethod.GET)
 	public List<OrderItemData> getOrderItemsbyOrderId(@PathVariable int id) throws ApiException {
@@ -90,7 +95,8 @@ public class OrderController {
 	@ApiOperation(value = "Updates a OrderItem record")
 	@RequestMapping(path = "/api/order/{id}", method = RequestMethod.PUT)
 	public void update(@PathVariable int id, @RequestBody OrderItemForm f) throws ApiException {
-		OrderItemPojo p = ConversionUtil.convert(product_service, f);
+		ProductDetailsPojo product_pojo = product_service.get(f.getBarcode());
+		OrderItemPojo p = ConversionUtil.convert(product_pojo, f);
 		order_service.update(id, p);
 	}
 

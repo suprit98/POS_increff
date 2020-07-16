@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.increff.pos.model.ProductDetailsData;
 import com.increff.pos.model.ProductDetailsForm;
+import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.ProductDetailsPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandService;
@@ -22,7 +23,7 @@ import io.swagger.annotations.ApiOperation;
 
 @Api
 @RestController
-<span class="fc" id="L25">public class ProductDetailsController {</span>
+<span class="fc" id="L26">public class ProductDetailsController {</span>
 
 	@Autowired
 	private ProductDetailsService product_details_service;
@@ -33,37 +34,39 @@ import io.swagger.annotations.ApiOperation;
 	@ApiOperation(value = &quot;Adds ProductDetails&quot;)
 	@RequestMapping(path = &quot;/api/product_details&quot;, method = RequestMethod.POST)
 	public void add(@RequestBody ProductDetailsForm userform) throws ApiException {
-<span class="nc" id="L36">		ProductDetailsPojo p = ConversionUtil.convert(brand_service,userform);</span>
-<span class="nc" id="L37">		product_details_service.add(p);</span>
-<span class="nc" id="L38">	}</span>
+<span class="nc" id="L37">		BrandPojo brand_pojo = brand_service.getBrandPojo(userform.getBrand(), userform.getCategory()); </span>
+<span class="nc" id="L38">		ProductDetailsPojo p = ConversionUtil.convert(brand_pojo,userform);</span>
+<span class="nc" id="L39">		product_details_service.add(p);</span>
+<span class="nc" id="L40">	}</span>
 
 	@ApiOperation(value = &quot;Deletes a ProductDetails record&quot;)
 	@RequestMapping(path = &quot;/api/product_details/{id}&quot;, method = RequestMethod.DELETE)
 	public void delete(@PathVariable int id) {
-<span class="nc" id="L43">		product_details_service.delete(id);</span>
-<span class="nc" id="L44">	}</span>
+<span class="nc" id="L45">		product_details_service.delete(id);</span>
+<span class="nc" id="L46">	}</span>
 
 	@ApiOperation(value = &quot;Gets a ProductDetails record by id&quot;)
 	@RequestMapping(path = &quot;/api/product_details/{id}&quot;, method = RequestMethod.GET)
 	public ProductDetailsData get(@PathVariable int id) throws ApiException {
-<span class="nc" id="L49">		ProductDetailsPojo p = product_details_service.get(id);</span>
-<span class="nc" id="L50">		return ConversionUtil.convert(p);</span>
+<span class="nc" id="L51">		ProductDetailsPojo p = product_details_service.get(id);</span>
+<span class="nc" id="L52">		return ConversionUtil.convert(p);</span>
 	}
 
 	@ApiOperation(value = &quot;Gets list of Products&quot;)
 	@RequestMapping(path = &quot;/api/product_details&quot;, method = RequestMethod.GET)
 	public List&lt;ProductDetailsData&gt; getAll() {
-<span class="nc" id="L56">		List&lt;ProductDetailsPojo&gt; list = product_details_service.getAll();</span>
-<span class="nc" id="L57">		List&lt;ProductDetailsData&gt; list2 = ConversionUtil.convertProductList(list);</span>
-<span class="nc" id="L58">		return list2;</span>
+<span class="nc" id="L58">		List&lt;ProductDetailsPojo&gt; list = product_details_service.getAll();</span>
+<span class="nc" id="L59">		List&lt;ProductDetailsData&gt; list2 = ConversionUtil.convertProductList(list);</span>
+<span class="nc" id="L60">		return list2;</span>
 	}
 
 	@ApiOperation(value = &quot;Updates a ProductDetails record&quot;)
 	@RequestMapping(path = &quot;/api/product_details/{id}&quot;, method = RequestMethod.PUT)
-	public void update(@PathVariable int id, @RequestBody ProductDetailsForm f) throws ApiException {
-<span class="nc" id="L64">		ProductDetailsPojo p = ConversionUtil.convert(brand_service,f);</span>
-<span class="nc" id="L65">		product_details_service.update(id, p);</span>
-<span class="nc" id="L66">	}</span>
+	public void update(@PathVariable int id, @RequestBody ProductDetailsForm userform) throws ApiException {
+<span class="nc" id="L66">		BrandPojo brand_pojo = brand_service.getBrandPojo(userform.getBrand(), userform.getCategory());</span>
+<span class="nc" id="L67">		ProductDetailsPojo p = ConversionUtil.convert(brand_pojo,userform);</span>
+<span class="nc" id="L68">		product_details_service.update(id, p);</span>
+<span class="nc" id="L69">	}</span>
 
 	
 

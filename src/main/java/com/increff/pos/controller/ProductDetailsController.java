@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.increff.pos.model.ProductDetailsData;
 import com.increff.pos.model.ProductDetailsForm;
+import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.ProductDetailsPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandService;
@@ -33,7 +34,8 @@ public class ProductDetailsController {
 	@ApiOperation(value = "Adds ProductDetails")
 	@RequestMapping(path = "/api/product_details", method = RequestMethod.POST)
 	public void add(@RequestBody ProductDetailsForm userform) throws ApiException {
-		ProductDetailsPojo p = ConversionUtil.convert(brand_service,userform);
+		BrandPojo brand_pojo = brand_service.getBrandPojo(userform.getBrand(), userform.getCategory()); 
+		ProductDetailsPojo p = ConversionUtil.convert(brand_pojo,userform);
 		product_details_service.add(p);
 	}
 
@@ -60,8 +62,9 @@ public class ProductDetailsController {
 
 	@ApiOperation(value = "Updates a ProductDetails record")
 	@RequestMapping(path = "/api/product_details/{id}", method = RequestMethod.PUT)
-	public void update(@PathVariable int id, @RequestBody ProductDetailsForm f) throws ApiException {
-		ProductDetailsPojo p = ConversionUtil.convert(brand_service,f);
+	public void update(@PathVariable int id, @RequestBody ProductDetailsForm userform) throws ApiException {
+		BrandPojo brand_pojo = brand_service.getBrandPojo(userform.getBrand(), userform.getCategory());
+		ProductDetailsPojo p = ConversionUtil.convert(brand_pojo,userform);
 		product_details_service.update(id, p);
 	}
 
