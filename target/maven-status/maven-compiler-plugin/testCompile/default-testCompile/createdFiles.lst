@@ -9,7 +9,6 @@ com/increff/pos/model/InventoryDataTest.class
 com/increff/pos/service/ReportServiceTest.class
 com/increff/pos/service/BrandServiceTest.class
 com/increff/pos/model/ProductDetailsDataTest.class
-com/increff/pos/util/AbstractUtilTest.class
 com/increff/pos/service/ProductDetailsServiceTest.class
 com/increff/pos/util/BarcodeUtilTest.class
 com/increff/pos/model/ErrorMessageTest.class

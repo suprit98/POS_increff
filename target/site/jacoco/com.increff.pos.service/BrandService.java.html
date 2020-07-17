@@ -61,7 +61,7 @@ import com.increff.pos.pojo.BrandPojo;
 	@Transactional
 	public BrandPojo getBrandPojo(String brand, String category) throws ApiException {
 <span class="fc bfc" id="L63" title="All 2 branches covered.">		List&lt;BrandPojo&gt; brand_list = getAll().stream().filter(brand_pojo -&gt; brand_pojo.getBrand().contentEquals(brand)</span>
-<span class="pc bpc" id="L64" title="1 of 2 branches missed.">				&amp;&amp; brand_pojo.getCategory().contentEquals(category)).collect(Collectors.toList());</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">				&amp;&amp; brand_pojo.getCategory().contentEquals(category)).collect(Collectors.toList());</span>
 
 <span class="fc bfc" id="L66" title="All 2 branches covered.">		if (brand_list.isEmpty()) {</span>
 <span class="fc" id="L67">			throw new ApiException(&quot;The brand name and category given does not exist &quot; + brand + &quot; &quot; + category);</span>

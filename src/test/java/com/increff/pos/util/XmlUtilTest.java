@@ -14,26 +14,19 @@ import com.increff.pos.model.InventoryReportList;
 import com.increff.pos.model.InvoiceDataList;
 import com.increff.pos.model.SalesDataList;
 import com.increff.pos.model.SalesFilter;
-import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.OrderItemPojo;
-import com.increff.pos.pojo.ProductDetailsPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.ReportService;
+import com.increff.pos.spring.AbstractUnitTest;
 
-public class XmlUtilTest extends AbstractUtilTest{
+public class XmlUtilTest extends AbstractUnitTest{
 	
 	@Autowired
 	private ReportService report_service;
 	
 	@Before
 	public void init() throws ApiException {
-		BrandPojo brand = getBrandPojo();
-		BrandPojo brand2 = getAnotherBrandPojo();
-		ProductDetailsPojo product1 = getProductDetailsPojo(brand);
-		ProductDetailsPojo product2 = getAnotherProductDetailsPojo(brand2);
-		getInventoryPojo(product1);
-		getInventoryPojo(product2);
-		getOrderItemPojo();
+		insertPojos();
 	}
 	
 	@Test

@@ -128,7 +128,7 @@ public class OrderService {
 		return p;
 	}
 
-	private void updateInventory(OrderItemPojo p) throws ApiException {
+	protected void updateInventory(OrderItemPojo p) throws ApiException {
 		int quantity = p.getQuantity();
 
 		int quantityInInventory = inventory_service.getByProductId(p.getProductPojo().getId()).getQuantity();
@@ -145,7 +145,7 @@ public class OrderService {
 
 	}
 
-	private void updateInventory(int old_qty, OrderItemPojo p) throws ApiException {
+	protected void updateInventory(int old_qty, OrderItemPojo p) throws ApiException {
 		int quantity = p.getQuantity();
 
 		int quantityInInventory = inventory_service.getByProductId(p.getProductPojo().getId()).getQuantity() + old_qty;

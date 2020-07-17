@@ -128,7 +128,7 @@ import com.increff.pos.pojo.OrderPojo;
 <span class="fc" id="L128">		return p;</span>
 	}
 
-	private void updateInventory(OrderItemPojo p) throws ApiException {
+	protected void updateInventory(OrderItemPojo p) throws ApiException {
 <span class="fc" id="L132">		int quantity = p.getQuantity();</span>
 
 <span class="fc" id="L134">		int quantityInInventory = inventory_service.getByProductId(p.getProductPojo().getId()).getQuantity();</span>
@@ -145,7 +145,7 @@ import com.increff.pos.pojo.OrderPojo;
 
 <span class="fc" id="L146">	}</span>
 
-	private void updateInventory(int old_qty, OrderItemPojo p) throws ApiException {
+	protected void updateInventory(int old_qty, OrderItemPojo p) throws ApiException {
 <span class="fc" id="L149">		int quantity = p.getQuantity();</span>
 
 <span class="fc" id="L151">		int quantityInInventory = inventory_service.getByProductId(p.getProductPojo().getId()).getQuantity() + old_qty;</span>

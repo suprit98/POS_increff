@@ -9,19 +9,12 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.ProductDetailsPojo;
 import com.increff.pos.spring.AbstractUnitTest;
 
 public class ProductDetailsServiceTest extends AbstractUnitTest {
-
-	@Autowired
-	private BrandService brand_service;
-
-	@Autowired
-	private ProductDetailsService product_service;
 
 	@Before
 	public void init() throws ApiException {
@@ -33,7 +26,7 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 	@Test()
 	public void testAdd() throws ApiException {
 
-		BrandPojo b = getBrandPojo();
+		BrandPojo b = brands.get(0);
 		ProductDetailsPojo p = getProductDetailsPojo(b);
 		List<ProductDetailsPojo> product_list_before = product_service.getAll();
 		product_service.add(p);
@@ -50,7 +43,7 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 	@Test()
 	public void testAddWrong() throws ApiException {
 
-		BrandPojo b = getBrandPojo();
+		BrandPojo b = brands.get(0);
 		ProductDetailsPojo p = getWrongProductDetailsPojo(b);
 		try {
 			product_service.add(p);
@@ -66,7 +59,7 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 	@Test()
 	public void testAddWrong2() throws ApiException {
 
-		BrandPojo b = getBrandPojo();
+		BrandPojo b = brands.get(0);
 		ProductDetailsPojo p = getWrongProductDetailsPojo(b);
 		p.setName("valid_product");
 		try {
@@ -82,7 +75,7 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 	@Test()
 	public void testDelete() throws ApiException {
 
-		BrandPojo b = getBrandPojo();
+		BrandPojo b = brands.get(0);
 		ProductDetailsPojo p = getProductDetailsPojo(b);
 		product_service.add(p);
 
@@ -103,15 +96,11 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 	@Test()
 	public void testGetById() throws ApiException {
 
-		BrandPojo b = getBrandPojo();
-		ProductDetailsPojo p = getProductDetailsPojo(b);
-		product_service.add(p);
-
-		ProductDetailsPojo db_product_pojo = product_service.get(p.getId());
-		assertEquals(p.getBarcode(), db_product_pojo.getBarcode());
-		assertEquals(p.getBrandPojo(), db_product_pojo.getBrandPojo());
-		assertEquals(p.getMrp(), db_product_pojo.getMrp(), 0.001);
-		assertEquals(p.getName(), db_product_pojo.getName());
+		ProductDetailsPojo db_product_pojo = product_service.get(products.get(0).getId());
+		assertEquals(products.get(0).getBarcode(), db_product_pojo.getBarcode());
+		assertEquals(products.get(0).getBrandPojo(), db_product_pojo.getBrandPojo());
+		assertEquals(products.get(0).getMrp(), db_product_pojo.getMrp(), 0.001);
+		assertEquals(products.get(0).getName(), db_product_pojo.getName());
 
 	}
 
@@ -131,15 +120,11 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 	@Test()
 	public void testGetByBarcode() throws ApiException {
 
-		BrandPojo b = getBrandPojo();
-		ProductDetailsPojo p = getProductDetailsPojo(b);
-		product_service.add(p);
-
-		ProductDetailsPojo db_product_pojo = product_service.get(p.getBarcode());
-		assertEquals(p.getId(), db_product_pojo.getId());
-		assertEquals(p.getBrandPojo(), db_product_pojo.getBrandPojo());
-		assertEquals(p.getMrp(), db_product_pojo.getMrp(), 0.001);
-		assertEquals(p.getName(), db_product_pojo.getName());
+		ProductDetailsPojo db_product_pojo = product_service.get(products.get(0).getBarcode());
+		assertEquals(products.get(0).getId(), db_product_pojo.getId());
+		assertEquals(products.get(0).getBrandPojo(), db_product_pojo.getBrandPojo());
+		assertEquals(products.get(0).getMrp(), db_product_pojo.getMrp(), 0.001);
+		assertEquals(products.get(0).getName(), db_product_pojo.getName());
 
 	}
 
@@ -160,42 +145,36 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 	@Test
 	public void testGetAll() {
 		List<ProductDetailsPojo> product_list = product_service.getAll();
-		assertEquals(2, product_list.size());
+		assertEquals(3, product_list.size());
 	}
-	
-	//Testing getting of all Product pojos by barcode
+
+	// Testing getting of all Product pojos by barcode
 	@Test
 	public void testGetAllProductPojosByBarcode() {
-		Map<String,ProductDetailsPojo> barcode_product = product_service.getAllProductPojosByBarcode();
-		assertEquals(2,barcode_product.size());
-		assertTrue(barcode_product.containsKey(barcodes.get(0)));
-		assertTrue(barcode_product.containsKey(barcodes.get(1)));
+		Map<String, ProductDetailsPojo> barcode_product = product_service.getAllProductPojosByBarcode();
+		assertEquals(3, barcode_product.size());
+		assertTrue(barcode_product.containsKey(products.get(0).getBarcode()));
+		assertTrue(barcode_product.containsKey(products.get(1).getBarcode()));
 	}
 
 	// Testing updation of productdetails pojo
 	@Test
 	public void testUpdate() throws ApiException {
-		BrandPojo b = getBrandPojo();
-		ProductDetailsPojo p = getProductDetailsPojo(b);
-		product_service.add(p);
 
-		ProductDetailsPojo p2 = getNewProductDetailsPojo(b);
-		product_service.update(p.getId(), p2);
-		assertEquals(p2.getBrandPojo(), product_service.get(p.getId()).getBrandPojo());
-		assertEquals(p2.getName(), product_service.get(p.getId()).getName());
-		assertEquals(p2.getMrp(), product_service.get(p.getId()).getMrp(), 0.001);
+		ProductDetailsPojo p2 = getNewProductDetailsPojo(brands.get(1));
+		product_service.update(products.get(0).getId(), p2);
+		assertEquals(p2.getBrandPojo(), product_service.get(products.get(0).getId()).getBrandPojo());
+		assertEquals(p2.getName(), product_service.get(products.get(0).getId()).getName());
+		assertEquals(p2.getMrp(), product_service.get(products.get(0).getId()).getMrp(), 0.001);
 	}
 
 	// Testing updation with invalid details. Should throw exception
 	@Test()
 	public void testUpdateWrong() throws ApiException {
-		BrandPojo b = getBrandPojo();
-		ProductDetailsPojo p = getProductDetailsPojo(b);
-		product_service.add(p);
 
-		ProductDetailsPojo p2 = getWrongProductDetailsPojo(b);
+		ProductDetailsPojo p2 = getWrongProductDetailsPojo(brands.get(1));
 		try {
-			product_service.update(p.getId(), p2);
+			product_service.update(products.get(0).getId(), p2);
 			fail("ApiException did not occur");
 		} catch (ApiException e) {
 			assertEquals(e.getMessage(), "The name of product must not be empty");
@@ -206,29 +185,23 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 	// Testing checkifexists
 	@Test()
 	public void testCheckIfExistsId() throws ApiException {
-		BrandPojo b = getBrandPojo();
-		ProductDetailsPojo p = getProductDetailsPojo(b);
-		product_service.add(p);
 
-		ProductDetailsPojo db_product_pojo = product_service.checkIfExists(p.getId());
-		assertEquals(p.getBarcode(), db_product_pojo.getBarcode());
-		assertEquals(p.getBrandPojo(), db_product_pojo.getBrandPojo());
-		assertEquals(p.getMrp(), db_product_pojo.getMrp(), 0.001);
-		assertEquals(p.getName(), db_product_pojo.getName());
+		ProductDetailsPojo db_product_pojo = product_service.checkIfExists(products.get(0).getId());
+		assertEquals(products.get(0).getId(), db_product_pojo.getId());
+		assertEquals(products.get(0).getBrandPojo(), db_product_pojo.getBrandPojo());
+		assertEquals(products.get(0).getMrp(), db_product_pojo.getMrp(), 0.001);
+		assertEquals(products.get(0).getName(), db_product_pojo.getName());
 	}
 
 	// Testing checkifexists for barcode
 	@Test()
 	public void testCheckIfExistsBarcode() throws ApiException {
-		BrandPojo b = getBrandPojo();
-		ProductDetailsPojo p = getProductDetailsPojo(b);
-		product_service.add(p);
 
-		ProductDetailsPojo db_product_pojo = product_service.checkIfExists(p.getBarcode());
-		assertEquals(p.getBarcode(), db_product_pojo.getBarcode());
-		assertEquals(p.getBrandPojo(), db_product_pojo.getBrandPojo());
-		assertEquals(p.getMrp(), db_product_pojo.getMrp(), 0.001);
-		assertEquals(p.getName(), db_product_pojo.getName());
+		ProductDetailsPojo db_product_pojo = product_service.checkIfExists(products.get(0).getBarcode());
+		assertEquals(products.get(0).getId(), db_product_pojo.getId());
+		assertEquals(products.get(0).getBrandPojo(), db_product_pojo.getBrandPojo());
+		assertEquals(products.get(0).getMrp(), db_product_pojo.getMrp(), 0.001);
+		assertEquals(products.get(0).getName(), db_product_pojo.getName());
 	}
 
 	// Testing check if exists for wrong id
@@ -270,8 +243,7 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 	// Testing validate
 	@Test
 	public void testValidate() throws ApiException {
-		BrandPojo b = getBrandPojo();
-		ProductDetailsPojo p = getProductDetailsPojo(b);
+		ProductDetailsPojo p = getProductDetailsPojo(brands.get(0));
 
 		product_service.validate(p);
 		assertTrue(!p.getName().isEmpty());
@@ -282,8 +254,7 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 	// Testing validate for an invalid product details pojo. Should throw exception
 	@Test()
 	public void testValidateWrong() throws ApiException {
-		BrandPojo b = getBrandPojo();
-		ProductDetailsPojo p = getWrongProductDetailsPojo(b);
+		ProductDetailsPojo p = getWrongProductDetailsPojo(brands.get(0));
 
 		try {
 			product_service.validate(p);
