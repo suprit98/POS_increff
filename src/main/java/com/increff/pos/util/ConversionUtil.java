@@ -82,7 +82,10 @@ public class ConversionUtil {
 		OrderItemPojo p = new OrderItemPojo();
 		p.setProductPojo(product_pojo);
 		p.setQuantity(f.getQuantity());
-		p.setSellingPrice(product_pojo.getMrp());
+		if(product_pojo != null) {
+			p.setSellingPrice(product_pojo.getMrp());
+		}
+		
 		return p;
 	}
 

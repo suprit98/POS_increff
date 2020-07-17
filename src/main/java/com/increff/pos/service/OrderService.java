@@ -31,6 +31,9 @@ public class OrderService {
 		op.setDatetime(LocalDateTime.now());
 		int order_id = order_dao.insert(op);
 		for (OrderItemPojo p : lis) {
+			if(p.getProductPojo() == null) {
+				throw new ApiException("An invalid product was entered. Please check");
+			}
 			p.setOrderPojo(order_dao.select(order_id));
 			validate(p);
 			order_item_dao.insert(p);

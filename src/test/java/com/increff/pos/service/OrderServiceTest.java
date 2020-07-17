@@ -188,6 +188,26 @@ public class OrderServiceTest extends AbstractUnitTest {
 			assertEquals(e.getMessage(), "OrderItem with given ID does not exist, id: " + id);
 		}
 	}
+	
+	@Test
+	public void testDeleteOrder() throws ApiException {
+		List<OrderPojo> order_list_before = order_service.getAllOrders();
+		List<OrderItemPojo> orderitem_list_before = order_service.getAll();
+		
+		order_service.deleteOrder(order_id);
+		List<OrderPojo> order_list_after = order_service.getAllOrders();
+		List<OrderItemPojo> orderitem_list_after = order_service.getAll();
+		
+		assertEquals(order_list_before.size()-1,order_list_after.size());
+		assertEquals(orderitem_list_before.size()-2,orderitem_list_after.size());
+		
+		try {
+			order_service.getOrder(order_id);
+			fail("ApiException did not occur");
+		} catch (ApiException e) {
+			assertEquals(e.getMessage(),"Order with given ID does not exist, id: " + order_id);
+		}
+	}
 
 	//Testing updation of order items
 	@Test

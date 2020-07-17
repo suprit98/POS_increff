@@ -48,7 +48,7 @@ import com.increff.pos.pojo.OrderItemPojo;
 		
 <span class="fc" id="L49">	}</span>
 	
-	TypedQuery&lt;OrderItemPojo&gt; getQuery(String jpql) {
+	private TypedQuery&lt;OrderItemPojo&gt; getQuery(String jpql) {
 <span class="fc" id="L52">		return em.createQuery(jpql,OrderItemPojo.class);</span>
 	}
 

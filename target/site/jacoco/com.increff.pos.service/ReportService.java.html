@@ -74,7 +74,7 @@ import com.increff.pos.util.XmlUtil;
 
 	}
 
-	public Map&lt;BrandPojo, Integer&gt; GroupByBrandCategory(List&lt;InventoryPojo&gt; inventory_pojo_list) {
+	private static Map&lt;BrandPojo, Integer&gt; GroupByBrandCategory(List&lt;InventoryPojo&gt; inventory_pojo_list) {
 <span class="fc" id="L78">		Map&lt;BrandPojo, Integer&gt; quantityPerBrandPojo = inventory_pojo_list.stream().collect(</span>
 <span class="fc" id="L79">				Collectors.groupingBy(InventoryPojo::getBrandPojo, Collectors.summingInt(InventoryPojo::getQuantity)));</span>
 <span class="fc" id="L80">		return quantityPerBrandPojo;</span>
@@ -89,7 +89,7 @@ import com.increff.pos.util.XmlUtil;
 <span class="fc" id="L89">		return ConversionUtil.convertSalesList(quantityPerBrandCategory, revenuePerBrandCategory);</span>
 	}
 
-	public static List&lt;OrderItemPojo&gt; FilterByDate(SalesFilter sales_filter, List&lt;OrderItemPojo&gt; orderitem_list) {
+	private static List&lt;OrderItemPojo&gt; FilterByDate(SalesFilter sales_filter, List&lt;OrderItemPojo&gt; orderitem_list) {
 <span class="fc" id="L93">		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);</span>
 <span class="fc" id="L94">		LocalDateTime startDate = LocalDate.parse(sales_filter.getStartDate(), formatter).atStartOfDay();</span>
 <span class="fc" id="L95">		LocalDateTime endDate = LocalDate.parse(sales_filter.getEndDate(), formatter).atStartOfDay();</span>
@@ -100,7 +100,7 @@ import com.increff.pos.util.XmlUtil;
 <span class="fc" id="L100">		return filtered_date_list;</span>
 	}
 
-	public static Map&lt;BrandPojo, Integer&gt; getMapQuantity(SalesFilter sales_filter, List&lt;OrderItemPojo&gt; orderitem_list) {
+	private static Map&lt;BrandPojo, Integer&gt; getMapQuantity(SalesFilter sales_filter, List&lt;OrderItemPojo&gt; orderitem_list) {
 <span class="fc" id="L104">		Map&lt;BrandPojo, Integer&gt; quantityPerBrandCategory = orderitem_list.stream()</span>
 <span class="pc bpc" id="L105" title="1 of 2 branches missed.">				.filter(order_item -&gt; Equals(order_item.getBrandPojo().getBrand(), sales_filter.getBrand())</span>
 <span class="fc bfc" id="L106" title="All 2 branches covered.">						&amp;&amp; Equals(order_item.getBrandPojo().getCategory(), sales_filter.getCategory()))</span>
@@ -109,7 +109,7 @@ import com.increff.pos.util.XmlUtil;
 <span class="fc" id="L109">		return quantityPerBrandCategory;</span>
 	}
 
-	public Map&lt;BrandPojo, Double&gt; getMapRevenue(SalesFilter sales_filter, List&lt;OrderItemPojo&gt; orderitem_list) {
+	private static Map&lt;BrandPojo, Double&gt; getMapRevenue(SalesFilter sales_filter, List&lt;OrderItemPojo&gt; orderitem_list) {
 <span class="fc" id="L113">		Map&lt;BrandPojo, Double&gt; revenuePerBrandCategory = orderitem_list.stream()</span>
 <span class="pc bpc" id="L114" title="1 of 2 branches missed.">				.filter(order_item -&gt; Equals(order_item.getBrandPojo().getBrand(), sales_filter.getBrand())</span>
 <span class="fc bfc" id="L115" title="All 2 branches covered.">						&amp;&amp; Equals(order_item.getBrandPojo().getCategory(), sales_filter.getCategory()))</span>
@@ -118,7 +118,7 @@ import com.increff.pos.util.XmlUtil;
 <span class="fc" id="L118">		return revenuePerBrandCategory;</span>
 	}
 
-	protected static Boolean Equals(String a, String b) {
+	private static Boolean Equals(String a, String b) {
 <span class="fc bfc" id="L122" title="All 4 branches covered.">		return (a.contentEquals(b) || b.isEmpty());</span>
 	}
 

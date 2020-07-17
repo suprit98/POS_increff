@@ -54,7 +54,7 @@ public class ProductDetailsDao {
 		
 	}
 	
-	TypedQuery<ProductDetailsPojo> getQuery(String jpql) {
+	private TypedQuery<ProductDetailsPojo> getQuery(String jpql) {
 		return em.createQuery(jpql,ProductDetailsPojo.class);
 	}
 

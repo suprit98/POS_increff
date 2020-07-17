@@ -55,7 +55,7 @@ import com.increff.pos.pojo.BrandPojo;
 		
 <span class="fc" id="L56">	}</span>
 	
-	TypedQuery&lt;BrandPojo&gt; getQuery(String jpql) {
+	private TypedQuery&lt;BrandPojo&gt; getQuery(String jpql) {
 <span class="fc" id="L59">		return em.createQuery(jpql,BrandPojo.class);</span>
 	}
 	

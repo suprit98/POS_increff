@@ -50,12 +50,12 @@ import com.increff.pos.util.BarcodeUtil;
 	
 	@Transactional
 	public Map&lt;String,ProductDetailsPojo&gt; getAllProductPojosByBarcode() {
-<span class="nc" id="L53">		List&lt;ProductDetailsPojo&gt; product_list = getAll();</span>
-<span class="nc" id="L54">		Map&lt;String,ProductDetailsPojo&gt; barcode_product = new HashMap&lt;String,ProductDetailsPojo&gt;();</span>
-<span class="nc bnc" id="L55" title="All 2 branches missed.">		for(ProductDetailsPojo product:product_list) {</span>
-<span class="nc" id="L56">			barcode_product.put(product.getBarcode(), product);</span>
-<span class="nc" id="L57">		}</span>
-<span class="nc" id="L58">		return barcode_product;</span>
+<span class="fc" id="L53">		List&lt;ProductDetailsPojo&gt; product_list = getAll();</span>
+<span class="fc" id="L54">		Map&lt;String,ProductDetailsPojo&gt; barcode_product = new HashMap&lt;String,ProductDetailsPojo&gt;();</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">		for(ProductDetailsPojo product:product_list) {</span>
+<span class="fc" id="L56">			barcode_product.put(product.getBarcode(), product);</span>
+<span class="fc" id="L57">		}</span>
+<span class="fc" id="L58">		return barcode_product;</span>
 	}
 	
 	@Transactional(rollbackFor = ApiException.class)

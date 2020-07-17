@@ -74,7 +74,7 @@ public class ReportService {
 
 	}
 
-	public Map<BrandPojo, Integer> GroupByBrandCategory(List<InventoryPojo> inventory_pojo_list) {
+	private static Map<BrandPojo, Integer> GroupByBrandCategory(List<InventoryPojo> inventory_pojo_list) {
 		Map<BrandPojo, Integer> quantityPerBrandPojo = inventory_pojo_list.stream().collect(
 				Collectors.groupingBy(InventoryPojo::getBrandPojo, Collectors.summingInt(InventoryPojo::getQuantity)));
 		return quantityPerBrandPojo;
@@ -89,7 +89,7 @@ public class ReportService {
 		return ConversionUtil.convertSalesList(quantityPerBrandCategory, revenuePerBrandCategory);
 	}
 
-	public static List<OrderItemPojo> FilterByDate(SalesFilter sales_filter, List<OrderItemPojo> orderitem_list) {
+	private static List<OrderItemPojo> FilterByDate(SalesFilter sales_filter, List<OrderItemPojo> orderitem_list) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDateTime startDate = LocalDate.parse(sales_filter.getStartDate(), formatter).atStartOfDay();
 		LocalDateTime endDate = LocalDate.parse(sales_filter.getEndDate(), formatter).atStartOfDay();
@@ -100,7 +100,7 @@ public class ReportService {
 		return filtered_date_list;
 	}
 
-	public static Map<BrandPojo, Integer> getMapQuantity(SalesFilter sales_filter, List<OrderItemPojo> orderitem_list) {
+	private static Map<BrandPojo, Integer> getMapQuantity(SalesFilter sales_filter, List<OrderItemPojo> orderitem_list) {
 		Map<BrandPojo, Integer> quantityPerBrandCategory = orderitem_list.stream()
 				.filter(order_item -> Equals(order_item.getBrandPojo().getBrand(), sales_filter.getBrand())
 						&& Equals(order_item.getBrandPojo().getCategory(), sales_filter.getCategory()))
@@ -109,7 +109,7 @@ public class ReportService {
 		return quantityPerBrandCategory;
 	}
 
-	public Map<BrandPojo, Double> getMapRevenue(SalesFilter sales_filter, List<OrderItemPojo> orderitem_list) {
+	private static Map<BrandPojo, Double> getMapRevenue(SalesFilter sales_filter, List<OrderItemPojo> orderitem_list) {
 		Map<BrandPojo, Double> revenuePerBrandCategory = orderitem_list.stream()
 				.filter(order_item -> Equals(order_item.getBrandPojo().getBrand(), sales_filter.getBrand())
 						&& Equals(order_item.getBrandPojo().getCategory(), sales_filter.getCategory()))
@@ -118,7 +118,7 @@ public class ReportService {
 		return revenuePerBrandCategory;
 	}
 
-	protected static Boolean Equals(String a, String b) {
+	private static Boolean Equals(String a, String b) {
 		return (a.contentEquals(b) || b.isEmpty());
 	}
 

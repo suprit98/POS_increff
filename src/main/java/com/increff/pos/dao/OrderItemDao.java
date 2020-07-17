@@ -48,7 +48,7 @@ public class OrderItemDao {
 		
 	}
 	
-	TypedQuery<OrderItemPojo> getQuery(String jpql) {
+	private TypedQuery<OrderItemPojo> getQuery(String jpql) {
 		return em.createQuery(jpql,OrderItemPojo.class);
 	}
 

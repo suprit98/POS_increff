@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="18" failures="0" name="com.increff.pos.service.OrderServiceTest" time="0.749" errors="0" skipped="0">
+<testsuite tests="19" failures="0" name="com.increff.pos.service.OrderServiceTest" time="0.8" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib"/>
@@ -64,22 +64,23 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testGetOrder" time="0.051"/>
+  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testDeleteOrder" time="0.072"/>
+  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testGetOrder" time="0.059"/>
   <testcase classname="com.increff.pos.service.OrderServiceTest" name="testUpdateInventoryDuringEditExceeding" time="0.067"/>
-  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testGetOrderItemsByOrderId" time="0.045"/>
-  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testAdd" time="0.054"/>
-  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testGet" time="0.041"/>
-  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testCheckIfExistsOrderWrong" time="0.032"/>
-  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testUpdateInventory" time="0.037"/>
-  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testAddWrong" time="0.033"/>
-  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testGetAllOrders" time="0.043"/>
-  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testAddOrderItem" time="0.044"/>
-  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testCheckIfExists" time="0.036"/>
-  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testUpdateInventoryExceeding" time="0.033"/>
-  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testDelete" time="0.063"/>
-  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testGetAll" time="0.037"/>
-  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testUpdateInventoryDuringEdit" time="0.036"/>
-  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testUpdate" time="0.037"/>
-  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testCheckIfExistsOrder" time="0.034"/>
+  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testGetOrderItemsByOrderId" time="0.04"/>
+  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testAdd" time="0.045"/>
+  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testGet" time="0.042"/>
+  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testCheckIfExistsOrderWrong" time="0.028"/>
+  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testUpdateInventory" time="0.039"/>
+  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testAddWrong" time="0.031"/>
+  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testGetAllOrders" time="0.036"/>
+  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testAddOrderItem" time="0.045"/>
+  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testCheckIfExists" time="0.037"/>
+  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testUpdateInventoryExceeding" time="0.037"/>
+  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testDelete" time="0.049"/>
+  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testGetAll" time="0.036"/>
+  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testUpdateInventoryDuringEdit" time="0.039"/>
+  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testUpdate" time="0.04"/>
+  <testcase classname="com.increff.pos.service.OrderServiceTest" name="testCheckIfExistsOrder" time="0.032"/>
   <testcase classname="com.increff.pos.service.OrderServiceTest" name="testCheckIfExistsWrong" time="0.026"/>
 </testsuite>

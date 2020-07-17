@@ -142,6 +142,7 @@ function displayOrdersList(data) {
 	console.log('Printing Orders');
 	var $tbody = $('#order-table2').find('tbody');
 	$tbody.empty();
+	data.reverse();
 	for(var i in data){
 		var e = data[i];
 		var buttonHtml = '<button style="padding: 0;border: none;background: none;" onclick="initializeDropdown(' + e.id + ')"><span class="material-icons">keyboard_arrow_down</span></button>';
