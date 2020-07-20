@@ -175,6 +175,15 @@ function validateInventory(json) {
 	return true;
 }
 
+function inventoryFilter() {
+	$("#inventory-filter").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#inventory-table-body tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+}
+
 
 //INITIALIZATION CODE
 function init(){
@@ -190,3 +199,4 @@ function init(){
 
 $(document).ready(init);
 $(document).ready(getInventoryList);
+$(document).ready(inventoryFilter);

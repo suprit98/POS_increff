@@ -35,9 +35,11 @@ public class ConversionUtilTest extends AbstractUnitTest {
 
 	@Before
 	public void init() throws ApiException {
+		//Insert initial pojos
 		insertPojos();
 	}
 
+	//Testing conversion of brand form to pojo
 	@Test
 	public void testConvertBrandFormToPojo() {
 
@@ -49,6 +51,7 @@ public class ConversionUtilTest extends AbstractUnitTest {
 		assertEquals(form.getCategory(), brand_pojo.getCategory());
 	}
 	
+	//Testing conversion of brand pojo to data
 	@Test
 	public void testConvertBrandPojoToData() {
 
@@ -61,6 +64,7 @@ public class ConversionUtilTest extends AbstractUnitTest {
 		assertEquals(pojo.getCategory(), brand_data.getCategory());
 	}
 	
+	//Testing conversion of product form to pojo
 	@Test
 	public void testConvertProductFormToPojo() throws ApiException {
 
@@ -76,6 +80,7 @@ public class ConversionUtilTest extends AbstractUnitTest {
 		assertEquals(form.getMrp(),product_pojo.getMrp(),0.001);
 	}
 	
+	//Testing conversion of product pojo to data
 	@Test
 	public void testConvertProductPojoToData() throws ApiException {
 
@@ -92,6 +97,7 @@ public class ConversionUtilTest extends AbstractUnitTest {
 		assertEquals(product_data.getMrp(),product_pojo.getMrp(),0.001);
 	}
 	
+	//Testing conversion of inventory form to pojo
 	@Test
 	public void testConvertInventoryFormToPojo() throws ApiException {
 
@@ -102,6 +108,7 @@ public class ConversionUtilTest extends AbstractUnitTest {
 		assertEquals(form.getQuantity(),inventory_pojo.getQuantity());
 	}
 	
+	//Testing conversion of inventory pojo to data
 	@Test
 	public void testConvertInventoryPojoToData() throws ApiException {
 
@@ -113,6 +120,7 @@ public class ConversionUtilTest extends AbstractUnitTest {
 		assertEquals(inventory_data.getQuantity(),pojo.getQuantity());
 	}
 	
+	//Testing conversion of orderitem form to pojo
 	@Test
 	public void testConvertOrderItemFormToPojo() throws ApiException {
 
@@ -124,6 +132,7 @@ public class ConversionUtilTest extends AbstractUnitTest {
 		assertEquals(form.getQuantity(),pojo.getQuantity());
 	}
 	
+	//Testing conversion of orderitem pojo to data
 	@Test
 	public void testConvertOrderItemPojoToData() throws ApiException {
 
@@ -138,6 +147,7 @@ public class ConversionUtilTest extends AbstractUnitTest {
 		assertEquals(data.getQuantity(),pojo.getQuantity());
 	}
 	
+	//Testing conversion of list of brand pojos to data
 	@Test
 	public void testListBrandPojoToData() {
 		List<BrandPojo> brand_list = brand_service.getAll();
@@ -147,6 +157,7 @@ public class ConversionUtilTest extends AbstractUnitTest {
 		assertEquals(brand_list.get(0).getCategory(),brand_data_list.get(0).getCategory());
 	}
 	
+	//Testing conversion of list of product pojos to data
 	@Test
 	public void testListProductPojoToData() {
 		List<ProductDetailsPojo> product_list = product_service.getAll();
@@ -159,6 +170,7 @@ public class ConversionUtilTest extends AbstractUnitTest {
 		assertEquals(product_data_list.get(0).getMrp(), product_list.get(0).getMrp(),0.001);
 	}
 	
+	//Testing conversion of list of inventory pojos to data
 	@Test
 	public void testListInventoryPojoToData() {
 		List<InventoryPojo> inventory_list = inventory_service.getAll();
@@ -168,6 +180,7 @@ public class ConversionUtilTest extends AbstractUnitTest {
 		assertEquals(inventory_data_list.get(0).getQuantity(),inventory_list.get(0).getQuantity());
 	}
 	
+	//Testing conversion of list of order items to invoice
 	@Test
 	public void testOrderItemstoInvoice() {
 		List<OrderItemPojo> order_item_list = order_service.getAll();
@@ -178,6 +191,7 @@ public class ConversionUtilTest extends AbstractUnitTest {
 		assertEquals(invoice_list.getInvoiceLis().get(0).getMrp(), order_item_list.get(0).getSellingPrice(),0.001);
 	}
 	
+	//Testing conversion of list of order item pojos to data
 	@Test
 	public void testOrderItemsPojotoData() {
 		List<OrderItemPojo> order_item_list = order_service.getAll();
@@ -188,6 +202,7 @@ public class ConversionUtilTest extends AbstractUnitTest {
 		assertEquals(data_list.get(0).getQuantity(), order_item_list.get(0).getQuantity());
 	}
 	
+	//Testing conversion of list of orderitem forms to pojos
 	@Test
 	public void testOrderItemsFormtoPojo() throws ApiException {
 		OrderItemForm[] order_item_forms = new OrderItemForm[1];
@@ -205,6 +220,7 @@ public class ConversionUtilTest extends AbstractUnitTest {
 		assertEquals(order_item_forms[0].getQuantity(), pojo_list.get(0).getQuantity());
 	}
 	
+	//Testing conversion of order pojo to data
 	@Test
 	public void testConvertOrderPojoToData() throws ApiException {
 		OrderPojo pojo = order_service.getOrder(order_id);
@@ -212,6 +228,7 @@ public class ConversionUtilTest extends AbstractUnitTest {
 		assertEquals(pojo.getId(), order_data.getId());
 	}
 	
+	//Testing conversion of list of order pojos to data
 	@Test
 	public void testListOrderPojoToData() throws ApiException {
 		OrderPojo pojo = order_service.getOrder(order_id);
@@ -222,6 +239,7 @@ public class ConversionUtilTest extends AbstractUnitTest {
 		assertEquals(order_list.get(0).getId(),order_data_list.get(0).getId());
 	}
 	
+	//Test conversion to inventory report list
 	@Test
 	public void testConvertInventoryReportList() throws ApiException {
 		Map<BrandPojo, Integer> quantityPerBrandPojo = new HashMap<BrandPojo,Integer>();
@@ -237,6 +255,7 @@ public class ConversionUtilTest extends AbstractUnitTest {
 		assertEquals(2,inv_list.getInventory_list().size());
 	}
 	
+	//Test conversion to sales list
 	@Test
 	public void testConvertSalesList() {
 		Map<BrandPojo, Integer> quantityPerBrandPojo = new HashMap<BrandPojo,Integer>();

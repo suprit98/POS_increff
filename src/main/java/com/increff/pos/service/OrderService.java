@@ -25,6 +25,7 @@ public class OrderService {
 	@Autowired
 	private InventoryService inventory_service;
 
+	//Adding an order
 	@Transactional(rollbackFor = ApiException.class)
 	public int add(List<OrderItemPojo> lis) throws ApiException {
 		OrderPojo op = new OrderPojo();
@@ -37,39 +38,45 @@ public class OrderService {
 			p.setOrderPojo(order_dao.select(order_id));
 			validate(p);
 			order_item_dao.insert(p);
-			updateInventory(p);
+			updateInventory(p,0);
 		}
 		return order_id;
 	}
 
+	//Fetching an Order item by id
 	@Transactional
 	public OrderItemPojo get(int id) throws ApiException {
 		OrderItemPojo p = checkIfExists(id);
 		return p;
 	}
 
+	//Fetching an Order by id
 	@Transactional
 	public OrderPojo getOrder(int id) throws ApiException {
 		OrderPojo p = checkIfExistsOrder(id);
 		return p;
 	}
 
+	//Fetch all order items of a particular order
 	@Transactional
 	public List<OrderItemPojo> getOrderItems(int order_id) throws ApiException {
 		List<OrderItemPojo> lis = order_item_dao.selectOrder(order_id);
 		return lis;
 	}
 
+	//Fetching all order items 
 	@Transactional
 	public List<OrderItemPojo> getAll() {
 		return order_item_dao.selectAll();
 	}
 
+	//Fetching all orders
 	@Transactional
 	public List<OrderPojo> getAllOrders() {
 		return order_dao.selectAll();
 	}
 
+	//Deletion of order item
 	@Transactional
 	public void delete(int id) {
 		int order_id = order_item_dao.select(id).getOrderPojo().getId();
@@ -80,6 +87,7 @@ public class OrderService {
 		}
 	}
 	
+	//Deletion of order
 	@Transactional
 	public void deleteOrder(int order_id) throws ApiException {
 		List<OrderItemPojo> orderitem_list = getOrderItems(order_id);
@@ -89,7 +97,7 @@ public class OrderService {
 		order_dao.delete(order_id);
 	}
 
-
+	//Update of an order item
 	@Transactional(rollbackFor = ApiException.class)
 	public void update(int id, OrderItemPojo p) throws ApiException {
 
@@ -99,17 +107,19 @@ public class OrderService {
 		ex.setProductPojo(p.getProductPojo());
 		ex.setSellingPrice(p.getSellingPrice());
 		order_item_dao.update(p);
-		updateInventory(old_qty, p);
+		updateInventory(p,old_qty);
 	}
 
+	//Adding order item to an existing order
 	@Transactional(rollbackFor = ApiException.class)
 	public void addOrderItem(int order_id, OrderItemPojo p) throws ApiException {
 
 		p.setOrderPojo(order_dao.select(order_id));
 		order_item_dao.insert(p);
-		updateInventory(p);
+		updateInventory(p,0);
 	}
 
+	//Checking if a particular order item exists or not
 	@Transactional(rollbackFor = ApiException.class)
 	public OrderItemPojo checkIfExists(int id) throws ApiException {
 		OrderItemPojo p = order_item_dao.select(id);
@@ -119,6 +129,7 @@ public class OrderService {
 		return p;
 	}
 	
+	//Checking if a particular order exists or not
 	@Transactional(rollbackFor = ApiException.class)
 	public OrderPojo checkIfExistsOrder(int id) throws ApiException {
 		OrderPojo p = order_dao.select(id);
@@ -128,10 +139,11 @@ public class OrderService {
 		return p;
 	}
 
-	protected void updateInventory(OrderItemPojo p) throws ApiException {
+	//Updation of inventory when order is created or updated
+	protected void updateInventory(OrderItemPojo p, int old_qty) throws ApiException {
 		int quantity = p.getQuantity();
 
-		int quantityInInventory = inventory_service.getByProductId(p.getProductPojo().getId()).getQuantity();
+		int quantityInInventory = inventory_service.getByProductId(p.getProductPojo().getId()).getQuantity() + old_qty;
 
 		if (quantity > quantityInInventory) {
 			throw new ApiException(
@@ -145,23 +157,7 @@ public class OrderService {
 
 	}
 
-	protected void updateInventory(int old_qty, OrderItemPojo p) throws ApiException {
-		int quantity = p.getQuantity();
-
-		int quantityInInventory = inventory_service.getByProductId(p.getProductPojo().getId()).getQuantity() + old_qty;
-
-		if (quantity > quantityInInventory) {
-			throw new ApiException(
-					"Inventory does not contain this much quantity of product. Existing quantity in inventory: "
-							+ quantityInInventory);
-		} 
-			InventoryPojo new_ip = new InventoryPojo();
-			new_ip.setQuantity(quantityInInventory - quantity);
-			inventory_service.update(inventory_service.getByProductId(p.getProductPojo().getId()).getId(), new_ip);
-		
-
-	}
-
+	//Validation of order item
 	private void validate(OrderItemPojo p) throws ApiException {
 		if (p.getQuantity() <= 0) {
 			throw new ApiException("Quantity must be positive");

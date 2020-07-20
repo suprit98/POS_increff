@@ -176,6 +176,15 @@ function validateBrand(json) {
 	return true;
 }
 
+function brandFilter() {
+	$("#brand-filter").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#brand-table-body tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+}
+
 
 //INITIALIZATION CODE
 function init(){
@@ -191,3 +200,4 @@ function init(){
 
 $(document).ready(init);
 $(document).ready(getBrandList);
+$(document).ready(brandFilter);

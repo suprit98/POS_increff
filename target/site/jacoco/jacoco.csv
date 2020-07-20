@@ -1,5 +1,5 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-pos,com.increff.pos.dao,BrandDao,0,75,0,2,0,20,0,10,0,9
+pos,com.increff.pos.dao,BrandDao,0,67,0,0,0,18,0,9,0,9
 pos,com.increff.pos.dao,ProductDetailsDao,0,72,0,2,0,20,0,10,0,9
 pos,com.increff.pos.dao,InventoryDao,0,60,0,0,0,16,0,9,0,9
 pos,com.increff.pos.dao,OrderItemDao,0,61,0,0,0,16,0,9,0,9
@@ -7,10 +7,10 @@ pos,com.increff.pos.dao,OrderDao,1,50,0,0,1,12,1,7,1,7
 pos,com.increff.pos,App,7,0,0,0,3,0,2,0,2,0
 pos,com.increff.pos.service,ProductDetailsService,0,164,0,10,0,43,0,17,0,12
 pos,com.increff.pos.service,ApiException,0,4,0,0,0,2,0,1,0,1
-pos,com.increff.pos.service,BrandService,0,164,1,13,0,35,1,17,0,11
+pos,com.increff.pos.service,BrandService,0,146,1,9,0,34,1,14,0,10
 pos,com.increff.pos.service,InventoryService,0,113,0,10,0,32,0,15,0,10
 pos,com.increff.pos.service,ReportService,1,345,4,20,0,66,4,23,0,15
-pos,com.increff.pos.service,OrderService,5,312,2,16,1,71,2,23,0,16
+pos,com.increff.pos.service,OrderService,5,267,2,14,1,63,2,21,0,15
 pos,com.increff.pos.model,OrderItemData,0,31,0,0,0,13,0,9,0,9
 pos,com.increff.pos.model,InventoryData,0,10,0,0,0,4,0,3,0,3
 pos,com.increff.pos.model,InvoiceData,0,31,0,0,0,13,0,9,0,9

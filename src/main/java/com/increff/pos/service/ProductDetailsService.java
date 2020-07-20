@@ -18,6 +18,7 @@ public class ProductDetailsService {
 	@Autowired
 	private ProductDetailsDao productdetails_dao;
 	
+	//Adding Product Details
 	@Transactional
 	public void add(ProductDetailsPojo p) throws ApiException {
 		validate(p);
@@ -26,28 +27,33 @@ public class ProductDetailsService {
 		productdetails_dao.insert(p);
 	}
 	
+	//Deletion of Product Details by id
 	@Transactional
 	public void delete(int id) {
 		productdetails_dao.delete(id);	
 	}
 	
+	//Fetching of product details by id
 	@Transactional
 	public ProductDetailsPojo get(int id) throws ApiException {
 		ProductDetailsPojo p = checkIfExists(id);
 		return p;
 	}
 	
+	//Fetching of product details by barcode
 	@Transactional
 	public ProductDetailsPojo get(String barcode) throws ApiException {
 		ProductDetailsPojo p = checkIfExists(barcode);
 		return p;
 	}
 	
+	//Fetching all product details
 	@Transactional
 	public List<ProductDetailsPojo> getAll() {
 		return productdetails_dao.selectAll();
 	}
 	
+	//Getting a map of product details pojos with barcode as key
 	@Transactional
 	public Map<String,ProductDetailsPojo> getAllProductPojosByBarcode() {
 		List<ProductDetailsPojo> product_list = getAll();
@@ -58,6 +64,7 @@ public class ProductDetailsService {
 		return barcode_product;
 	}
 	
+	//Update of product details
 	@Transactional(rollbackFor = ApiException.class)
 	public void update(int id, ProductDetailsPojo p) throws ApiException {
 		validate(p);
@@ -70,6 +77,7 @@ public class ProductDetailsService {
 		productdetails_dao.update(p);
 	}
 	
+	//Check if product exists with given id
 	@Transactional(rollbackFor = ApiException.class)
 	public ProductDetailsPojo checkIfExists(int id) throws ApiException {
 		ProductDetailsPojo p = productdetails_dao.select(id);
@@ -79,6 +87,7 @@ public class ProductDetailsService {
 		return p;
 	}
 	
+	//Check if product exists with given barcode
 	@Transactional(rollbackFor = ApiException.class)
 	public ProductDetailsPojo checkIfExists(String barcode) throws ApiException {
 		ProductDetailsPojo p = productdetails_dao.select(barcode);
@@ -88,10 +97,12 @@ public class ProductDetailsService {
 		return p;
 	}
 	
+	//Normalize
 	protected void normalize(ProductDetailsPojo p) {
 		p.setName(p.getName().toLowerCase());		
 	}
 	
+	//Validate
 	protected void validate(ProductDetailsPojo p) throws ApiException {
 		if(p.getName().isEmpty()) {
 			throw new ApiException("The name of product must not be empty");

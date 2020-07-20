@@ -20,40 +20,42 @@ import org.apache.fop.apps.MimeConstants;
 <span class="nc" id="L20">public class XmlUtil {</span>
 
 
+	//Generate PDF
 	public static byte[] generatePDF(File xml_file, StreamSource xsl_source) throws Exception {
-<span class="fc" id="L24">		FopFactory fopFactory = FopFactory.newInstance(new File(&quot;.&quot;).toURI());</span>
+<span class="fc" id="L25">		FopFactory fopFactory = FopFactory.newInstance(new File(&quot;.&quot;).toURI());</span>
 		// Setup a buffer to obtain the content length
-<span class="fc" id="L26">		ByteArrayOutputStream out = new ByteArrayOutputStream();</span>
+<span class="fc" id="L27">		ByteArrayOutputStream out = new ByteArrayOutputStream();</span>
 		// Setup FOP
-<span class="fc" id="L28">		Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, out);</span>
-<span class="fc" id="L29">		TransformerFactory factory = TransformerFactory.newInstance();</span>
-<span class="fc" id="L30">		Transformer transformer = factory.newTransformer(xsl_source);</span>
+<span class="fc" id="L29">		Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, out);</span>
+<span class="fc" id="L30">		TransformerFactory factory = TransformerFactory.newInstance();</span>
+<span class="fc" id="L31">		Transformer transformer = factory.newTransformer(xsl_source);</span>
 		// Make sure the XSL transformation's result is piped through to FOP
-<span class="fc" id="L32">		Result res = new SAXResult(fop.getDefaultHandler());</span>
+<span class="fc" id="L33">		Result res = new SAXResult(fop.getDefaultHandler());</span>
 
 		// Setup input
-<span class="fc" id="L35">		Source src = new StreamSource(xml_file);</span>
+<span class="fc" id="L36">		Source src = new StreamSource(xml_file);</span>
 
 		// Start the transformation and rendering process
-<span class="fc" id="L38">		transformer.transform(src, res);</span>
+<span class="fc" id="L39">		transformer.transform(src, res);</span>
 
-<span class="fc" id="L40">		byte[] bytes = out.toByteArray();</span>
+<span class="fc" id="L41">		byte[] bytes = out.toByteArray();</span>
 
-<span class="fc" id="L42">		out.close();</span>
-<span class="fc" id="L43">		out.flush();</span>
+<span class="fc" id="L43">		out.close();</span>
+<span class="fc" id="L44">		out.flush();</span>
 
-<span class="fc" id="L45">		return bytes;</span>
+<span class="fc" id="L46">		return bytes;</span>
 
 	}
 
+	//Generate XML
 	public static void generateXml(File file,Object list,Class&lt;?&gt; class_type) throws JAXBException {
-<span class="fc" id="L50">		JAXBContext context = JAXBContext.newInstance(class_type);</span>
-<span class="fc" id="L51">		Marshaller m = context.createMarshaller();</span>
+<span class="fc" id="L52">		JAXBContext context = JAXBContext.newInstance(class_type);</span>
+<span class="fc" id="L53">		Marshaller m = context.createMarshaller();</span>
 		// for pretty-print XML in JAXB
-<span class="fc" id="L53">		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);</span>
-<span class="fc" id="L54">		m.marshal(list, file);</span>
+<span class="fc" id="L55">		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);</span>
+<span class="fc" id="L56">		m.marshal(list, file);</span>
 		
-<span class="fc" id="L56">	}</span>
+<span class="fc" id="L58">	}</span>
 
 
 }

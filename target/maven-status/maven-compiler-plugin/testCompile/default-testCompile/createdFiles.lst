@@ -1,9 +1,7 @@
-com/increff/pos/dao/ProductDetailsDaoTest.class
 com/increff/pos/spring/QaConfig.class
 com/increff/pos/util/XmlUtilTest.class
 com/increff/pos/service/InventoryServiceTest.class
 com/increff/pos/util/ConversionUtilTest.class
-com/increff/pos/dao/BrandDaoTest.class
 com/increff/pos/service/OrderServiceTest.class
 com/increff/pos/model/InventoryDataTest.class
 com/increff/pos/service/ReportServiceTest.class

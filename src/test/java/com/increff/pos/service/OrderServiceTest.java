@@ -235,7 +235,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 	//Testing updation of inventory
 	@Test
 	public void testUpdateInventory() throws ApiException {
-		order_service.updateInventory(orderitems.get(0));
+		order_service.updateInventory(orderitems.get(0),0);
 		assertEquals(16, inventory_service.getByProductId(orderitems.get(0).getProductPojo().getId()).getQuantity());
 	}
 
@@ -244,7 +244,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 	public void testUpdateInventoryExceeding() throws ApiException {
 
 		try {
-			order_service.updateInventory(getOrderItemPojo(products.get(0), 100));
+			order_service.updateInventory(getOrderItemPojo(products.get(0), 100),0);
 			fail("ApiException did not occur");
 		} catch (ApiException e) {
 			assertEquals(e.getMessage(),
@@ -257,7 +257,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 	//Testing updation of inventory during editing of order items
 	@Test
 	public void testUpdateInventoryDuringEdit() throws ApiException {
-		order_service.updateInventory(2,getOrderItemPojo(products.get(0), 3));
+		order_service.updateInventory(getOrderItemPojo(products.get(0), 3),2);
 		assertEquals(17, inventory_service.getByProductId(products.get(0).getId()).getQuantity());
 	}
 
@@ -266,7 +266,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 	public void testUpdateInventoryDuringEditExceeding() throws ApiException {
 
 		try {
-			order_service.updateInventory(2,getOrderItemPojo(products.get(0), 100));
+			order_service.updateInventory(getOrderItemPojo(products.get(0), 100),2);
 			fail("ApiException did not occur");
 		} catch (ApiException e) {
 			assertEquals(e.getMessage(),

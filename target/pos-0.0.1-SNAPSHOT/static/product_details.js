@@ -196,6 +196,15 @@ function validateProduct(json) {
 	return true;
 }
 
+function productDetailsFilter() {
+	$("#productdetails-filter").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#productdetails-table-body tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+}
+
 //INITIALIZATION CODE
 function init(){
 	$('#open-add-productdetails').click(displayAddProductDetailsModal);
@@ -210,3 +219,4 @@ function init(){
 
 $(document).ready(init);
 $(document).ready(getProductDetailsList);
+$(document).ready(productDetailsFilter);

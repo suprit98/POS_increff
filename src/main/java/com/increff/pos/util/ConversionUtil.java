@@ -29,6 +29,7 @@ import com.increff.pos.service.ApiException;
 
 public class ConversionUtil {
 
+	//Convert to BrandPojo
 	public static BrandPojo convert(BrandForm d) {
 		BrandPojo p = new BrandPojo();
 		p.setBrand(d.getBrand());
@@ -36,6 +37,7 @@ public class ConversionUtil {
 		return p;
 	}
 
+	//Convert to Brand Data
 	public static BrandData convert(BrandPojo p) {
 		BrandData d = new BrandData();
 		d.setBrand(p.getBrand());
@@ -44,6 +46,7 @@ public class ConversionUtil {
 		return d;
 	}
 
+	//Convert to Product Details Pojo
 	public static ProductDetailsPojo convert(BrandPojo brand_pojo, ProductDetailsForm f) throws ApiException {
 		ProductDetailsPojo p = new ProductDetailsPojo();
 		p.setName(f.getName());
@@ -52,6 +55,7 @@ public class ConversionUtil {
 		return p;
 	}
 
+	//Convert to Product Details Data
 	public static ProductDetailsData convert(ProductDetailsPojo p) {
 		ProductDetailsData d = new ProductDetailsData();
 		d.setId(p.getId());
@@ -63,6 +67,7 @@ public class ConversionUtil {
 		return d;
 	}
 
+	//Convert to Inventory Pojo
 	public static InventoryPojo convert(InventoryForm f, ProductDetailsPojo product_pojo) throws ApiException {
 		InventoryPojo p = new InventoryPojo();
 		p.setProductPojo(product_pojo);
@@ -70,6 +75,7 @@ public class ConversionUtil {
 		return p;
 	}
 
+	//Convert to Inventory Data
 	public static InventoryData convert(InventoryPojo p) {
 		InventoryData d = new InventoryData();
 		d.setId(p.getId());
@@ -78,6 +84,7 @@ public class ConversionUtil {
 		return d;
 	}
 
+	//Convert to OrderItem Pojo
 	public static OrderItemPojo convert(ProductDetailsPojo product_pojo, OrderItemForm f) throws ApiException {
 		OrderItemPojo p = new OrderItemPojo();
 		p.setProductPojo(product_pojo);
@@ -89,6 +96,7 @@ public class ConversionUtil {
 		return p;
 	}
 
+	//Convert to OrderItem data
 	public static OrderItemData convert(OrderItemPojo p) {
 		OrderItemData d = new OrderItemData();
 		d.setId(p.getId());
@@ -100,6 +108,7 @@ public class ConversionUtil {
 		return d;
 	}
 
+	//Convert list of orderitems to invoice list
 	public static InvoiceDataList convertToInvoiceDataList(List<OrderItemPojo> lis) {
 		List<InvoiceData> invoiceLis = new ArrayList<InvoiceData>();
 		for (OrderItemPojo p : lis) {
@@ -115,6 +124,7 @@ public class ConversionUtil {
 		return idl;
 	}
 
+	//Convert list of brand pojos to list of brand data
 	public static List<BrandData> convert(List<BrandPojo> list) {
 		List<BrandData> list2 = new ArrayList<BrandData>();
 		for (BrandPojo p : list) {
@@ -123,6 +133,7 @@ public class ConversionUtil {
 		return list2;
 	}
 
+	//Convert list of product details pojos to list of product details data
 	public static List<ProductDetailsData> convertProductList(List<ProductDetailsPojo> list) {
 		List<ProductDetailsData> list2 = new ArrayList<ProductDetailsData>();
 		for (ProductDetailsPojo p : list) {
@@ -131,6 +142,7 @@ public class ConversionUtil {
 		return list2;
 	}
 
+	//Convert list of inventory pojos to list of inventory data
 	public static List<InventoryData> convertInventoryList(List<InventoryPojo> list) {
 		List<InventoryData> list2 = new ArrayList<InventoryData>();
 		for (InventoryPojo p : list) {
@@ -139,6 +151,7 @@ public class ConversionUtil {
 		return list2;
 	}
 
+	//Convert list of order item pojos to list of order item data
 	public static List<OrderItemData> convertOrderItemList(List<OrderItemPojo> list) {
 		List<OrderItemData> list2 = new ArrayList<OrderItemData>();
 		for (OrderItemPojo p : list) {
@@ -147,6 +160,7 @@ public class ConversionUtil {
 		return list2;
 	}
 
+	//Convert Order Item Forms to Pojo
 	public static List<OrderItemPojo> convertOrderItemForms(Map<String,ProductDetailsPojo> barcode_product,
 			OrderItemForm[] forms) throws ApiException {
 		List<OrderItemPojo> list2 = new ArrayList<OrderItemPojo>();
@@ -156,6 +170,7 @@ public class ConversionUtil {
 		return list2;
 	}
 
+	//Convert Order Pojo to Order Data
 	public static OrderData convertOrderPojo(OrderPojo pojo) {
 		OrderData d = new OrderData();
 		d.setId(pojo.getId());
@@ -165,6 +180,7 @@ public class ConversionUtil {
 		return d;
 	}
 	
+	//Convert List of Order Pojos to Data
 	public static List<OrderData> convertOrderList(List<OrderPojo> list) {
 		List<OrderData> list2 = new ArrayList<OrderData>();
 		for (OrderPojo p : list) {
@@ -173,6 +189,7 @@ public class ConversionUtil {
 		return list2;
 	}
 
+	//Convert Map of quantity per BrandPojo to inventory list
 	public static InventoryReportList convertInventoryReportList(Map<BrandPojo, Integer> quantityPerBrandPojo) {
 		List<InventoryReportData> inventory_report_list = new ArrayList<InventoryReportData>();
 		for (BrandPojo brand_pojo : quantityPerBrandPojo.keySet()) {
@@ -187,7 +204,7 @@ public class ConversionUtil {
 		return inventory_list;
 	}
 	
-
+	//Convert Maps of quantity sold and revenue per BrandPojo to sales list
 	public static SalesDataList convertSalesList(Map<BrandPojo, Integer> quantityPerBrandCategory,
 			Map<BrandPojo, Double> revenuePerBrandCategory) {
 		

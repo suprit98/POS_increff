@@ -20,6 +20,7 @@ import org.apache.fop.apps.MimeConstants;
 public class XmlUtil {
 
 
+	//Generate PDF
 	public static byte[] generatePDF(File xml_file, StreamSource xsl_source) throws Exception {
 		FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
 		// Setup a buffer to obtain the content length
@@ -46,6 +47,7 @@ public class XmlUtil {
 
 	}
 
+	//Generate XML
 	public static void generateXml(File file,Object list,Class<?> class_type) throws JAXBException {
 		JAXBContext context = JAXBContext.newInstance(class_type);
 		Marshaller m = context.createMarshaller();

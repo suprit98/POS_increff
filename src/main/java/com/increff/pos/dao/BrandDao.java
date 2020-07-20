@@ -38,17 +38,12 @@ public class BrandDao {
 		return query.getResultList();
 	}
 	
-	public BrandPojo selectAllBrandCategory(String brand, String category) {
+	public List<BrandPojo> selectAllBrandCategory(String brand, String category) {
 		TypedQuery<BrandPojo> query = getQuery(select_brand_category);
 		query.setParameter("brand", brand);
 		query.setParameter("category", category);
 		List<BrandPojo> results = query.getResultList();
-		if(results.size()>0) {
-			return results.get(0);
-		}
-		else {
-			return null;
-		}
+		return results;
 	}
 	
 	public void update(BrandPojo p) {

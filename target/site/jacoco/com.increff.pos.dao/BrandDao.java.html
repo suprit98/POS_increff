@@ -38,25 +38,20 @@ import com.increff.pos.pojo.BrandPojo;
 <span class="fc" id="L38">		return query.getResultList();</span>
 	}
 	
-	public BrandPojo selectAllBrandCategory(String brand, String category) {
+	public List&lt;BrandPojo&gt; selectAllBrandCategory(String brand, String category) {
 <span class="fc" id="L42">		TypedQuery&lt;BrandPojo&gt; query = getQuery(select_brand_category);</span>
 <span class="fc" id="L43">		query.setParameter(&quot;brand&quot;, brand);</span>
 <span class="fc" id="L44">		query.setParameter(&quot;category&quot;, category);</span>
 <span class="fc" id="L45">		List&lt;BrandPojo&gt; results = query.getResultList();</span>
-<span class="fc bfc" id="L46" title="All 2 branches covered.">		if(results.size()&gt;0) {</span>
-<span class="fc" id="L47">			return results.get(0);</span>
-		}
-		else {
-<span class="fc" id="L50">			return null;</span>
-		}
+<span class="fc" id="L46">		return results;</span>
 	}
 	
 	public void update(BrandPojo p) {
 		
-<span class="fc" id="L56">	}</span>
+<span class="fc" id="L51">	}</span>
 	
 	private TypedQuery&lt;BrandPojo&gt; getQuery(String jpql) {
-<span class="fc" id="L59">		return em.createQuery(jpql,BrandPojo.class);</span>
+<span class="fc" id="L54">		return em.createQuery(jpql,BrandPojo.class);</span>
 	}
 	
 	
