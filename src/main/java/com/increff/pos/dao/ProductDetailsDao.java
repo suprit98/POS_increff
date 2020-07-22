@@ -19,19 +19,23 @@ public class ProductDetailsDao {
 	private static String select_all = "select p from ProductDetailsPojo p";
 	private static String select_barcode = "select p from ProductDetailsPojo p where barcode=:barcode";
 	
+	//Insert product details to DB
 	public void insert(ProductDetailsPojo p) {
 		em.persist(p);
 	}
 	
+	//Delete Product from DB
 	public void delete(int id) {
 		ProductDetailsPojo p = em.find(ProductDetailsPojo.class, id);
 		em.remove(p);
 	}
 	
+	//Select product from DB
 	public ProductDetailsPojo select(int id) {
 		return em.find(ProductDetailsPojo.class, id);
 	}
 	
+	//Select product by barcode from DB
 	public ProductDetailsPojo select(String barcode) {
 		TypedQuery<ProductDetailsPojo> query = getQuery(select_barcode);
 		query.setParameter("barcode", barcode);
@@ -45,11 +49,13 @@ public class ProductDetailsDao {
 		}
 	}
 	
+	//Select all products from DB
 	public List<ProductDetailsPojo> selectAll() {
 		TypedQuery<ProductDetailsPojo> query = getQuery(select_all);
 		return query.getResultList();	
 	}
 	
+	//Update Product Details
 	public void update(ProductDetailsPojo p) {
 		
 	}

@@ -2,12 +2,12 @@
 <inventory_items>
     <inventory_item>
         <brand>brand</brand>
-        <category>category1</category>
+        <category>category0</category>
         <quantity>18</quantity>
     </inventory_item>
     <inventory_item>
         <brand>brand</brand>
-        <category>category0</category>
+        <category>category1</category>
         <quantity>18</quantity>
     </inventory_item>
 </inventory_items>

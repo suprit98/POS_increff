@@ -18,34 +18,37 @@ import com.increff.pos.pojo.OrderPojo;
 	
 <span class="fc" id="L19">	private static String select_all = &quot;select p from OrderPojo p&quot;;</span>
 	
-	
+	//Insert Order to DB
 	public int insert(OrderPojo p) {
 <span class="fc" id="L23">		em.persist(p);</span>
 <span class="fc" id="L24">		em.flush();</span>
 <span class="fc" id="L25">		return p.getId();</span>
 	}
 	
+	//Delete Order from DB
 	public void delete(int id) {
-<span class="fc" id="L29">		OrderPojo p = em.find(OrderPojo.class, id);</span>
-<span class="fc" id="L30">		em.remove(p);</span>
-<span class="fc" id="L31">	}</span>
+<span class="fc" id="L30">		OrderPojo p = em.find(OrderPojo.class, id);</span>
+<span class="fc" id="L31">		em.remove(p);</span>
+<span class="fc" id="L32">	}</span>
 	
+	//Select Order from DB
 	public OrderPojo select(int id) {
-<span class="fc" id="L34">		return em.find(OrderPojo.class, id);</span>
+<span class="fc" id="L36">		return em.find(OrderPojo.class, id);</span>
 	}
 	
-	
+	//Select All Orders from DB
 	public List&lt;OrderPojo&gt; selectAll() {
-<span class="fc" id="L39">		TypedQuery&lt;OrderPojo&gt; query = getQuery(select_all);</span>
-<span class="fc" id="L40">		return query.getResultList();</span>
+<span class="fc" id="L41">		TypedQuery&lt;OrderPojo&gt; query = getQuery(select_all);</span>
+<span class="fc" id="L42">		return query.getResultList();</span>
 	}
 	
+	//Update Order
 	public void update(OrderPojo p) {
 		
-<span class="nc" id="L45">	}</span>
+<span class="nc" id="L48">	}</span>
 	
 	private TypedQuery&lt;OrderPojo&gt; getQuery(String jpql) {
-<span class="fc" id="L48">		return em.createQuery(jpql,OrderPojo.class);</span>
+<span class="fc" id="L51">		return em.createQuery(jpql,OrderPojo.class);</span>
 	}
 
 

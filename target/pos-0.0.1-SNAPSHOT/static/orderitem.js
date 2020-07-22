@@ -41,22 +41,28 @@ function getOrderItemList() {
 	displayOrderItemListFrontend(orderitemList);
 }
 
-function addOrder(event){
+function addOrderItem(event){
+	$("#add-orderitem-modal").modal('toggle');
 	var $form = $("#orderitem-add-form");
 	var json = toJson($form);
 	var order_id = $("#orderitem-add-form input[name=order_id]").val();
 	var url = getOrderItemUrl() + "/" + order_id;
+	var check = validateOrderItem(json);
 
-	ajaxQuery(url,'POST',json,getOrderList);
+	if(check) {
+		ajaxQuery(url,'POST',json,getOrderList);
+	}
+
 
 	return false;
 }
 
-function addOrderItem(event) {
+function addOrder(event) {
+	$("#add-order-modal").modal('toggle');
 	var json = JSON.stringify(orderitemList);
 	var url = getOrderUrl();
 
-	ajaxQuery(url,'POST',json,displayDownloadPdfButton);
+	ajaxQuery(url,'POST',json,getOrderList);
 
 	return false;
 }
@@ -65,7 +71,7 @@ function updateOrder(event){
 	$('#edit-orderitem-modal').modal('toggle');
 	//Get the ID
 	var id = $("#orderitem-edit-form input[name=id]").val();
-	var url = getOrderUrl() + "/" + id;
+	var url = getOrderItemUrl() + "/" + id;
 
 
 	var $form = $("#orderitem-edit-form");
@@ -97,12 +103,12 @@ function deleteOrderItem(id) {
 
 
 function getOrderList() {
-	var url = getAllOrdersUrl();
+	var url = getOrderUrl();
 	ajaxQuery(url,'GET','',displayOrdersList);
 }
 
 function getOrderItemsHtml(id) {
-	var url = getAllOrdersUrl() + "/" + id;
+	var url = getOrderUrl() + "/" + id;
 	$.ajax({
 		 url: url,
 		 type: 'GET',
@@ -161,8 +167,12 @@ function displayOrdersList(data) {
 }
 
 function displayEditOrderItem(id){
-	var url = getOrderUrl() + "/" + id;
+	var url = getOrderItemUrl() + "/" + id;
 	ajaxQuery(url,'GET','',displayOrderItem);
+}
+
+function displayAddOrderModal() {
+	$("#add-order-modal").modal('toggle');
 }
 
 function downloadPDF(id) {
@@ -200,15 +210,15 @@ function displayAddOrderItemModal(order_id) {
 }
 
 function displayDownloadPdfButton(response) {
-	alert("Order created");
+	toastr.info("Order created");
 	$("#container").append('<button onclick="downloadPDF(' + response.id +')">Download Invoice PDF</button>');
+	getOrderList();
 }
 
 function createOrderItemsHtml(data,id) {
 
 	var table = $('.orderitemrows' + id).find('tbody');
 	var thHtml = '<tr>';
-	thHtml += '<th scope="col">ID</th>';
 	thHtml += '<th scope="col">Barcode</th>';
 	thHtml += '<th scope="col">Name</th>';
 	thHtml += '<th scope="col">Quantity</th>';
@@ -221,7 +231,6 @@ function createOrderItemsHtml(data,id) {
 		var buttonHtml = '<button style="padding: 0;border: none;background: none;" onclick="deleteOrderItemFromOrderList(' + e.id + ')"><span class="material-icons" style="color:red">delete</span></button>';
 		buttonHtml += '<button style="padding: 0;border: none;background: none;" onclick="displayEditOrderItem(' + e.id + ')"><span class="material-icons" style="color:#CCCC00">edit</span></button>';
 		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.barcode + '</td>'
 		+ '<td>' + e.name + '</td>'
 		+ '<td>'  + e.quantity + '</td>'
@@ -230,7 +239,7 @@ function createOrderItemsHtml(data,id) {
 		+ '</tr>';
 		table.append(row);
 	}
-	table.append('<tr><td colspan="4"><button class="btn btn-primary" onclick="downloadPDF('+id +')">Download Invoice PDF</button></td><td colspan="2"><button class="btn btn-primary" onclick="displayAddOrderItemModal(' + id + ')">Add Order Item</button></td></tr>');
+	table.append('<tr><td colspan="3"><button class="btn btn-primary" onclick="downloadPDF('+id +')">Download Invoice PDF</button></td><td colspan="2"><button class="btn btn-primary" onclick="displayAddOrderItemModal(' + id + ')">Add Order Item</button></td></tr>');
 }
 
 function initializeDropdown(id) {
@@ -242,11 +251,11 @@ function initializeDropdown(id) {
 function validateOrderItem(json) {
 	json = JSON.parse(json);
 	if(isBlank(json.barcode)) {
-		alert("Barcode field must not be empty");
+		toastr.error("Barcode field must not be empty");
 		return false;
 	}
-	if(isBlank(json.quantity) || isNaN(parseInt(json.quantity))) {
-		alert("Quantity field must not be empty and must be an integer value");
+	if(isBlank(json.quantity) || isNaN(parseInt(json.quantity)) || !isInt(json.quantity)) {
+		toastr.error("Quantity field must not be empty and must be an integer value");
 		return false;
 	}
 	return true;
@@ -255,10 +264,11 @@ function validateOrderItem(json) {
 
 //INITIALIZATION CODE
 function init(){
+	$("#open-add-order").click(displayAddOrderModal);
 	$('#add-orderitem').click(addOrderItemToList);
 	$('#refresh-data').click(getOrderItemList);
-	$('#add-order').click(addOrderItem);
-	$("#add-orderitem-previousorders").click(addOrder);
+	$('#add-order').click(addOrder);
+	$("#add-orderitem-previousorders").click(addOrderItem);
 	$('#update-orderitem').click(updateOrder);
 }
 

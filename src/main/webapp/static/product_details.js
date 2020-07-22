@@ -6,7 +6,7 @@ function getProductDetailsUrl(){
 
 //BUTTON ACTIONS
 function addProductDetails(event){
-	$('#add-productdetails-modal').modal('toggle');
+
 	//Set the values to update
 	var $form = $("#productdetails-form");
 	var json = toJson($form);
@@ -15,6 +15,7 @@ function addProductDetails(event){
 	if(check) {
 		var url = getProductDetailsUrl();
 		ajaxQuery(url,'POST',json,getProductDetailsList);
+		$('#add-productdetails-modal').modal('toggle');
 	}
 
 
@@ -22,7 +23,7 @@ function addProductDetails(event){
 }
 
 function updateProductDetails(event){
-	$('#edit-productdetails-modal').modal('toggle');
+
 	//Get the ID
 	var id = $("#productdetails-edit-form input[name=id]").val();
 	var url = getProductDetailsUrl() + "/" + id;
@@ -34,6 +35,7 @@ function updateProductDetails(event){
 	var check = validateProduct(json);
 	if(check) {
 		ajaxQuery(url,'PUT',json,getProductDetailsList);
+		$('#edit-productdetails-modal').modal('toggle');
 	}
 
 	return false;
@@ -63,7 +65,6 @@ function displayProductDetailsList(data){
 		buttonHtml += ' <button style="padding: 0;border: none;background: none;" onclick="displayEditProductDetails(' + e.id + ')"><span class="material-icons" style="color:#CCCC00">edit</span></button>';
 		console.log('brand');
 		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.barcode + '</td>'
 		+ '<td>'  + e.brand + '</td>'
 		+ '<td>'  + e.category + '</td>'
@@ -90,15 +91,23 @@ function displayProductDetails(data){
 	$('#edit-productdetails-modal').modal('toggle');
 }
 
+function displayUploadDataProductDetails(){
+	resetUploadDialogProduct();
+	$('#upload-productdetails-modal').modal('toggle');
+}
+
+function displayAddProductDetailsModal() {
+	$('#add-productdetails-modal').modal('toggle');
+}
+
 //FILE METHODS
 
 var fileData = [];
-var errorData = [];
 var rowsProcessed = 0;
 
 function processDataProductDetails(){
 	var file = $('#productdetailsFile')[0].files[0];
-	readFileData(file, readFileDataCallback);
+	checkHeader(file,["brand","category","name","mrp"],readFileDataCallback);
 }
 
 function readFileDataCallback(results){
@@ -107,7 +116,7 @@ function readFileDataCallback(results){
 }
 
 function uploadRowsProductDetails(){
-
+	updateUploadDialog();
 	//If everything processed then return
 	if(rowsProcessed==fileData.length){
 		getProductDetailsList();
@@ -123,21 +132,7 @@ function uploadRowsProductDetails(){
 
 	var url = getProductDetailsUrl();
 
-	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },
-	   success: function(response) {
-	   		uploadRowsProductDetails(response);
-	   },
-	   error: function(response){
-				errorData.push(JSON.parse(response.responseText));
-				uploadRowsProductDetails();
-	   }
-	});
+	ajaxQueryRecur(url,'POST',json,uploadRowsProductDetails,uploadRowsProductDetails);
 
 }
 
@@ -145,14 +140,7 @@ function downloadErrors(){
 	writeFileData(errorData);
 }
 
-function displayUploadDataProductDetails(){
-	resetUploadDialogProduct();
-	$('#upload-productdetails-modal').modal('toggle');
-}
 
-function displayAddProductDetailsModal() {
-	$('#add-productdetails-modal').modal('toggle');
-}
 
 function updateFileNameProductDetails(){
 	var $file = $('#productdetailsFile');
@@ -166,34 +154,41 @@ function resetUploadDialogProduct(){
 	$file.val('');
 	$('#productdetailsFileName').html("Choose File");
 
-	processCount = 0;
+	rowsProcessed = 0;
 	fileData = [];
 	errorData = [];
+	updateUploadDialog();
 }
 
 function validateProduct(json) {
 	json = JSON.parse(json);
 	if(isBlank(json.brand)) {
-		alert("Brand field must not be empty");
+		toastr.error("Brand field must not be empty");
 		return false;
 	}
 	if(isBlank(json.category)) {
-		alert("Category field must not be empty");
+		toastr.error("Category field must not be empty");
 		return false;
 	}
 	if(isBlank(json.brand)) {
-		alert("Brand field must not be empty");
+		toastr.error("Brand field must not be empty");
 		return false;
 	}
 	if(isBlank(json.name)) {
-		alert("Name field must not be empty");
+		toastr.error("Name field must not be empty");
 		return false;
 	}
 	if(isBlank(json.mrp) || isNaN(parseFloat(json.mrp))) {
-		alert("Mrp field must not be empty and must be a float value");
+		toastr.error("Mrp field must not be empty and must be a float value");
 		return false;
 	}
 	return true;
+}
+
+function updateUploadDialog(){
+	$('#rowCount').html("" + fileData.length);
+	$('#processCount').html("" + rowsProcessed);
+	$('#errorCount').html("" + errorData.length);
 }
 
 function productDetailsFilter() {

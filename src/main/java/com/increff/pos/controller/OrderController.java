@@ -56,7 +56,7 @@ public class OrderController {
 	}
 
 	@ApiOperation(value = "Gets a OrderItem details record by id")
-	@RequestMapping(path = "/api/order/{id}", method = RequestMethod.GET)
+	@RequestMapping(path = "/api/order_item/{id}", method = RequestMethod.GET)
 	public OrderItemData get(@PathVariable int id) throws ApiException {
 		OrderItemPojo p = order_service.get(id);
 		return ConversionUtil.convert(p);
@@ -69,7 +69,7 @@ public class OrderController {
 	}
 
 	@ApiOperation(value = "Gets list of Order Items")
-	@RequestMapping(path = "/api/order", method = RequestMethod.GET)
+	@RequestMapping(path = "/api/order_item", method = RequestMethod.GET)
 	public List<OrderItemData> getAll() {
 		List<OrderItemPojo> list = order_service.getAll();
 		List<OrderItemData> list2 = ConversionUtil.convertOrderItemList(list);
@@ -77,7 +77,7 @@ public class OrderController {
 	}
 
 	@ApiOperation(value = "Gets list of Orders")
-	@RequestMapping(path = "/api/all_orders", method = RequestMethod.GET)
+	@RequestMapping(path = "/api/order", method = RequestMethod.GET)
 	public List<OrderData> getAllOrders() {
 		List<OrderPojo> orders_list = order_service.getAllOrders();
 		List<OrderData> orders_data_list = ConversionUtil.convertOrderList(orders_list);
@@ -85,7 +85,7 @@ public class OrderController {
 	}
 
 	@ApiOperation(value = "Gets list of Order Items of a particular order")
-	@RequestMapping(path = "/api/all_orders/{id}", method = RequestMethod.GET)
+	@RequestMapping(path = "/api/order/{id}", method = RequestMethod.GET)
 	public List<OrderItemData> getOrderItemsbyOrderId(@PathVariable int id) throws ApiException {
 		List<OrderItemPojo> list = order_service.getOrderItems(id);
 		List<OrderItemData> list2 = ConversionUtil.convertOrderItemList(list);
@@ -99,7 +99,7 @@ public class OrderController {
 	}
 
 	@ApiOperation(value = "Updates a OrderItem record")
-	@RequestMapping(path = "/api/order/{id}", method = RequestMethod.PUT)
+	@RequestMapping(path = "/api/order_item/{id}", method = RequestMethod.PUT)
 	public void update(@PathVariable int id, @RequestBody OrderItemForm f) throws ApiException {
 		ProductDetailsPojo product_pojo = product_service.get(f.getBarcode());
 		OrderItemPojo p = ConversionUtil.convert(product_pojo, f);

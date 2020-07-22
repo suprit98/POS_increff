@@ -7,19 +7,20 @@ function getBrandUrl(){
 //BUTTON ACTIONS
 function addBrand(event){
 	//Set the values to update
-	$('#add-brand-modal').modal('toggle');
+
 	var $form = $("#brand-form");
 	var json = toJson($form);
 	var check = validateBrand(json);
 	if(check) {
 		var url = getBrandUrl();
 		ajaxQuery(url,'POST',json,getBrandList);
+		$('#add-brand-modal').modal('toggle');
 	}
 	return false;
 }
 
 function updateBrand(event){
-	$('#edit-brand-modal').modal('toggle');
+
 	//Get the ID
 	var id = $("#brand-edit-form input[name=id]").val();
 	var url = getBrandUrl() + "/" + id;
@@ -31,6 +32,7 @@ function updateBrand(event){
 	var check = validateBrand(json);
 	if(check) {
 		ajaxQuery(url,'PUT',json,getBrandList);
+		$('#edit-brand-modal').modal('toggle');
 	}
 
 	return false;
@@ -59,7 +61,6 @@ function displayBrandList(data){
 		var buttonHtml = '<button style="padding: 0;border: none;background: none;" onclick="deleteBrand(' + e.id + ')"><span class="material-icons" style="color:red">delete</span></button>'
 		buttonHtml += ' <button style="padding: 0;border: none;background: none;" onclick="displayEditBrand(' + e.id + ')"><span class="material-icons" style="color:#CCCC00">edit</span></button>'
 		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.brand + '</td>'
 		+ '<td>'  + e.category + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
@@ -81,15 +82,23 @@ function displayBrand(data){
 	$('#edit-brand-modal').modal('toggle');
 }
 
+function displayUploadData(){
+	resetUploadDialog();
+	$('#upload-brand-modal').modal('toggle');
+}
+
+function displayAddBrandModal() {
+	$("#add-brand-modal").modal('toggle');
+}
+
 //FILE METHODS
 
 var fileData = [];
-var errorData = [];
 var rowsProcessed = 0;
 
 function processData(){
 	var file = $('#brandFile')[0].files[0];
-	readFileData(file, readFileDataCallback);
+	checkHeader(file,["brand","category"],readFileDataCallback);
 }
 
 function readFileDataCallback(results){
@@ -98,7 +107,7 @@ function readFileDataCallback(results){
 }
 
 function uploadRows(){
-
+	updateUploadDialog();
 	//If everything processed then return
 	if(rowsProcessed==fileData.length){
 		getBrandList();
@@ -115,21 +124,7 @@ function uploadRows(){
 	var url = getBrandUrl();
 
 	//Make ajax call
-	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },
-	   success: function(response) {
-	   		uploadRows(response);
-	   },
-	   error: function(response){
-				errorData.push(JSON.parse(response.responseText));
-				uploadRows();
-	   }
-	});
+	ajaxQueryRecur(url,'POST',json,uploadRows,uploadRows);
 
 }
 
@@ -137,14 +132,6 @@ function downloadErrors(){
 	writeFileData(errorData);
 }
 
-function displayUploadData(){
-	resetUploadDialog();
-	$('#upload-brand-modal').modal('toggle');
-}
-
-function displayAddBrandModal() {
-	$("#add-brand-modal").modal('toggle');
-}
 
 function resetUploadDialog(){
 
@@ -152,9 +139,10 @@ function resetUploadDialog(){
 	$file.val('');
 	$('#brandFileName').html("Choose File");
 
-	processCount = 0;
+	rowsProcessed = 0;
 	fileData = [];
 	errorData = [];
+	updateUploadDialog();
 }
 
 function updateFileName(){
@@ -166,14 +154,20 @@ function updateFileName(){
 function validateBrand(json) {
 	json = JSON.parse(json);
 	if(isBlank(json.brand)) {
-		alert("Brand field must not be empty");
+		toastr.error("Brand field must not be empty");
 		return false;
 	}
 	if(isBlank(json.category)) {
-		alert("Category field must not be empty");
+		toastr.error("Category field must not be empty");
 		return false;
 	}
 	return true;
+}
+
+function updateUploadDialog(){
+	$('#rowCount').html("" + fileData.length);
+	$('#processCount').html("" + rowsProcessed);
+	$('#errorCount').html("" + errorData.length);
 }
 
 function brandFilter() {

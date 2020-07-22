@@ -253,6 +253,21 @@ public class OrderServiceTest extends AbstractUnitTest {
 		}
 
 	}
+	
+	@Test
+	public void testUpdateInventoryNotExisting() throws ApiException {
+
+		inventory_service.delete(inventory_service.getByProductId(products.get(0).getId()).getId());
+		try {
+			order_service.updateInventory(getOrderItemPojo(products.get(0), 1),0);
+			fail("ApiException did not occur");
+		} catch (ApiException e) {
+			assertEquals(e.getMessage(),
+					"Inventory for this item does not exist "
+							+ products.get(0).getBarcode());
+		}
+
+	}
 
 	//Testing updation of inventory during editing of order items
 	@Test

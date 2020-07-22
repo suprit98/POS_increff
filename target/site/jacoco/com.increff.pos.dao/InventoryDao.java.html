@@ -20,36 +20,42 @@ import com.increff.pos.pojo.ProductDetailsPojo;
 <span class="fc" id="L20">	private static String select_all = &quot;select p from InventoryPojo p&quot;;</span>
 <span class="fc" id="L21">	private static String select_product = &quot;select p from InventoryPojo p where p.productPojo=:productpojo&quot;;</span>
 	
+	//Insert inventory to DB
 	public void insert(InventoryPojo p) {
-<span class="fc" id="L24">		em.persist(p);</span>
-<span class="fc" id="L25">	}</span>
+<span class="fc" id="L25">		em.persist(p);</span>
+<span class="fc" id="L26">	}</span>
 	
+	//Delete inventory from DB
 	public void delete(int id) {
-<span class="fc" id="L28">		InventoryPojo p = em.find(InventoryPojo.class, id);</span>
-<span class="fc" id="L29">		em.remove(p);</span>
-<span class="fc" id="L30">	}</span>
+<span class="fc" id="L30">		InventoryPojo p = em.find(InventoryPojo.class, id);</span>
+<span class="fc" id="L31">		em.remove(p);</span>
+<span class="fc" id="L32">	}</span>
 	
+	//Select inventory from DB
 	public InventoryPojo select(int id) {
-<span class="fc" id="L33">		return em.find(InventoryPojo.class, id);</span>
+<span class="fc" id="L36">		return em.find(InventoryPojo.class, id);</span>
 	}
 	
+	//Select Inventory based on product
 	public List&lt;InventoryPojo&gt; selectByProduct(ProductDetailsPojo p) {
-<span class="fc" id="L37">		TypedQuery&lt;InventoryPojo&gt; query = getQuery(select_product);</span>
-<span class="fc" id="L38">		query.setParameter(&quot;productpojo&quot;, p);</span>
-<span class="fc" id="L39">		return query.getResultList();</span>
+<span class="fc" id="L41">		TypedQuery&lt;InventoryPojo&gt; query = getQuery(select_product);</span>
+<span class="fc" id="L42">		query.setParameter(&quot;productpojo&quot;, p);</span>
+<span class="fc" id="L43">		return query.getResultList();</span>
 	}
 	
+	//Select All inventory pojos
 	public List&lt;InventoryPojo&gt; selectAll() {
-<span class="fc" id="L43">		TypedQuery&lt;InventoryPojo&gt; query = getQuery(select_all);</span>
-<span class="fc" id="L44">		return query.getResultList();</span>
+<span class="fc" id="L48">		TypedQuery&lt;InventoryPojo&gt; query = getQuery(select_all);</span>
+<span class="fc" id="L49">		return query.getResultList();</span>
 	}
 	
+	//Update inventory
 	public void update(InventoryPojo p) {
 		
-<span class="fc" id="L49">	}</span>
+<span class="fc" id="L55">	}</span>
 	
 	private TypedQuery&lt;InventoryPojo&gt; getQuery(String jpql) {
-<span class="fc" id="L52">		return em.createQuery(jpql,InventoryPojo.class);</span>
+<span class="fc" id="L58">		return em.createQuery(jpql,InventoryPojo.class);</span>
 	}
 
 }

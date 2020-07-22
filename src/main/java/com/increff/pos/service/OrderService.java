@@ -101,6 +101,7 @@ public class OrderService {
 	@Transactional(rollbackFor = ApiException.class)
 	public void update(int id, OrderItemPojo p) throws ApiException {
 
+		validate(p);
 		OrderItemPojo ex = checkIfExists(id);
 		int old_qty = ex.getQuantity();
 		ex.setQuantity(p.getQuantity());
@@ -142,8 +143,13 @@ public class OrderService {
 	//Updation of inventory when order is created or updated
 	protected void updateInventory(OrderItemPojo p, int old_qty) throws ApiException {
 		int quantity = p.getQuantity();
-
-		int quantityInInventory = inventory_service.getByProductId(p.getProductPojo().getId()).getQuantity() + old_qty;
+		int quantityInInventory;
+		try {
+			quantityInInventory = inventory_service.getByProductId(p.getProductPojo().getId()).getQuantity() + old_qty;
+		} catch(Exception e) {
+			throw new ApiException("Inventory for this item does not exist " + p.getProductPojo().getBarcode());
+		}
+		
 
 		if (quantity > quantityInInventory) {
 			throw new ApiException(

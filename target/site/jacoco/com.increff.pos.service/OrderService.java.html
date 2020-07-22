@@ -101,69 +101,75 @@ import com.increff.pos.pojo.OrderPojo;
 	@Transactional(rollbackFor = ApiException.class)
 	public void update(int id, OrderItemPojo p) throws ApiException {
 
-<span class="fc" id="L104">		OrderItemPojo ex = checkIfExists(id);</span>
-<span class="fc" id="L105">		int old_qty = ex.getQuantity();</span>
-<span class="fc" id="L106">		ex.setQuantity(p.getQuantity());</span>
-<span class="fc" id="L107">		ex.setProductPojo(p.getProductPojo());</span>
-<span class="fc" id="L108">		ex.setSellingPrice(p.getSellingPrice());</span>
-<span class="fc" id="L109">		order_item_dao.update(p);</span>
-<span class="fc" id="L110">		updateInventory(p,old_qty);</span>
-<span class="fc" id="L111">	}</span>
+<span class="fc" id="L104">		validate(p);</span>
+<span class="fc" id="L105">		OrderItemPojo ex = checkIfExists(id);</span>
+<span class="fc" id="L106">		int old_qty = ex.getQuantity();</span>
+<span class="fc" id="L107">		ex.setQuantity(p.getQuantity());</span>
+<span class="fc" id="L108">		ex.setProductPojo(p.getProductPojo());</span>
+<span class="fc" id="L109">		ex.setSellingPrice(p.getSellingPrice());</span>
+<span class="fc" id="L110">		order_item_dao.update(p);</span>
+<span class="fc" id="L111">		updateInventory(p,old_qty);</span>
+<span class="fc" id="L112">	}</span>
 
 	//Adding order item to an existing order
 	@Transactional(rollbackFor = ApiException.class)
 	public void addOrderItem(int order_id, OrderItemPojo p) throws ApiException {
 
-<span class="fc" id="L117">		p.setOrderPojo(order_dao.select(order_id));</span>
-<span class="fc" id="L118">		order_item_dao.insert(p);</span>
-<span class="fc" id="L119">		updateInventory(p,0);</span>
-<span class="fc" id="L120">	}</span>
+<span class="fc" id="L118">		p.setOrderPojo(order_dao.select(order_id));</span>
+<span class="fc" id="L119">		order_item_dao.insert(p);</span>
+<span class="fc" id="L120">		updateInventory(p,0);</span>
+<span class="fc" id="L121">	}</span>
 
 	//Checking if a particular order item exists or not
 	@Transactional(rollbackFor = ApiException.class)
 	public OrderItemPojo checkIfExists(int id) throws ApiException {
-<span class="fc" id="L125">		OrderItemPojo p = order_item_dao.select(id);</span>
-<span class="fc bfc" id="L126" title="All 2 branches covered.">		if (p == null) {</span>
-<span class="fc" id="L127">			throw new ApiException(&quot;OrderItem with given ID does not exist, id: &quot; + id);</span>
+<span class="fc" id="L126">		OrderItemPojo p = order_item_dao.select(id);</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">		if (p == null) {</span>
+<span class="fc" id="L128">			throw new ApiException(&quot;OrderItem with given ID does not exist, id: &quot; + id);</span>
 		}
-<span class="fc" id="L129">		return p;</span>
+<span class="fc" id="L130">		return p;</span>
 	}
 	
 	//Checking if a particular order exists or not
 	@Transactional(rollbackFor = ApiException.class)
 	public OrderPojo checkIfExistsOrder(int id) throws ApiException {
-<span class="fc" id="L135">		OrderPojo p = order_dao.select(id);</span>
-<span class="fc bfc" id="L136" title="All 2 branches covered.">		if (p == null) {</span>
-<span class="fc" id="L137">			throw new ApiException(&quot;Order with given ID does not exist, id: &quot; + id);</span>
+<span class="fc" id="L136">		OrderPojo p = order_dao.select(id);</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">		if (p == null) {</span>
+<span class="fc" id="L138">			throw new ApiException(&quot;Order with given ID does not exist, id: &quot; + id);</span>
 		}
-<span class="fc" id="L139">		return p;</span>
+<span class="fc" id="L140">		return p;</span>
 	}
 
 	//Updation of inventory when order is created or updated
 	protected void updateInventory(OrderItemPojo p, int old_qty) throws ApiException {
-<span class="fc" id="L144">		int quantity = p.getQuantity();</span>
+<span class="fc" id="L145">		int quantity = p.getQuantity();</span>
+		int quantityInInventory;
+		try {
+<span class="fc" id="L148">			quantityInInventory = inventory_service.getByProductId(p.getProductPojo().getId()).getQuantity() + old_qty;</span>
+<span class="fc" id="L149">		} catch(Exception e) {</span>
+<span class="fc" id="L150">			throw new ApiException(&quot;Inventory for this item does not exist &quot; + p.getProductPojo().getBarcode());</span>
+<span class="fc" id="L151">		}</span>
+		
 
-<span class="fc" id="L146">		int quantityInInventory = inventory_service.getByProductId(p.getProductPojo().getId()).getQuantity() + old_qty;</span>
-
-<span class="fc bfc" id="L148" title="All 2 branches covered.">		if (quantity &gt; quantityInInventory) {</span>
-<span class="fc" id="L149">			throw new ApiException(</span>
+<span class="fc bfc" id="L154" title="All 2 branches covered.">		if (quantity &gt; quantityInInventory) {</span>
+<span class="fc" id="L155">			throw new ApiException(</span>
 					&quot;Inventory does not contain this much quantity of product. Existing quantity in inventory: &quot;
 							+ quantityInInventory);
 		} 
-<span class="fc" id="L153">		InventoryPojo new_ip = new InventoryPojo();</span>
-<span class="fc" id="L154">		new_ip.setQuantity(quantityInInventory - quantity);</span>
-<span class="fc" id="L155">		inventory_service.update(inventory_service.getByProductId(p.getProductPojo().getId()).getId(), new_ip);</span>
+<span class="fc" id="L159">		InventoryPojo new_ip = new InventoryPojo();</span>
+<span class="fc" id="L160">		new_ip.setQuantity(quantityInInventory - quantity);</span>
+<span class="fc" id="L161">		inventory_service.update(inventory_service.getByProductId(p.getProductPojo().getId()).getId(), new_ip);</span>
 		
 
-<span class="fc" id="L158">	}</span>
+<span class="fc" id="L164">	}</span>
 
 	//Validation of order item
 	private void validate(OrderItemPojo p) throws ApiException {
-<span class="fc bfc" id="L162" title="All 2 branches covered.">		if (p.getQuantity() &lt;= 0) {</span>
-<span class="fc" id="L163">			throw new ApiException(&quot;Quantity must be positive&quot;);</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">		if (p.getQuantity() &lt;= 0) {</span>
+<span class="fc" id="L169">			throw new ApiException(&quot;Quantity must be positive&quot;);</span>
 		}
 
-<span class="fc" id="L166">	}</span>
+<span class="fc" id="L172">	}</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -97,7 +97,7 @@ import com.increff.pos.util.XmlUtil;
 	private static List&lt;OrderItemPojo&gt; FilterByDate(SalesFilter sales_filter, List&lt;OrderItemPojo&gt; orderitem_list) {
 <span class="fc" id="L98">		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);</span>
 <span class="fc" id="L99">		LocalDateTime startDate = LocalDate.parse(sales_filter.getStartDate(), formatter).atStartOfDay();</span>
-<span class="fc" id="L100">		LocalDateTime endDate = LocalDate.parse(sales_filter.getEndDate(), formatter).atStartOfDay();</span>
+<span class="fc" id="L100">		LocalDateTime endDate = LocalDate.parse(sales_filter.getEndDate(), formatter).atStartOfDay().plusDays(1);</span>
 <span class="fc" id="L101">		List&lt;OrderItemPojo&gt; filtered_date_list = orderitem_list.stream()</span>
 <span class="pc bpc" id="L102" title="1 of 2 branches missed.">				.filter(orderitem -&gt; orderitem.getOrderPojo().getDatetime().isAfter(startDate)</span>
 <span class="pc bpc" id="L103" title="1 of 2 branches missed.">						&amp;&amp; orderitem.getOrderPojo().getDatetime().isBefore(endDate))</span>

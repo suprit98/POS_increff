@@ -2,6 +2,8 @@ var barcodeList = [];
 var brandList = [];
 var categoryList = [];
 
+var errorData = [];
+
 function getBrandUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content");
 	console.log(baseUrl);
@@ -52,6 +54,38 @@ function readFileData(file, callback){
 	Papa.parse(file, config);
 }
 
+function checkHeader(file,header_list,callback) {
+	var allHeadersPresent = true;
+	Papa.parse(file,{
+		delimiter: "\t",
+		step: function(results, parser) {
+
+        for(var i=0; i<header_list.length; i++){
+					if(!results.data.includes(header_list[i])){
+						allHeadersPresent = false;
+						break;
+					}
+				}
+
+        parser.abort();
+        results=null;
+        delete results;
+
+    }, complete: function(results){
+
+        results=null;
+        delete results;
+				if(allHeadersPresent) {
+					readFileData(file,callback);
+				}
+				else{
+					alert("Improper or absent headers in file");
+				}
+
+    }
+	});
+}
+
 function writeFileData(arr){
 	var config = {
 		quoteChar: '',
@@ -77,7 +111,7 @@ function writeFileData(arr){
 function handleAjaxError(response) {
 	console.log(response.responseText);
 	var response = JSON.parse(response.responseText);
-	alert(response.message);
+	toastr.error(response.message);
 }
 
 //HELPER METHOD
@@ -123,7 +157,12 @@ function ajaxQueryRecur(url, type, data, successFunction,recurFunction) {
 	   		successFunction(response);
 	   },
 	   error: function(response){
-	   		handleAjaxError(response);
+			  var error_obj = JSON.parse(response.responseText);
+			  var error = "For " + data;
+				console.log(error_obj.message);
+				error_obj.message = error + " " + error_obj.message;
+				console.log(error_obj.message);
+	   		errorData.push(error_obj);
 				recurFunction();
 	   }
 	});
@@ -131,6 +170,10 @@ function ajaxQueryRecur(url, type, data, successFunction,recurFunction) {
 
 function isBlank(str) {
     return (!str || /^\s*$/.test(str));
+}
+
+function isInt(n) {
+   return n % 1 === 0;
 }
 
 function init() {

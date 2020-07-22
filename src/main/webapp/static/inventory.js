@@ -6,7 +6,7 @@ function getInventoryUrl(){
 
 //BUTTON ACTIONS
 function addInventory(event){
-	$('#add-inventory-modal').modal('toggle');
+
 	//Set the values to update
 	var $form = $("#inventory-form");
 	var json = toJson($form);
@@ -15,6 +15,7 @@ function addInventory(event){
 	var check = validateInventory(json);
 	if(check){
 		ajaxQuery(url,'POST',json,getInventoryList);
+		$('#add-inventory-modal').modal('toggle');
 	}
 
 
@@ -22,7 +23,7 @@ function addInventory(event){
 }
 
 function updateInventory(event){
-	$('#edit-inventory-modal').modal('toggle');
+
 	//Get the ID
 	var id = $("#inventory-edit-form input[name=id]").val();
 	var url = getInventoryUrl() + "/" + id;
@@ -33,6 +34,7 @@ function updateInventory(event){
 	var check = validateInventory(json);
 	if(check){
 		ajaxQuery(url,'PUT',json,getInventoryList);
+		$('#edit-inventory-modal').modal('toggle');
 	}
 	return false;
 
@@ -56,7 +58,7 @@ var rowsProcessed = 0;
 
 function processDataInventory(){
 	var file = $('#inventoryFile')[0].files[0];
-	readFileData(file, readFileDataCallback);
+	checkHeader(file,["barcode","quantity"],readFileDataCallback);
 }
 
 function readFileDataCallback(results){
@@ -65,7 +67,7 @@ function readFileDataCallback(results){
 }
 
 function uploadRowsInventory(){
-
+	updateUploadDialog();
 	//If everything processed then return
 	if(rowsProcessed==fileData.length){
 		getInventoryList();
@@ -81,21 +83,7 @@ function uploadRowsInventory(){
 
 	var url = getInventoryUrl();
 
-	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },
-	   success: function(response) {
-	   		uploadRowsInventory(response);
-	   },
-	   error: function(response){
-				errorData.push(JSON.parse(response.responseText));
-				uploadRowsInventory();
-	   }
-	});
+	ajaxQueryRecur(url,'POST',json,uploadRowsInventory,uploadRowsInventory);
 
 }
 
@@ -126,7 +114,6 @@ function displayInventoryList(data){
 		var buttonHtml = '<button style="padding: 0;border: none;background: none;" onclick="deleteInventory(' + e.id + ')"><span class="material-icons" style="color:red">delete</span></button>'
 		buttonHtml += ' <button style="padding: 0;border: none;background: none;" onclick="displayEditInventory(' + e.id + ')"><span class="material-icons" style="color:#CCCC00">edit</span></button>'
 		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.barcode + '</td>'
 		+ '<td>' + e.quantity + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
@@ -157,22 +144,29 @@ function resetUploadDialogInventory(){
 	$file.val('');
 	$('#inventoryFileName').html("Choose File");
 
-	processCount = 0;
+	rowsProcessed = 0;
 	fileData = [];
 	errorData = [];
+	updateUploadDialog();
 }
 
 function validateInventory(json) {
 	json = JSON.parse(json);
 	if(isBlank(json.barcode)) {
-		alert("Barcode field must not be empty");
+		toastr.error("Barcode field must not be empty");
 		return false;
 	}
-	if(isBlank(json.quantity) || isNaN(parseInt(json.quantity))) {
-		alert("Quantity field must not be empty and must be an integer value");
+	if(isBlank(json.quantity) || isNaN(parseInt(json.quantity)) || !isInt(json.quantity)) {
+		toastr.error("Quantity field must not be empty and must be an integer value");
 		return false;
 	}
 	return true;
+}
+
+function updateUploadDialog(){
+	$('#rowCount').html("" + fileData.length);
+	$('#processCount').html("" + rowsProcessed);
+	$('#errorCount').html("" + errorData.length);
 }
 
 function inventoryFilter() {

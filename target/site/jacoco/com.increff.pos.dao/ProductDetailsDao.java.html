@@ -19,43 +19,49 @@ import com.increff.pos.pojo.ProductDetailsPojo;
 <span class="fc" id="L19">	private static String select_all = &quot;select p from ProductDetailsPojo p&quot;;</span>
 <span class="fc" id="L20">	private static String select_barcode = &quot;select p from ProductDetailsPojo p where barcode=:barcode&quot;;</span>
 	
+	//Insert product details to DB
 	public void insert(ProductDetailsPojo p) {
-<span class="fc" id="L23">		em.persist(p);</span>
-<span class="fc" id="L24">	}</span>
+<span class="fc" id="L24">		em.persist(p);</span>
+<span class="fc" id="L25">	}</span>
 	
+	//Delete Product from DB
 	public void delete(int id) {
-<span class="fc" id="L27">		ProductDetailsPojo p = em.find(ProductDetailsPojo.class, id);</span>
-<span class="fc" id="L28">		em.remove(p);</span>
-<span class="fc" id="L29">	}</span>
+<span class="fc" id="L29">		ProductDetailsPojo p = em.find(ProductDetailsPojo.class, id);</span>
+<span class="fc" id="L30">		em.remove(p);</span>
+<span class="fc" id="L31">	}</span>
 	
+	//Select product from DB
 	public ProductDetailsPojo select(int id) {
-<span class="fc" id="L32">		return em.find(ProductDetailsPojo.class, id);</span>
+<span class="fc" id="L35">		return em.find(ProductDetailsPojo.class, id);</span>
 	}
 	
+	//Select product by barcode from DB
 	public ProductDetailsPojo select(String barcode) {
-<span class="fc" id="L36">		TypedQuery&lt;ProductDetailsPojo&gt; query = getQuery(select_barcode);</span>
-<span class="fc" id="L37">		query.setParameter(&quot;barcode&quot;, barcode);</span>
-<span class="fc" id="L38">		List&lt;ProductDetailsPojo&gt; lis = query.getResultList();</span>
-<span class="fc bfc" id="L39" title="All 2 branches covered.">		if(lis.size()&gt;0) {</span>
-<span class="fc" id="L40">			ProductDetailsPojo p = lis.get(0);</span>
-<span class="fc" id="L41">			return p;</span>
+<span class="fc" id="L40">		TypedQuery&lt;ProductDetailsPojo&gt; query = getQuery(select_barcode);</span>
+<span class="fc" id="L41">		query.setParameter(&quot;barcode&quot;, barcode);</span>
+<span class="fc" id="L42">		List&lt;ProductDetailsPojo&gt; lis = query.getResultList();</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">		if(lis.size()&gt;0) {</span>
+<span class="fc" id="L44">			ProductDetailsPojo p = lis.get(0);</span>
+<span class="fc" id="L45">			return p;</span>
 		}
 		else {
-<span class="fc" id="L44">			return null;</span>
+<span class="fc" id="L48">			return null;</span>
 		}
 	}
 	
+	//Select all products from DB
 	public List&lt;ProductDetailsPojo&gt; selectAll() {
-<span class="fc" id="L49">		TypedQuery&lt;ProductDetailsPojo&gt; query = getQuery(select_all);</span>
-<span class="fc" id="L50">		return query.getResultList();	</span>
+<span class="fc" id="L54">		TypedQuery&lt;ProductDetailsPojo&gt; query = getQuery(select_all);</span>
+<span class="fc" id="L55">		return query.getResultList();	</span>
 	}
 	
+	//Update Product Details
 	public void update(ProductDetailsPojo p) {
 		
-<span class="fc" id="L55">	}</span>
+<span class="fc" id="L61">	}</span>
 	
 	private TypedQuery&lt;ProductDetailsPojo&gt; getQuery(String jpql) {
-<span class="fc" id="L58">		return em.createQuery(jpql,ProductDetailsPojo.class);</span>
+<span class="fc" id="L64">		return em.createQuery(jpql,ProductDetailsPojo.class);</span>
 	}
 
 }

@@ -97,7 +97,7 @@ public class ReportService {
 	private static List<OrderItemPojo> FilterByDate(SalesFilter sales_filter, List<OrderItemPojo> orderitem_list) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDateTime startDate = LocalDate.parse(sales_filter.getStartDate(), formatter).atStartOfDay();
-		LocalDateTime endDate = LocalDate.parse(sales_filter.getEndDate(), formatter).atStartOfDay();
+		LocalDateTime endDate = LocalDate.parse(sales_filter.getEndDate(), formatter).atStartOfDay().plusDays(1);
 		List<OrderItemPojo> filtered_date_list = orderitem_list.stream()
 				.filter(orderitem -> orderitem.getOrderPojo().getDatetime().isAfter(startDate)
 						&& orderitem.getOrderPojo().getDatetime().isBefore(endDate))
