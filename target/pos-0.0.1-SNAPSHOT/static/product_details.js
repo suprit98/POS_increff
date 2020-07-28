@@ -93,6 +93,7 @@ function displayProductDetails(data){
 
 function displayUploadDataProductDetails(){
 	resetUploadDialogProduct();
+	$("#download-errors-productdetails").prop("disabled",true);
 	$('#upload-productdetails-modal').modal('toggle');
 }
 
@@ -117,6 +118,7 @@ function readFileDataCallback(results){
 
 function uploadRowsProductDetails(){
 	updateUploadDialog();
+	$("#download-errors-productdetails").prop("disabled",false);
 	//If everything processed then return
 	if(rowsProcessed==fileData.length){
 		getProductDetailsList();
@@ -186,8 +188,9 @@ function validateProduct(json) {
 }
 
 function updateUploadDialog(){
+	var correct_rows = parseInt(fileData.length) - parseInt(errorData.length);
 	$('#rowCount').html("" + fileData.length);
-	$('#processCount').html("" + rowsProcessed);
+	$('#processCount').html("" + correct_rows);
 	$('#errorCount').html("" + errorData.length);
 }
 

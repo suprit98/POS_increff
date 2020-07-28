@@ -68,6 +68,7 @@ function readFileDataCallback(results){
 
 function uploadRowsInventory(){
 	updateUploadDialog();
+	$("#download-errors-inventory").prop("disabled",false);
 	//If everything processed then return
 	if(rowsProcessed==fileData.length){
 		getInventoryList();
@@ -96,6 +97,7 @@ function downloadErrors(){
 
 function displayUploadDataInventory(){
 	resetUploadDialogInventory();
+	$("#download-errors-inventory").prop("disabled",true);
 	$('#upload-inventory-modal').modal('toggle');
 }
 
@@ -164,8 +166,9 @@ function validateInventory(json) {
 }
 
 function updateUploadDialog(){
+	var correct_rows = parseInt(fileData.length) - parseInt(errorData.length);
 	$('#rowCount').html("" + fileData.length);
-	$('#processCount').html("" + rowsProcessed);
+	$('#processCount').html("" + correct_rows);
 	$('#errorCount').html("" + errorData.length);
 }
 

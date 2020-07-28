@@ -13,8 +13,10 @@ function addBrand(event){
 	var check = validateBrand(json);
 	if(check) {
 		var url = getBrandUrl();
-		ajaxQuery(url,'POST',json,getBrandList);
-		$('#add-brand-modal').modal('toggle');
+		ajaxQuery(url,'POST',json,function(response) {
+			getBrandList(response);
+			$('#add-brand-modal').modal('toggle');
+		},handleAjaxError);
 	}
 	return false;
 }
@@ -31,8 +33,10 @@ function updateBrand(event){
 
 	var check = validateBrand(json);
 	if(check) {
-		ajaxQuery(url,'PUT',json,getBrandList);
-		$('#edit-brand-modal').modal('toggle');
+		ajaxQuery(url,'PUT',json,function(response) {
+			getBrandList(response);
+			$('#edit-brand-modal').modal('toggle');
+		},handleAjaxError);
 	}
 
 	return false;
@@ -42,12 +46,12 @@ function updateBrand(event){
 
 function getBrandList(){
 	var url = getBrandUrl();
-	ajaxQuery(url,'GET','',displayBrandList);
+	ajaxQuery(url,'GET','',displayBrandList,handleAjaxError);
 }
 
 function deleteBrand(id){
 	var url = getBrandUrl() + "/" + id;
-	ajaxQuery(url,'DELETE','',getBrandList);
+	ajaxQuery(url,'DELETE','',getBrandList,handleAjaxError);
 }
 
 //UI DISPLAY METHODS
@@ -72,7 +76,7 @@ function displayBrandList(data){
 
 function displayEditBrand(id){
 	var url = getBrandUrl() + "/" + id;
-	ajaxQuery(url,'GET','',displayBrand);
+	ajaxQuery(url,'GET','',displayBrand,handleAjaxError);
 }
 
 function displayBrand(data){
@@ -84,6 +88,7 @@ function displayBrand(data){
 
 function displayUploadData(){
 	resetUploadDialog();
+	$("#download-errors").prop("disabled",true);
 	$('#upload-brand-modal').modal('toggle');
 }
 
@@ -108,6 +113,7 @@ function readFileDataCallback(results){
 
 function uploadRows(){
 	updateUploadDialog();
+	$("#download-errors").prop("disabled",false);
 	//If everything processed then return
 	if(rowsProcessed==fileData.length){
 		getBrandList();
@@ -165,8 +171,9 @@ function validateBrand(json) {
 }
 
 function updateUploadDialog(){
+	var correct_rows = parseInt(fileData.length) - parseInt(errorData.length);
 	$('#rowCount').html("" + fileData.length);
-	$('#processCount').html("" + rowsProcessed);
+	$('#processCount').html("" + correct_rows);
 	$('#errorCount').html("" + errorData.length);
 }
 

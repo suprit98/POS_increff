@@ -29,18 +29,21 @@ public class XmlUtilTest extends AbstractUnitTest{
 		insertPojos();
 	}
 	
+	/* Testing Xml Generation of Brand Report */
 	@Test
 	public void testXmlBrand() throws Exception {
 		BrandDataList brand_list = report_service.generateBrandList();
 		XmlUtil.generateXml(new File("brand_report.xml"), brand_list, BrandDataList.class);
 	}
 	
+	/* Testing Xml Generation of Inventory Report */
 	@Test
 	public void testXmlInventory() throws Exception {
 		InventoryReportList inventory_list = report_service.generateInventoryList();
 		XmlUtil.generateXml(new File("inventory_report.xml"), inventory_list, InventoryReportList.class);
 	}
 	
+	/* Testing Xml Generation of Sales Report */
 	@Test
 	public void testXmlSales() throws Exception {
 		SalesFilter sales_filter = new SalesFilter();
@@ -52,6 +55,7 @@ public class XmlUtilTest extends AbstractUnitTest{
 		XmlUtil.generateXml(new File("sales_report.xml"), sales_data_list, SalesDataList.class);
 	}
 	
+	/* Testing Xml Generation of Invoice */
 	@Test
 	public void testXmlInvoice() throws Exception {
 		List<OrderItemPojo> orderitem_list = order_service.getAll();
@@ -60,6 +64,7 @@ public class XmlUtilTest extends AbstractUnitTest{
 		XmlUtil.generateXml(new File("invoice.xml"), idl, InvoiceDataList.class);
 	}
 	
+	/* Testing Pdf Generation */
 	@Test
 	public void testPdf() throws Exception {
 		XmlUtil.generatePDF(new File("brand_report.xml"), new StreamSource("brand_report.xsl"));

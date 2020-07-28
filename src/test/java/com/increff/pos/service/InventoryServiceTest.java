@@ -22,11 +22,10 @@ public class InventoryServiceTest extends AbstractUnitTest {
 		insertPojos();
 	}
 
-	// Testing adding of inventory pojo
+	/* Testing adding of inventory pojo */
 	@Test()
 	public void testAdd() throws ApiException {
 
-		
 		InventoryPojo i = getInventoryPojo(products.get(2));
 		List<InventoryPojo> inv_list_before = inventory_service.getAll();
 		inventory_service.add(i);
@@ -38,7 +37,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing adding of duplicate pojo. Should throw exception
+	/* Testing adding of duplicate pojo. Should throw exception */
 	@Test()
 	public void testAddDuplicate() throws ApiException {
 
@@ -55,7 +54,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing adding of an invalid pojo. Should throw exception
+	/* Testing adding of an invalid pojo. Should throw exception */
 	@Test()
 	public void testAddWrong() throws ApiException {
 
@@ -70,7 +69,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing deletion of pojo
+	/* Testing deletion of pojo */
 	@Test()
 	public void testDelete() throws ApiException {
 
@@ -90,7 +89,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing get by id
+	/* Testing get by id */
 	@Test()
 	public void testGetById() throws ApiException {
 
@@ -100,7 +99,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing get by id of a non-existent pojo. Should throw exception
+	/* Testing get by id of a non-existent pojo. Should throw exception */
 	@Test()
 	public void testGetByIdNotExisting() throws ApiException {
 
@@ -114,7 +113,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing get by product id
+	/* Testing get by product id */
 	@Test()
 	public void testGetByProductId() throws ApiException {
 
@@ -124,7 +123,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing get by product id of a non-existent pojo. Should throw exception
+	/* Testing get by product id of a non-existent pojo. Should throw exception */
 	@Test()
 	public void testGetByProductIdWrong() throws ApiException {
 
@@ -133,7 +132,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing get all inventory pojos
+	/* Testing get all inventory pojos */
 	@Test()
 	public void testGetAll() throws ApiException {
 
@@ -142,7 +141,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing updation of inventory pojo
+	/* Testing updation of inventory pojo */
 	@Test()
 	public void testUpdate() throws ApiException {
 
@@ -153,8 +152,10 @@ public class InventoryServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing updation of inventory pojo with an invalid pojo. Should throw
-	// exception
+	/*
+	 * Testing updation of inventory pojo with an invalid pojo. Should throw
+	 * exception
+	 */
 	@Test()
 	public void testUpdateWrong() throws ApiException {
 
@@ -168,7 +169,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing checkifexists
+	/* Testing checkifexists */
 	@Test()
 	public void testCheckIfExistsId() throws ApiException {
 
@@ -177,7 +178,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
 		assertEquals(inventories.get(0).getQuantity(), db_inventory_pojo.getQuantity());
 	}
 
-	// Testing checkifexists with an non-existent id. Should throw exception
+	/* Testing checkifexists with an non-existent id. Should throw exception */
 	@Test()
 	public void testCheckIfExistsIdWrong() throws ApiException {
 		int id = 5;
@@ -189,7 +190,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
 		}
 	}
 
-	// Testing validate
+	/* Testing validate */
 	@Test
 	public void testValidate() throws ApiException {
 		InventoryPojo ip = getInventoryPojo(products.get(2));
@@ -197,7 +198,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
 		assertTrue(ip.getQuantity() > 0);
 	}
 
-	// Testing validate of invalid inventory pojo.Should throw exception
+	/* Testing validate of invalid inventory pojo.Should throw exception */
 	@Test
 	public void testValidateWrong() throws ApiException {
 		InventoryPojo ip = getWrongInventoryPojo(products.get(0));
@@ -210,7 +211,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
 		}
 	}
 
-	// Testing if inventory of product exists or not
+	/* Testing if inventory of product exists or not */
 	@Test
 	public void testCheckIfBarcodePresent() throws ApiException {
 		try {

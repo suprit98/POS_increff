@@ -55,9 +55,8 @@ public class ProductDetailsController {
 	@ApiOperation(value = "Gets list of Products")
 	@RequestMapping(path = "/api/product_details", method = RequestMethod.GET)
 	public List<ProductDetailsData> getAll() {
-		List<ProductDetailsPojo> list = product_details_service.getAll();
-		List<ProductDetailsData> list2 = ConversionUtil.convertProductList(list);
-		return list2;
+		List<ProductDetailsPojo> product_pojo_list = product_details_service.getAll();
+		return ConversionUtil.convertProductList(product_pojo_list);
 	}
 
 	@ApiOperation(value = "Updates a ProductDetails record")

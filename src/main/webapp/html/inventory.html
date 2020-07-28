@@ -13,6 +13,10 @@
 
 <div class="container">
 
+  <div class="row page-heading">
+      Inventory Page
+  </div>
+
 <!-- Top row with form-->
  <div class="row">
 	 <div class="col-12">
@@ -38,6 +42,7 @@
 	  <thead>
 	    <tr>
 	      <th scope="col">Barcode</th>
+        <th scope="col">Name</th>
 	      <th scope="col">Quantity</th>
 	      <th scope="col">Actions</th>
 	    </tr>
@@ -59,7 +64,7 @@
         </button>
       </div>
       <div class="modal-body ui-front">
-			<form class="form-inline" id="inventory-form">
+			<form id="inventory-form">
 			  <div class="form-group">
 			    <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
 			    <div class="col-sm-10">
@@ -94,7 +99,7 @@
         </button>
       </div>
       <div class="modal-body ui-front">
-			<form class="form-inline" id="inventory-edit-form">
+			<form id="inventory-edit-form">
 			  <div class="form-group">
 			    <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
 			    <div class="col-sm-10">

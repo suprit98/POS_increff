@@ -80,6 +80,7 @@ public class ConversionUtil {
 		InventoryData d = new InventoryData();
 		d.setId(p.getId());
 		d.setBarcode(p.getProductPojo().getBarcode());
+		d.setName(p.getProductPojo().getName());
 		d.setQuantity(p.getQuantity());
 		return d;
 	}

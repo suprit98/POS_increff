@@ -20,7 +20,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 		insertPojos();
 	}
 
-	// Testing Adding of brand
+	/* Testing Adding of brand */
 	@Test()
 	public void testAdd() throws ApiException {
 
@@ -36,7 +36,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing Adding of duplicates. Exception should be thrown
+	/* Testing Adding of duplicates. Exception should be thrown */
 	@Test()
 	public void testAddDuplicate() throws ApiException {
 
@@ -52,7 +52,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing adding of invalid brand pojo. Exception should be thrown
+	/* Testing adding of invalid brand pojo. Exception should be thrown */
 	@Test()
 	public void testAddWrong() throws ApiException {
 
@@ -66,7 +66,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing deletion of an existing brand pojo
+	/* Testing deletion of an existing brand pojo */
 	@Test()
 	public void testDelete() throws ApiException {
 
@@ -90,7 +90,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing Get for brand pojo
+	/* Testing Get for brand pojo */
 	@Test()
 	public void testGet() throws ApiException {
 
@@ -101,7 +101,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing Get for a non-existent pojo. Should throw exception
+	/* Testing Get for a non-existent pojo. Should throw exception */
 	@Test()
 	public void testGetNotExisting() throws ApiException {
 
@@ -115,7 +115,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing update
+	/* Testing update */
 	@Test()
 	public void testUpdate() throws ApiException {
 
@@ -127,7 +127,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing update with invalid brand pojo. Exception should be thrown
+	/* Testing update with invalid brand pojo. Exception should be thrown */
 	@Test()
 	public void testUpdateWrong() throws ApiException {
 
@@ -143,7 +143,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing get all brand pojos
+	/* Testing get all brand pojos */
 	@Test()
 	public void testGetAll() throws ApiException {
 
@@ -152,7 +152,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing checkifexists
+	/* Testing checkifexists */
 	@Test()
 	public void testCheckIfExists() throws ApiException {
 
@@ -163,7 +163,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing checkifexists for a non-existent pojo
+	/* Testing checkifexists for a non-existent pojo */
 	@Test()
 	public void testCheckIfExistsNotExisting() throws ApiException {
 
@@ -177,7 +177,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing getting of brand id based on brand and category
+	/* Testing getting of brand id based on brand and category */
 	@Test()
 	public void testGetId() throws ApiException {
 
@@ -189,8 +189,10 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing getting of brand id based on a brand and category that does not
-	// exist. Should throw an exception
+	/*
+	 * Testing getting of brand id based on a brand and category that does not
+	 * exist. Should throw an exception
+	 */
 	@Test()
 	public void testGetIdNotExisting() throws ApiException {
 
@@ -204,7 +206,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing normalize
+	/* Testing normalize */
 	@Test
 	public void testNormalize() throws ApiException {
 		BrandPojo p = getBrandPojo();
@@ -214,7 +216,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 		assertEquals("biscuits", p.getCategory());
 	}
 
-	// Testing Validate
+	/* Testing Validate */
 	@Test
 	public void testValidate() throws ApiException {
 		BrandPojo p = getBrandPojo();

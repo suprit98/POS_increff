@@ -84,6 +84,7 @@ function displayBrand(data){
 
 function displayUploadData(){
 	resetUploadDialog();
+	$("#download-errors").prop("disabled",true);
 	$('#upload-brand-modal').modal('toggle');
 }
 
@@ -108,6 +109,7 @@ function readFileDataCallback(results){
 
 function uploadRows(){
 	updateUploadDialog();
+	$("#download-errors").prop("disabled",false);
 	//If everything processed then return
 	if(rowsProcessed==fileData.length){
 		getBrandList();
@@ -165,8 +167,9 @@ function validateBrand(json) {
 }
 
 function updateUploadDialog(){
+	var correct_rows = parseInt(fileData.length) - parseInt(errorData.length);
 	$('#rowCount').html("" + fileData.length);
-	$('#processCount').html("" + rowsProcessed);
+	$('#processCount').html("" + correct_rows);
 	$('#errorCount').html("" + errorData.length);
 }
 

@@ -29,8 +29,8 @@ public class BrandController {
 	@ApiOperation(value = "Adds Brand Details")
 	@RequestMapping(path = "/api/brand", method = RequestMethod.POST)
 	public void add(@RequestBody BrandForm userform) throws ApiException {
-		BrandPojo p = ConversionUtil.convert(userform);
-		brand_service.add(p);
+		BrandPojo brand_pojo = ConversionUtil.convert(userform);
+		brand_service.add(brand_pojo);
 	}
 
 	@ApiOperation(value = "Deletes a Brand Details record")
@@ -42,23 +42,22 @@ public class BrandController {
 	@ApiOperation(value = "Gets a Brand details record by id")
 	@RequestMapping(path = "/api/brand/{id}", method = RequestMethod.GET)
 	public BrandData get(@PathVariable int id) throws ApiException {
-		BrandPojo p = brand_service.get(id);
-		return ConversionUtil.convert(p);
+		BrandPojo brand_pojo = brand_service.get(id);
+		return ConversionUtil.convert(brand_pojo);
 	}
 
 	@ApiOperation(value = "Gets list of Brands")
 	@RequestMapping(path = "/api/brand", method = RequestMethod.GET)
 	public List<BrandData> getAll() {
-		List<BrandPojo> list = brand_service.getAll();
-		List<BrandData> list2 = ConversionUtil.convert(list);
-		return list2;
+		List<BrandPojo> brand_pojo_list = brand_service.getAll();
+		return ConversionUtil.convert(brand_pojo_list);
 	}
 
 	@ApiOperation(value = "Updates a Brand details record")
 	@RequestMapping(path = "/api/brand/{id}", method = RequestMethod.PUT)
 	public void update(@PathVariable int id, @RequestBody BrandForm f) throws ApiException {
-		BrandPojo p = ConversionUtil.convert(f);
-		brand_service.update(id, p);
+		BrandPojo brand_pojo = ConversionUtil.convert(f);
+		brand_service.update(id, brand_pojo);
 	}
 
 }

@@ -1,12 +1,16 @@
+com/increff/pos/dao/ProductDaoTest.class
 com/increff/pos/spring/QaConfig.class
 com/increff/pos/util/XmlUtilTest.class
 com/increff/pos/service/InventoryServiceTest.class
 com/increff/pos/util/ConversionUtilTest.class
+com/increff/pos/dao/BrandDaoTest.class
 com/increff/pos/service/OrderServiceTest.class
 com/increff/pos/model/InventoryDataTest.class
 com/increff/pos/service/ReportServiceTest.class
 com/increff/pos/service/BrandServiceTest.class
 com/increff/pos/model/ProductDetailsDataTest.class
+com/increff/pos/dao/InventoryDaoTest.class
+com/increff/pos/dao/OrderDaoTest.class
 com/increff/pos/service/ProductDetailsServiceTest.class
 com/increff/pos/util/BarcodeUtilTest.class
 com/increff/pos/model/ErrorMessageTest.class
@@ -14,3 +18,4 @@ com/increff/pos/model/BrandDataTest.class
 com/increff/pos/spring/AbstractUnitTest.class
 com/increff/pos/model/OrderDataTest.class
 com/increff/pos/model/OrderItemDataTest.class
+com/increff/pos/dao/OrderItemDaoTest.class

@@ -8,6 +8,7 @@ import com.increff.pos.spring.AbstractUnitTest;
 
 public class BarcodeUtilTest extends AbstractUnitTest{
 	
+	/* Testing generation of Barcode */
 	@Test
 	public void generateBarcode() {
 		String s1 = BarcodeUtil.randomString(8);

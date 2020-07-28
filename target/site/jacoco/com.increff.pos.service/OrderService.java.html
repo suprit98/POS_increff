@@ -2,6 +2,7 @@
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.OrderPojo;
 
 @Service
-<span class="fc" id="L17">public class OrderService {</span>
+<span class="fc" id="L18">public class OrderService {</span>
 
 	@Autowired
 	private OrderDao order_dao;
@@ -25,151 +26,162 @@ import com.increff.pos.pojo.OrderPojo;
 	@Autowired
 	private InventoryService inventory_service;
 
-	//Adding an order
+	/* Adding an order */
 	@Transactional(rollbackFor = ApiException.class)
 	public int add(List&lt;OrderItemPojo&gt; lis) throws ApiException {
-<span class="fc" id="L31">		OrderPojo op = new OrderPojo();</span>
-<span class="fc" id="L32">		op.setDatetime(LocalDateTime.now());</span>
-<span class="fc" id="L33">		int order_id = order_dao.insert(op);</span>
-<span class="fc bfc" id="L34" title="All 2 branches covered.">		for (OrderItemPojo p : lis) {</span>
-<span class="pc bpc" id="L35" title="1 of 2 branches missed.">			if(p.getProductPojo() == null) {</span>
-<span class="nc" id="L36">				throw new ApiException(&quot;An invalid product was entered. Please check&quot;);</span>
+<span class="fc" id="L32">		OrderPojo op = new OrderPojo();</span>
+<span class="fc" id="L33">		op.setDatetime(LocalDateTime.now());</span>
+<span class="fc" id="L34">		int order_id = order_dao.insert(op);</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">		for (OrderItemPojo p : lis) {</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">			if (p.getProductPojo() == null) {</span>
+<span class="fc" id="L37">				throw new ApiException(&quot;An invalid product was entered. Please check&quot;);</span>
 			}
-<span class="fc" id="L38">			p.setOrderPojo(order_dao.select(order_id));</span>
-<span class="fc" id="L39">			validate(p);</span>
-<span class="fc" id="L40">			order_item_dao.insert(p);</span>
-<span class="fc" id="L41">			updateInventory(p,0);</span>
-<span class="fc" id="L42">		}</span>
-<span class="fc" id="L43">		return order_id;</span>
+<span class="fc" id="L39">			p.setOrderPojo(order_dao.select(order_id));</span>
+<span class="fc" id="L40">			validate(p);</span>
+<span class="fc" id="L41">			order_item_dao.insert(p);</span>
+<span class="fc" id="L42">			updateInventory(p, 0);</span>
+<span class="fc" id="L43">		}</span>
+<span class="fc" id="L44">		return order_id;</span>
 	}
 
-	//Fetching an Order item by id
+	/* Fetching an Order item by id */
 	@Transactional
 	public OrderItemPojo get(int id) throws ApiException {
-<span class="fc" id="L49">		OrderItemPojo p = checkIfExists(id);</span>
-<span class="fc" id="L50">		return p;</span>
+<span class="fc" id="L50">		OrderItemPojo p = checkIfExists(id);</span>
+<span class="fc" id="L51">		return p;</span>
 	}
 
-	//Fetching an Order by id
+	/* Fetching an Order by id */
 	@Transactional
 	public OrderPojo getOrder(int id) throws ApiException {
-<span class="fc" id="L56">		OrderPojo p = checkIfExistsOrder(id);</span>
-<span class="fc" id="L57">		return p;</span>
+<span class="fc" id="L57">		OrderPojo p = checkIfExistsOrder(id);</span>
+<span class="fc" id="L58">		return p;</span>
 	}
 
-	//Fetch all order items of a particular order
+	/* Fetch all order items of a particular order */
 	@Transactional
 	public List&lt;OrderItemPojo&gt; getOrderItems(int order_id) throws ApiException {
-<span class="fc" id="L63">		List&lt;OrderItemPojo&gt; lis = order_item_dao.selectOrder(order_id);</span>
-<span class="fc" id="L64">		return lis;</span>
+<span class="fc" id="L64">		List&lt;OrderItemPojo&gt; lis = order_item_dao.selectOrder(order_id);</span>
+<span class="fc" id="L65">		return lis;</span>
 	}
 
-	//Fetching all order items 
+	/* Fetching all order items */
 	@Transactional
 	public List&lt;OrderItemPojo&gt; getAll() {
-<span class="fc" id="L70">		return order_item_dao.selectAll();</span>
+<span class="fc" id="L71">		return order_item_dao.selectAll();</span>
 	}
 
-	//Fetching all orders
+	/* Fetching all orders */
 	@Transactional
 	public List&lt;OrderPojo&gt; getAllOrders() {
-<span class="fc" id="L76">		return order_dao.selectAll();</span>
+<span class="fc" id="L77">		return order_dao.selectAll();</span>
 	}
 
-	//Deletion of order item
+	/* Deletion of order item */
 	@Transactional
 	public void delete(int id) {
-<span class="fc" id="L82">		int order_id = order_item_dao.select(id).getOrderPojo().getId();</span>
-<span class="fc" id="L83">		order_item_dao.delete(id);</span>
-<span class="fc" id="L84">		List&lt;OrderItemPojo&gt; lis = order_item_dao.selectOrder(order_id);</span>
-<span class="pc bpc" id="L85" title="1 of 2 branches missed.">		if (lis.isEmpty()) {</span>
-<span class="fc" id="L86">			order_dao.delete(order_id);</span>
+<span class="fc" id="L83">		int order_id = order_item_dao.select(id).getOrderPojo().getId();</span>
+<span class="fc" id="L84">		order_item_dao.delete(id);</span>
+<span class="fc" id="L85">		List&lt;OrderItemPojo&gt; lis = order_item_dao.selectOrder(order_id);</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">		if (lis.isEmpty()) {</span>
+<span class="fc" id="L87">			order_dao.delete(order_id);</span>
 		}
-<span class="fc" id="L88">	}</span>
-	
-	//Deletion of order
+<span class="fc" id="L89">	}</span>
+
+	/* Deletion of order */
 	@Transactional
 	public void deleteOrder(int order_id) throws ApiException {
-<span class="fc" id="L93">		List&lt;OrderItemPojo&gt; orderitem_list = getOrderItems(order_id);</span>
-<span class="fc bfc" id="L94" title="All 2 branches covered.">		for(OrderItemPojo orderitem_pojo:orderitem_list) {</span>
-<span class="fc" id="L95">			order_item_dao.delete(orderitem_pojo.getId());</span>
-<span class="fc" id="L96">		}</span>
-<span class="fc" id="L97">		order_dao.delete(order_id);</span>
-<span class="fc" id="L98">	}</span>
+<span class="fc" id="L94">		List&lt;OrderItemPojo&gt; orderitem_list = getOrderItems(order_id);</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">		for (OrderItemPojo orderitem_pojo : orderitem_list) {</span>
+<span class="fc" id="L96">			order_item_dao.delete(orderitem_pojo.getId());</span>
+<span class="fc" id="L97">		}</span>
+<span class="fc" id="L98">		order_dao.delete(order_id);</span>
+<span class="fc" id="L99">	}</span>
 
-	//Update of an order item
+	/* Update of an order item */
 	@Transactional(rollbackFor = ApiException.class)
 	public void update(int id, OrderItemPojo p) throws ApiException {
 
-<span class="fc" id="L104">		validate(p);</span>
-<span class="fc" id="L105">		OrderItemPojo ex = checkIfExists(id);</span>
-<span class="fc" id="L106">		int old_qty = ex.getQuantity();</span>
-<span class="fc" id="L107">		ex.setQuantity(p.getQuantity());</span>
-<span class="fc" id="L108">		ex.setProductPojo(p.getProductPojo());</span>
-<span class="fc" id="L109">		ex.setSellingPrice(p.getSellingPrice());</span>
-<span class="fc" id="L110">		order_item_dao.update(p);</span>
-<span class="fc" id="L111">		updateInventory(p,old_qty);</span>
-<span class="fc" id="L112">	}</span>
+<span class="fc" id="L105">		validate(p);</span>
+<span class="fc" id="L106">		OrderItemPojo ex = checkIfExists(id);</span>
+<span class="fc" id="L107">		int old_qty = ex.getQuantity();</span>
+<span class="fc" id="L108">		ex.setQuantity(p.getQuantity());</span>
+<span class="fc" id="L109">		ex.setProductPojo(p.getProductPojo());</span>
+<span class="fc" id="L110">		ex.setSellingPrice(p.getSellingPrice());</span>
+<span class="fc" id="L111">		order_item_dao.update(p);</span>
+<span class="fc" id="L112">		updateInventory(p, old_qty);</span>
+<span class="fc" id="L113">	}</span>
 
-	//Adding order item to an existing order
+	/* Adding order item to an existing order */
 	@Transactional(rollbackFor = ApiException.class)
 	public void addOrderItem(int order_id, OrderItemPojo p) throws ApiException {
+<span class="fc" id="L118">		List&lt;OrderItemPojo&gt; orderitem_list = getOrderItems(order_id);</span>
+<span class="fc" id="L119">		boolean alreadyExists = orderitem_list.stream().anyMatch(</span>
+<span class="fc" id="L120">				orderitem -&gt; orderitem.getProductPojo().getBarcode().contentEquals(p.getProductPojo().getBarcode()));</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (alreadyExists) {</span>
+<span class="nc" id="L122">			List&lt;OrderItemPojo&gt; existing_orderitem = orderitem_list.stream().filter(</span>
+<span class="nc" id="L123">					orderitem -&gt; orderitem.getProductPojo().getBarcode().contentEquals(p.getProductPojo().getBarcode()))</span>
+<span class="nc" id="L124">					.collect(Collectors.toList());</span>
+<span class="nc" id="L125">			int old_qty = existing_orderitem.get(0).getQuantity();</span>
+<span class="nc" id="L126">			p.setQuantity(p.getQuantity() + old_qty);</span>
+<span class="nc" id="L127">			update(existing_orderitem.get(0).getId(), p);</span>
+<span class="nc" id="L128">			updateInventory(p, old_qty);</span>
+<span class="nc" id="L129">		} else {</span>
+<span class="fc" id="L130">			p.setOrderPojo(order_dao.select(order_id));</span>
+<span class="fc" id="L131">			order_item_dao.insert(p);</span>
+<span class="fc" id="L132">			updateInventory(p, 0);</span>
+		}
 
-<span class="fc" id="L118">		p.setOrderPojo(order_dao.select(order_id));</span>
-<span class="fc" id="L119">		order_item_dao.insert(p);</span>
-<span class="fc" id="L120">		updateInventory(p,0);</span>
-<span class="fc" id="L121">	}</span>
+<span class="fc" id="L135">	}</span>
 
-	//Checking if a particular order item exists or not
+	/* Checking if a particular order item exists or not */
 	@Transactional(rollbackFor = ApiException.class)
 	public OrderItemPojo checkIfExists(int id) throws ApiException {
-<span class="fc" id="L126">		OrderItemPojo p = order_item_dao.select(id);</span>
-<span class="fc bfc" id="L127" title="All 2 branches covered.">		if (p == null) {</span>
-<span class="fc" id="L128">			throw new ApiException(&quot;OrderItem with given ID does not exist, id: &quot; + id);</span>
+<span class="fc" id="L140">		OrderItemPojo p = order_item_dao.select(id);</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">		if (p == null) {</span>
+<span class="fc" id="L142">			throw new ApiException(&quot;OrderItem with given ID does not exist, id: &quot; + id);</span>
 		}
-<span class="fc" id="L130">		return p;</span>
+<span class="fc" id="L144">		return p;</span>
 	}
-	
-	//Checking if a particular order exists or not
+
+	/* Checking if a particular order exists or not */
 	@Transactional(rollbackFor = ApiException.class)
 	public OrderPojo checkIfExistsOrder(int id) throws ApiException {
-<span class="fc" id="L136">		OrderPojo p = order_dao.select(id);</span>
-<span class="fc bfc" id="L137" title="All 2 branches covered.">		if (p == null) {</span>
-<span class="fc" id="L138">			throw new ApiException(&quot;Order with given ID does not exist, id: &quot; + id);</span>
+<span class="fc" id="L150">		OrderPojo p = order_dao.select(id);</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">		if (p == null) {</span>
+<span class="fc" id="L152">			throw new ApiException(&quot;Order with given ID does not exist, id: &quot; + id);</span>
 		}
-<span class="fc" id="L140">		return p;</span>
+<span class="fc" id="L154">		return p;</span>
 	}
 
-	//Updation of inventory when order is created or updated
+	/* Updation of inventory when order is created or updated */
 	protected void updateInventory(OrderItemPojo p, int old_qty) throws ApiException {
-<span class="fc" id="L145">		int quantity = p.getQuantity();</span>
+<span class="fc" id="L159">		int quantity = p.getQuantity();</span>
 		int quantityInInventory;
 		try {
-<span class="fc" id="L148">			quantityInInventory = inventory_service.getByProductId(p.getProductPojo().getId()).getQuantity() + old_qty;</span>
-<span class="fc" id="L149">		} catch(Exception e) {</span>
-<span class="fc" id="L150">			throw new ApiException(&quot;Inventory for this item does not exist &quot; + p.getProductPojo().getBarcode());</span>
-<span class="fc" id="L151">		}</span>
-		
+<span class="fc" id="L162">			quantityInInventory = inventory_service.getByProductId(p.getProductPojo().getId()).getQuantity() + old_qty;</span>
+<span class="fc" id="L163">		} catch (Exception e) {</span>
+<span class="fc" id="L164">			throw new ApiException(&quot;Inventory for this item does not exist &quot; + p.getProductPojo().getBarcode());</span>
+<span class="fc" id="L165">		}</span>
 
-<span class="fc bfc" id="L154" title="All 2 branches covered.">		if (quantity &gt; quantityInInventory) {</span>
-<span class="fc" id="L155">			throw new ApiException(</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">		if (quantity &gt; quantityInInventory) {</span>
+<span class="fc" id="L168">			throw new ApiException(</span>
 					&quot;Inventory does not contain this much quantity of product. Existing quantity in inventory: &quot;
 							+ quantityInInventory);
-		} 
-<span class="fc" id="L159">		InventoryPojo new_ip = new InventoryPojo();</span>
-<span class="fc" id="L160">		new_ip.setQuantity(quantityInInventory - quantity);</span>
-<span class="fc" id="L161">		inventory_service.update(inventory_service.getByProductId(p.getProductPojo().getId()).getId(), new_ip);</span>
-		
+		}
+<span class="fc" id="L172">		InventoryPojo new_ip = new InventoryPojo();</span>
+<span class="fc" id="L173">		new_ip.setQuantity(quantityInInventory - quantity);</span>
+<span class="fc" id="L174">		inventory_service.update(inventory_service.getByProductId(p.getProductPojo().getId()).getId(), new_ip);</span>
 
-<span class="fc" id="L164">	}</span>
+<span class="fc" id="L176">	}</span>
 
-	//Validation of order item
+	/* Validation of order item */
 	private void validate(OrderItemPojo p) throws ApiException {
-<span class="fc bfc" id="L168" title="All 2 branches covered.">		if (p.getQuantity() &lt;= 0) {</span>
-<span class="fc" id="L169">			throw new ApiException(&quot;Quantity must be positive&quot;);</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">		if (p.getQuantity() &lt;= 0) {</span>
+<span class="fc" id="L181">			throw new ApiException(&quot;Quantity must be positive&quot;);</span>
 		}
 
-<span class="fc" id="L172">	}</span>
+<span class="fc" id="L184">	}</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

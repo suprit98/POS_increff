@@ -29,9 +29,27 @@ function addOrderItemToList(event) {
 	var json = toJson($form);
 	var check = validateOrderItem(json);
 	if(check) {
-		orderitemList.push(JSON.parse(json));
-	}
+		var ind = checkIfAlreadyPresent(JSON.parse(json).barcode);
+		console.log();
 
+		if(ind==-1){
+			if(parseInt(inventoryMap[JSON.parse(json).barcode])>=parseInt(JSON.parse(json).quantity)) {
+				orderitemList.push(JSON.parse(json));
+			}
+			else{
+				toastr.error("Quantity ordered is exceeding inventory. Inventory present is " + inventoryMap[JSON.parse(json).barcode]);
+			}
+		}
+		else{
+			var qty = parseInt(orderitemList[ind].quantity) + parseInt(JSON.parse(json).quantity);
+			if(parseInt(inventoryMap[JSON.parse(json).barcode])>=qty){
+				orderitemList[ind].quantity = qty;
+			}
+			else{
+				toastr.error("Quantity ordered is exceeding inventory. Inventory present is " + inventoryMap[JSON.parse(json).barcode]);
+			}
+		}
+	}
 	console.log(orderitemList);
 	getOrderItemList();
 
@@ -42,7 +60,7 @@ function getOrderItemList() {
 }
 
 function addOrderItem(event){
-	$("#add-orderitem-modal").modal('toggle');
+
 	var $form = $("#orderitem-add-form");
 	var json = toJson($form);
 	var order_id = $("#orderitem-add-form input[name=order_id]").val();
@@ -50,7 +68,10 @@ function addOrderItem(event){
 	var check = validateOrderItem(json);
 
 	if(check) {
-		ajaxQuery(url,'POST',json,getOrderList);
+		ajaxQuery(url,'POST',json,function(response) {
+			getOrderList(response);
+			$("#add-orderitem-modal").modal('toggle');
+		},handleAjaxError);
 	}
 
 
@@ -59,13 +80,18 @@ function addOrderItem(event){
 
 function addOrder(event) {
 
+	if(orderitemList.length == 0) {
+		toastr.error("No order items added. Please add at least one order item");
+		return;
+	}
+
 	var json = JSON.stringify(orderitemList);
 	var url = getOrderUrl();
 
 	ajaxQuery(url,'POST',json,function (response) {
 		getOrderList(response);
 		$("#add-order-modal").modal('toggle');
-	});
+	},handleAjaxError);
 
 	return false;
 }
@@ -74,6 +100,8 @@ function updateOrder(event){
 	$('#edit-orderitem-modal').modal('toggle');
 	//Get the ID
 	var id = $("#orderitem-edit-form input[name=id]").val();
+	var orderId = $("#orderitem-edit-form input[name=order-id]").val();
+	console.log(orderId);
 	var url = getOrderItemUrl() + "/" + id;
 
 
@@ -84,8 +112,10 @@ function updateOrder(event){
 	if(check){
 		ajaxQuery(url,'PUT',json,function (response) {
 			getOrderList(response);
+			var orderitem_row = '.orderitemrows' + orderId;
+		  $(orderitem_row).show();
 			console.log(json);
-		});
+		},handleAjaxError);
 	}
 
 	return false;
@@ -94,12 +124,12 @@ function updateOrder(event){
 
 function deleteOrderItemFromOrderList(id) {
 	var url = getOrderItemUrl() + "/" + id;
-	ajaxQuery(url,'DELETE','',getOrderList);
+	ajaxQuery(url,'DELETE','',getOrderList,handleAjaxError);
 }
 
 function deleteOrder(id) {
 	var url = getOrderUrl() + "/" + id;
-	ajaxQuery(url,'DELETE','',getOrderList);
+	ajaxQuery(url,'DELETE','',getOrderList,handleAjaxError);
 }
 
 function deleteOrderItem(id) {
@@ -110,7 +140,7 @@ function deleteOrderItem(id) {
 
 function getOrderList() {
 	var url = getOrderUrl();
-	ajaxQuery(url,'GET','',displayOrdersList);
+	ajaxQuery(url,'GET','',displayOrdersList,handleAjaxError);
 }
 
 function getOrderItemsHtml(id) {
@@ -173,7 +203,7 @@ function displayOrdersList(data) {
 
 function displayEditOrderItem(id){
 	var url = getOrderItemUrl() + "/" + id;
-	ajaxQuery(url,'GET','',displayOrderItem);
+	ajaxQuery(url,'GET','',displayOrderItem,handleAjaxError);
 }
 
 function displayAddOrderModal() {
@@ -207,6 +237,7 @@ function displayOrderItem(data){
 	$("#orderitem-edit-form input[name=barcode]").val(data.barcode);
 	$("#orderitem-edit-form input[name=quantity]").val(data.quantity);
 	$("#orderitem-edit-form input[name=id]").val(data.id);
+	$("#orderitem-edit-form input[name=order-id]").val(data.orderId);
 	$('#edit-orderitem-modal').modal('toggle');
 }
 
@@ -264,7 +295,25 @@ function validateOrderItem(json) {
 		toastr.error("Quantity field must not be empty and must be an integer value");
 		return false;
 	}
+	if(barcodeList.indexOf(json.barcode) == -1) {
+		toastr.error("Please enter a valid barcode");
+		return false;
+	}
+	if(parseInt(json.quantity)<=0) {
+		toastr.error("Quantity must be positive");
+		return false;
+	}
 	return true;
+}
+
+function checkIfAlreadyPresent(barcode) {
+	for(var i in orderitemList) {
+		var e = orderitemList[i];
+		if(e.barcode.localeCompare(barcode) == 0){
+			return i;
+		}
+	}
+	return -1;
 }
 
 

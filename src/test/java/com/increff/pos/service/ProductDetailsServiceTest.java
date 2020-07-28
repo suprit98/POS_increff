@@ -22,7 +22,7 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 		insertPojos();
 	}
 
-	// Testing adding of product details pojo
+	/* Testing adding of product details pojo */
 	@Test()
 	public void testAdd() throws ApiException {
 
@@ -39,7 +39,7 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing adding of an invalid pojo. Should throw an exception
+	/* Testing adding of an invalid pojo. Should throw an exception */
 	@Test()
 	public void testAddWrong() throws ApiException {
 
@@ -54,8 +54,10 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing adding of an invalid pojo with negative price. Should throw an
-	// exception
+	/*
+	 * Testing adding of an invalid pojo with negative price. Should throw an
+	 * exception
+	 */
 	@Test()
 	public void testAddWrong2() throws ApiException {
 
@@ -71,7 +73,7 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing deletion of product details pojo
+	/* Testing deletion of product details pojo */
 	@Test()
 	public void testDelete() throws ApiException {
 
@@ -92,7 +94,7 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing get by id
+	/* Testing get by id */
 	@Test()
 	public void testGetById() throws ApiException {
 
@@ -104,7 +106,7 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing get by id for a non-existent pojo. Should throw an exception
+	/* Testing get by id for a non-existent pojo. Should throw an exception */
 	@Test()
 	public void testGetByIdNotExisting() throws ApiException {
 		try {
@@ -116,7 +118,7 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing get by barcode for a productdetails pojo
+	/* Testing get by barcode for a productdetails pojo */
 	@Test()
 	public void testGetByBarcode() throws ApiException {
 
@@ -128,7 +130,7 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing get by barcode for a non-existent productdetails pojo
+	/* Testing get by barcode for a non-existent productdetails pojo */
 	@Test()
 	public void testGetByBarcodeNotExisting() throws ApiException {
 
@@ -141,14 +143,14 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing get all productdetails pojos
+	/* Testing get all productdetails pojos */
 	@Test
 	public void testGetAll() {
 		List<ProductDetailsPojo> product_list = product_service.getAll();
 		assertEquals(3, product_list.size());
 	}
 
-	// Testing getting of all Product pojos by barcode
+	/* Testing getting of all Product pojos by barcode */
 	@Test
 	public void testGetAllProductPojosByBarcode() {
 		Map<String, ProductDetailsPojo> barcode_product = product_service.getAllProductPojosByBarcode();
@@ -157,7 +159,7 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 		assertTrue(barcode_product.containsKey(products.get(1).getBarcode()));
 	}
 
-	// Testing updation of productdetails pojo
+	/* Testing updation of productdetails pojo */
 	@Test
 	public void testUpdate() throws ApiException {
 
@@ -168,7 +170,7 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 		assertEquals(p2.getMrp(), product_service.get(products.get(0).getId()).getMrp(), 0.001);
 	}
 
-	// Testing updation with invalid details. Should throw exception
+	/* Testing updation with invalid details. Should throw exception */
 	@Test()
 	public void testUpdateWrong() throws ApiException {
 
@@ -182,7 +184,7 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing checkifexists
+	/* Testing checkifexists */
 	@Test()
 	public void testCheckIfExistsId() throws ApiException {
 
@@ -193,7 +195,7 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 		assertEquals(products.get(0).getName(), db_product_pojo.getName());
 	}
 
-	// Testing checkifexists for barcode
+	/* Testing checkifexists for barcode */
 	@Test()
 	public void testCheckIfExistsBarcode() throws ApiException {
 
@@ -204,7 +206,7 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 		assertEquals(products.get(0).getName(), db_product_pojo.getName());
 	}
 
-	// Testing check if exists for wrong id
+	/* Testing check if exists for wrong id */
 	@Test()
 	public void testCheckIfExistsIdWrong() throws ApiException {
 
@@ -217,7 +219,7 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing checkifexists for wrong barcode. Should throw exception
+	/* Testing checkifexists for wrong barcode. Should throw exception */
 	@Test()
 	public void testCheckIfExistsBarcodeWrong() throws ApiException {
 
@@ -229,7 +231,7 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 		}
 	}
 
-	// Testing normalize
+	/* Testing normalize */
 	@Test
 	public void testNormalize() throws ApiException {
 		BrandPojo b = getBrandPojo();
@@ -240,7 +242,7 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing validate
+	/* Testing validate */
 	@Test
 	public void testValidate() throws ApiException {
 		ProductDetailsPojo p = getProductDetailsPojo(brands.get(0));
@@ -251,7 +253,9 @@ public class ProductDetailsServiceTest extends AbstractUnitTest {
 
 	}
 
-	// Testing validate for an invalid product details pojo. Should throw exception
+	/*
+	 * Testing validate for an invalid product details pojo. Should throw exception
+	 */
 	@Test()
 	public void testValidateWrong() throws ApiException {
 		ProductDetailsPojo p = getWrongProductDetailsPojo(brands.get(0));

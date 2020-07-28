@@ -35,8 +35,8 @@ import io.swagger.annotations.ApiOperation;
 	@RequestMapping(path = &quot;/api/inventory&quot;, method = RequestMethod.POST)
 	public void add(@RequestBody InventoryForm userform) throws ApiException {
 <span class="nc" id="L37">		ProductDetailsPojo product = product_service.get(userform.getBarcode());</span>
-<span class="nc" id="L38">		InventoryPojo p = ConversionUtil.convert(userform,product);</span>
-<span class="nc" id="L39">		inventory_service.add(p);</span>
+<span class="nc" id="L38">		InventoryPojo inventory_pojo = ConversionUtil.convert(userform,product);</span>
+<span class="nc" id="L39">		inventory_service.add(inventory_pojo);</span>
 <span class="nc" id="L40">	}</span>
 
 	@ApiOperation(value = &quot;Deletes an Inventory record&quot;)
@@ -48,25 +48,24 @@ import io.swagger.annotations.ApiOperation;
 	@ApiOperation(value = &quot;Gets an Inventory record by id&quot;)
 	@RequestMapping(path = &quot;/api/inventory/{id}&quot;, method = RequestMethod.GET)
 	public InventoryData get(@PathVariable int id) throws ApiException {
-<span class="nc" id="L51">		InventoryPojo p = inventory_service.get(id);</span>
-<span class="nc" id="L52">		return ConversionUtil.convert(p);</span>
+<span class="nc" id="L51">		InventoryPojo inventory_pojo = inventory_service.get(id);</span>
+<span class="nc" id="L52">		return ConversionUtil.convert(inventory_pojo);</span>
 	}
 
 	@ApiOperation(value = &quot;Gets list of Products&quot;)
 	@RequestMapping(path = &quot;/api/inventory&quot;, method = RequestMethod.GET)
 	public List&lt;InventoryData&gt; getAll() {
-<span class="nc" id="L58">		List&lt;InventoryPojo&gt; list = inventory_service.getAll();</span>
-<span class="nc" id="L59">		List&lt;InventoryData&gt; list2 = ConversionUtil.convertInventoryList(list);</span>
-<span class="nc" id="L60">		return list2;</span>
+<span class="nc" id="L58">		List&lt;InventoryPojo&gt; inventory_pojo_list = inventory_service.getAll();</span>
+<span class="nc" id="L59">		return ConversionUtil.convertInventoryList(inventory_pojo_list);</span>
 	}
 
 	@ApiOperation(value = &quot;Updates an Inventory record&quot;)
 	@RequestMapping(path = &quot;/api/inventory/{id}&quot;, method = RequestMethod.PUT)
 	public void update(@PathVariable int id, @RequestBody InventoryForm f) throws ApiException {
-<span class="nc" id="L66">		ProductDetailsPojo product = product_service.get(f.getBarcode());</span>
-<span class="nc" id="L67">		InventoryPojo p = ConversionUtil.convert(f,product);</span>
-<span class="nc" id="L68">		inventory_service.update(id, p);</span>
-<span class="nc" id="L69">	}</span>
+<span class="nc" id="L65">		ProductDetailsPojo product = product_service.get(f.getBarcode());</span>
+<span class="nc" id="L66">		InventoryPojo inventory_pojo = ConversionUtil.convert(f,product);</span>
+<span class="nc" id="L67">		inventory_service.update(id, inventory_pojo);</span>
+<span class="nc" id="L68">	}</span>
 
 	
 

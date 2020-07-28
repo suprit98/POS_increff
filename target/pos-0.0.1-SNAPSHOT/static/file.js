@@ -1,6 +1,7 @@
 var barcodeList = [];
 var brandList = [];
 var categoryList = [];
+var inventoryMap = {};
 
 var errorData = [];
 
@@ -16,6 +17,12 @@ function getProductDetailsUrl(){
 	return baseUrl + "/api/product_details";
 }
 
+function getInventoryUrl(){
+	var baseUrl = $("meta[name=baseUrl]").attr("content");
+	console.log(baseUrl);
+	return baseUrl + "/api/inventory";
+}
+
 function createBarcodeList() {
 	var url = getProductDetailsUrl();
 	ajaxQuery(url,'GET','',formBarcodeList);
@@ -24,6 +31,11 @@ function createBarcodeList() {
 function createBrandCategoryList() {
 	var url = getBrandUrl();
 	ajaxQuery(url,'GET','',formBrandCategoryList);
+}
+
+function createInventoryMap() {
+	var url = getInventoryUrl();
+	ajaxQuery(url,'GET','',formInventoryMap);
 }
 
 function formBarcodeList(data) {
@@ -38,6 +50,13 @@ function formBrandCategoryList(data) {
 		var e = data[i];
 		brandList.push(e.brand);
 		categoryList.push(e.category);
+	}
+}
+
+function formInventoryMap(data) {
+	for(var i in data){
+		var e = data[i];
+		inventoryMap[e.barcode] = e.quantity;
 	}
 }
 
@@ -179,6 +198,7 @@ function isInt(n) {
 function init() {
 	createBarcodeList();
 	createBrandCategoryList();
+	createInventoryMap();
 	console.log(barcodeList);
 	$(".barcode").autocomplete({
 		minLength:0,

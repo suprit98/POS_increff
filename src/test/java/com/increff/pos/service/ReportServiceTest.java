@@ -1,6 +1,7 @@
 package com.increff.pos.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,98 +16,120 @@ import com.increff.pos.model.SalesDataList;
 import com.increff.pos.model.SalesFilter;
 import com.increff.pos.spring.AbstractUnitTest;
 
-public class ReportServiceTest extends AbstractUnitTest{
-	
+public class ReportServiceTest extends AbstractUnitTest {
+
 	@Autowired
 	private ReportService report_service;
-	
+
 	@Before
 	public void init() throws ApiException {
-		//Insert initial pojos
+		// Insert initial pojos
 		insertPojos();
 	}
-	
-	//Testing generation of brand list for report
+
+	/* Testing generation of brand list for report */
 	@Test
 	public void testGenerateBrandList() throws Exception {
 		BrandDataList brand_list = report_service.generateBrandList();
-		assertEquals(2,brand_list.getBrand_list().size());
-		
-		int i=0;
-		for(BrandData brand:brand_list.getBrand_list()) {
-			assertEquals("brand",brand.getBrand());
-			assertEquals("category"+i,brand.getCategory());
+		assertEquals(2, brand_list.getBrand_list().size());
+
+		int i = 0;
+		for (BrandData brand : brand_list.getBrand_list()) {
+			assertEquals("brand", brand.getBrand());
+			assertEquals("category" + i, brand.getCategory());
 			i++;
 		}
 	}
-	
-	//Testing generation of inventory list for report
+
+	/* Testing generation of inventory list for report */
 	@Test
 	public void testGenerateInventoryList() throws Exception {
 		InventoryReportList inv_list = report_service.generateInventoryList();
-		assertEquals(2,inv_list.getInventory_list().size());
-		
-		for(InventoryReportData inv: inv_list.getInventory_list()) {
-			assertEquals(18,inv.getQuantity());
+		assertEquals(2, inv_list.getInventory_list().size());
+
+		for (InventoryReportData inv : inv_list.getInventory_list()) {
+			assertEquals(18, inv.getQuantity());
 		}
 	}
-	
-	//Testing generation of sales list for report
+
+	/* Testing generation of sales list for report */
 	@Test
 	public void testGenerateSalesList() throws Exception {
 		SalesFilter sales_filter = new SalesFilter();
 		sales_filter.setBrand("");
-		sales_filter.setCategory("category"+0);
+		sales_filter.setCategory("category" + 0);
 		sales_filter.setStartDate("2020-01-01");
 		sales_filter.setEndDate("2020-12-31");
 		SalesDataList sales_list = report_service.generateSalesList(sales_filter);
-		assertEquals(1,sales_list.getSales_list().size());
-		assertEquals(2,sales_list.getSales_list().get(0).getQuantity());
-		assertEquals("category"+0,sales_list.getSales_list().get(0).getCategory());
-		assertEquals(2*50,sales_list.getSales_list().get(0).getRevenue(),0.001);
-		
+		assertEquals(1, sales_list.getSales_list().size());
+		assertEquals(2, sales_list.getSales_list().get(0).getQuantity());
+		assertEquals("category" + 0, sales_list.getSales_list().get(0).getCategory());
+		assertEquals(2 * 50, sales_list.getSales_list().get(0).getRevenue(), 0.001);
+
 		sales_filter.setBrand("brand");
 		sales_filter.setCategory("");
 		sales_list = report_service.generateSalesList(sales_filter);
-		assertEquals(2,sales_list.getSales_list().size());
-		
+		assertEquals(2, sales_list.getSales_list().size());
+
 		sales_filter.setBrand("brand");
-		sales_filter.setCategory("category"+1);
+		sales_filter.setCategory("category" + 1);
 		sales_list = report_service.generateSalesList(sales_filter);
-		assertEquals(1,sales_list.getSales_list().size());
-		assertEquals(2,sales_list.getSales_list().get(0).getQuantity());
-		assertEquals("category"+1,sales_list.getSales_list().get(0).getCategory());
-		assertEquals(2*50,sales_list.getSales_list().get(0).getRevenue(),0.001);
-		
+		assertEquals(1, sales_list.getSales_list().size());
+		assertEquals(2, sales_list.getSales_list().get(0).getQuantity());
+		assertEquals("category" + 1, sales_list.getSales_list().get(0).getCategory());
+		assertEquals(2 * 50, sales_list.getSales_list().get(0).getRevenue(), 0.001);
+
 		sales_filter.setBrand("");
 		sales_filter.setCategory("");
 		sales_list = report_service.generateSalesList(sales_filter);
-		assertEquals(2,sales_list.getSales_list().size());
+		assertEquals(2, sales_list.getSales_list().size());
 	}
-	
-	//Testing generation of invoice list for report
+
+	/* Testing generation of invoice list for report */
 	@Test
 	public void testGenerateInvoiceList() throws Exception {
 		InvoiceDataList idl = report_service.generateInvoiceList(order_id);
-		assertEquals(2,idl.getInvoiceLis().size());
-		assertEquals(200,idl.getTotal(),0.001);
+		assertEquals(2, idl.getInvoiceLis().size());
+		assertEquals(200, idl.getTotal(), 0.001);
 	}
-	
-	//Testing the general method of Pdf response
+
+	/* Testing the general method of Pdf response */
 	@Test
 	public void testPdfResponse() throws Exception {
 		report_service.generatePdfResponse("brand");
-		
+
 		report_service.generatePdfResponse("inventory");
-		
+
 		SalesFilter sales_filter = new SalesFilter();
 		sales_filter.setBrand("");
-		sales_filter.setCategory("category"+0);
+		sales_filter.setCategory("category" + 0);
 		sales_filter.setStartDate("2020-01-01");
 		sales_filter.setEndDate("2020-12-31");
 		report_service.generatePdfResponse("sales", sales_filter);
-		
+
 		report_service.generatePdfResponse("invoice", order_id);
-		
+
+	}
+
+	/*
+	 * Testing the general method of Pdf response for empty sales list. Should throw
+	 * exception
+	 */
+	@Test
+	public void testPdfResponseEmptySalesList() throws Exception {
+
+		SalesFilter sales_filter = new SalesFilter();
+		sales_filter.setBrand("");
+		sales_filter.setCategory("category");
+		sales_filter.setStartDate("2020-01-01");
+		sales_filter.setEndDate("2020-12-31");
+		try {
+			report_service.generatePdfResponse("sales", sales_filter);
+			fail("Api Exception did not occur");
+		} catch (ApiException e) {
+			assertEquals(e.getMessage(),
+					"No sales was done in this date range for this particular brand and category pair");
+		}
+
 	}
 }

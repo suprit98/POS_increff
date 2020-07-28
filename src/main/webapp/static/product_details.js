@@ -14,8 +14,10 @@ function addProductDetails(event){
 	var check = validateProduct(json);
 	if(check) {
 		var url = getProductDetailsUrl();
-		ajaxQuery(url,'POST',json,getProductDetailsList);
-		$('#add-productdetails-modal').modal('toggle');
+		ajaxQuery(url,'POST',json,function(response) {
+			getProductDetailsList(response);
+			$('#add-productdetails-modal').modal('toggle');
+		},handleAjaxError);
 	}
 
 
@@ -34,8 +36,10 @@ function updateProductDetails(event){
 
 	var check = validateProduct(json);
 	if(check) {
-		ajaxQuery(url,'PUT',json,getProductDetailsList);
-		$('#edit-productdetails-modal').modal('toggle');
+		ajaxQuery(url,'PUT',json,function(response) {
+			getProductDetailsList(response);
+			$('#edit-productdetails-modal').modal('toggle');
+		},handleAjaxError);
 	}
 
 	return false;
@@ -45,12 +49,12 @@ function updateProductDetails(event){
 
 function getProductDetailsList(){
 	var url = getProductDetailsUrl();
-	ajaxQuery(url,'GET','',displayProductDetailsList);
+	ajaxQuery(url,'GET','',displayProductDetailsList,handleAjaxError);
 }
 
 function deleteProductDetails(id){
 	var url = getProductDetailsUrl() + "/" + id;
-	ajaxQuery(url,'DELETE','',getProductDetailsList);
+	ajaxQuery(url,'DELETE','',getProductDetailsList,handleAjaxError);
 }
 
 //UI DISPLAY METHODS
@@ -69,7 +73,7 @@ function displayProductDetailsList(data){
 		+ '<td>'  + e.brand + '</td>'
 		+ '<td>'  + e.category + '</td>'
 		+ '<td>'  + e.name + '</td>'
-		+ '<td>'  + e.mrp + '</td>'
+		+ '<td>'  + parseFloat(e.mrp).toFixed(2) + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
     $tbody.append(row);
@@ -79,7 +83,7 @@ function displayProductDetailsList(data){
 
 function displayEditProductDetails(id){
 	var url = getProductDetailsUrl() + "/" + id;
-	ajaxQuery(url,'GET','',displayProductDetails);
+	ajaxQuery(url,'GET','',displayProductDetails,handleAjaxError);
 }
 
 function displayProductDetails(data){
@@ -93,6 +97,7 @@ function displayProductDetails(data){
 
 function displayUploadDataProductDetails(){
 	resetUploadDialogProduct();
+	$("#download-errors-productdetails").prop("disabled",true);
 	$('#upload-productdetails-modal').modal('toggle');
 }
 
@@ -117,6 +122,7 @@ function readFileDataCallback(results){
 
 function uploadRowsProductDetails(){
 	updateUploadDialog();
+	$("#download-errors-productdetails").prop("disabled",false);
 	//If everything processed then return
 	if(rowsProcessed==fileData.length){
 		getProductDetailsList();
@@ -186,8 +192,9 @@ function validateProduct(json) {
 }
 
 function updateUploadDialog(){
+	var correct_rows = parseInt(fileData.length) - parseInt(errorData.length);
 	$('#rowCount').html("" + fileData.length);
-	$('#processCount').html("" + rowsProcessed);
+	$('#processCount').html("" + correct_rows);
 	$('#errorCount').html("" + errorData.length);
 }
 

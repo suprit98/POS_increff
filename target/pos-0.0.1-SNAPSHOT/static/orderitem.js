@@ -29,9 +29,27 @@ function addOrderItemToList(event) {
 	var json = toJson($form);
 	var check = validateOrderItem(json);
 	if(check) {
-		orderitemList.push(JSON.parse(json));
-	}
+		var ind = checkIfAlreadyPresent(JSON.parse(json).barcode);
+		console.log();
 
+		if(ind==-1){
+			if(parseInt(inventoryMap[JSON.parse(json).barcode])>=parseInt(JSON.parse(json).quantity)) {
+				orderitemList.push(JSON.parse(json));
+			}
+			else{
+				toastr.error("Quantity ordered is exceeding inventory. Inventory present is " + inventoryMap[JSON.parse(json).barcode]);
+			}
+		}
+		else{
+			var qty = parseInt(orderitemList[ind].quantity) + parseInt(JSON.parse(json).quantity);
+			if(parseInt(inventoryMap[JSON.parse(json).barcode])>=qty){
+				orderitemList[ind].quantity = qty;
+			}
+			else{
+				toastr.error("Quantity ordered is exceeding inventory. Inventory present is " + inventoryMap[JSON.parse(json).barcode]);
+			}
+		}
+	}
 	console.log(orderitemList);
 	getOrderItemList();
 
@@ -58,11 +76,19 @@ function addOrderItem(event){
 }
 
 function addOrder(event) {
-	$("#add-order-modal").modal('toggle');
+
+	if(orderitemList.length == 0) {
+		toastr.error("No order items added. Please add at least one order item");
+		return;
+	}
+
 	var json = JSON.stringify(orderitemList);
 	var url = getOrderUrl();
 
-	ajaxQuery(url,'POST',json,getOrderList);
+	ajaxQuery(url,'POST',json,function (response) {
+		getOrderList(response);
+		$("#add-order-modal").modal('toggle');
+	});
 
 	return false;
 }
@@ -71,6 +97,8 @@ function updateOrder(event){
 	$('#edit-orderitem-modal').modal('toggle');
 	//Get the ID
 	var id = $("#orderitem-edit-form input[name=id]").val();
+	var orderId = $("#orderitem-edit-form input[name=order-id]").val();
+	console.log(orderId);
 	var url = getOrderItemUrl() + "/" + id;
 
 
@@ -79,7 +107,12 @@ function updateOrder(event){
 
 	var check = validateOrderItem(json);
 	if(check){
-		ajaxQuery(url,'PUT',json,getOrderList);
+		ajaxQuery(url,'PUT',json,function (response) {
+			getOrderList(response);
+			var orderitem_row = '.orderitemrows' + orderId;
+		  $(orderitem_row).show();
+			console.log(json);
+		});
 	}
 
 	return false;
@@ -159,7 +192,6 @@ function displayOrdersList(data) {
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
 		orderitemsHtml = '<tr><td colspan="3"><table style ="display:none;" class="table table-striped orderitemrows' + e.id +'"><tbody></tbody></table><td></tr>';
-		console.log(orderitemsHtml);
     $tbody.append(row);
 		$tbody.append(orderitemsHtml);
 		getOrderItemsHtml(e.id);
@@ -198,9 +230,11 @@ function downloadPDF(id) {
 }
 
 function displayOrderItem(data){
+	console.log(data);
 	$("#orderitem-edit-form input[name=barcode]").val(data.barcode);
 	$("#orderitem-edit-form input[name=quantity]").val(data.quantity);
 	$("#orderitem-edit-form input[name=id]").val(data.id);
+	$("#orderitem-edit-form input[name=order-id]").val(data.orderId);
 	$('#edit-orderitem-modal').modal('toggle');
 }
 
@@ -259,6 +293,16 @@ function validateOrderItem(json) {
 		return false;
 	}
 	return true;
+}
+
+function checkIfAlreadyPresent(barcode) {
+	for(var i in orderitemList) {
+		var e = orderitemList[i];
+		if(e.barcode.localeCompare(barcode) == 0){
+			return i;
+		}
+	}
+	return -1;
 }
 
 

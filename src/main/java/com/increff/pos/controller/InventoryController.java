@@ -35,8 +35,8 @@ public class InventoryController {
 	@RequestMapping(path = "/api/inventory", method = RequestMethod.POST)
 	public void add(@RequestBody InventoryForm userform) throws ApiException {
 		ProductDetailsPojo product = product_service.get(userform.getBarcode());
-		InventoryPojo p = ConversionUtil.convert(userform,product);
-		inventory_service.add(p);
+		InventoryPojo inventory_pojo = ConversionUtil.convert(userform,product);
+		inventory_service.add(inventory_pojo);
 	}
 
 	@ApiOperation(value = "Deletes an Inventory record")
@@ -48,24 +48,23 @@ public class InventoryController {
 	@ApiOperation(value = "Gets an Inventory record by id")
 	@RequestMapping(path = "/api/inventory/{id}", method = RequestMethod.GET)
 	public InventoryData get(@PathVariable int id) throws ApiException {
-		InventoryPojo p = inventory_service.get(id);
-		return ConversionUtil.convert(p);
+		InventoryPojo inventory_pojo = inventory_service.get(id);
+		return ConversionUtil.convert(inventory_pojo);
 	}
 
 	@ApiOperation(value = "Gets list of Products")
 	@RequestMapping(path = "/api/inventory", method = RequestMethod.GET)
 	public List<InventoryData> getAll() {
-		List<InventoryPojo> list = inventory_service.getAll();
-		List<InventoryData> list2 = ConversionUtil.convertInventoryList(list);
-		return list2;
+		List<InventoryPojo> inventory_pojo_list = inventory_service.getAll();
+		return ConversionUtil.convertInventoryList(inventory_pojo_list);
 	}
 
 	@ApiOperation(value = "Updates an Inventory record")
 	@RequestMapping(path = "/api/inventory/{id}", method = RequestMethod.PUT)
 	public void update(@PathVariable int id, @RequestBody InventoryForm f) throws ApiException {
 		ProductDetailsPojo product = product_service.get(f.getBarcode());
-		InventoryPojo p = ConversionUtil.convert(f,product);
-		inventory_service.update(id, p);
+		InventoryPojo inventory_pojo = ConversionUtil.convert(f,product);
+		inventory_service.update(id, inventory_pojo);
 	}
 
 	

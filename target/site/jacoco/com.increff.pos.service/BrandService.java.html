@@ -15,7 +15,7 @@ import com.increff.pos.pojo.BrandPojo;
 	@Autowired
 	private BrandDao brand_dao;
 
-	//Adding Brand
+	/* Adding Brand */
 	@Transactional
 	public void add(BrandPojo p) throws ApiException {
 <span class="fc" id="L21">		validate(p);</span>
@@ -23,26 +23,26 @@ import com.increff.pos.pojo.BrandPojo;
 <span class="fc" id="L23">		brand_dao.insert(p);</span>
 <span class="fc" id="L24">	}</span>
 
-	//Deleting brand
+	/* Deleting brand */
 	@Transactional
 	public void delete(int id) {
 <span class="fc" id="L29">		brand_dao.delete(id);</span>
 <span class="fc" id="L30">	}</span>
 
-	//Fetching Brand by Id
+	/* Fetching Brand by Id */
 	@Transactional
 	public BrandPojo get(int id) throws ApiException {
 <span class="fc" id="L35">		BrandPojo p = checkIfExists(id);</span>
 <span class="fc" id="L36">		return p;</span>
 	}
 
-	//Fetching all brands
+	/* Fetching all brands */
 	@Transactional
 	public List&lt;BrandPojo&gt; getAll() {
 <span class="fc" id="L42">		return brand_dao.selectAll();</span>
 	}
 
-	//Updating existing brand
+	/* Updating existing brand */
 	@Transactional(rollbackFor = ApiException.class)
 	public void update(int id, BrandPojo p) throws ApiException {
 <span class="fc" id="L48">		validate(p);</span>
@@ -53,7 +53,7 @@ import com.increff.pos.pojo.BrandPojo;
 <span class="fc" id="L53">		brand_dao.update(p);</span>
 <span class="fc" id="L54">	}</span>
 
-	//Checking if a particular brand exists
+	/* Checking if a particular brand exists */
 	@Transactional(rollbackFor = ApiException.class)
 	public BrandPojo checkIfExists(int id) throws ApiException {
 <span class="fc" id="L59">		BrandPojo p = brand_dao.select(id);</span>
@@ -63,7 +63,7 @@ import com.increff.pos.pojo.BrandPojo;
 <span class="fc" id="L63">		return p;</span>
 	}
 
-	//Getting a BrandPojo with particular brand and category
+	/* Getting a BrandPojo with particular brand and category */
 	@Transactional
 	public BrandPojo getBrandPojo(String brand, String category) throws ApiException {
 <span class="fc" id="L69">		List&lt;BrandPojo&gt; brand_list = brand_dao.selectAllBrandCategory(brand, category);</span>
@@ -74,13 +74,13 @@ import com.increff.pos.pojo.BrandPojo;
 <span class="fc" id="L74">		return brand_list.get(0);</span>
 	}
 
-	//Normalizing
+	/* Normalizing */
 	protected void normalize(BrandPojo p) {
 <span class="fc" id="L79">		p.setBrand(p.getBrand().toLowerCase().trim());</span>
 <span class="fc" id="L80">		p.setCategory(p.getCategory().toLowerCase().trim());</span>
 <span class="fc" id="L81">	}</span>
 
-	//Validation
+	/* Validation */
 	protected void validate(BrandPojo p) throws ApiException {
 <span class="pc bpc" id="L85" title="1 of 4 branches missed.">		if (p.getBrand().isEmpty() || p.getCategory().isEmpty()) {</span>
 <span class="fc" id="L86">			throw new ApiException(&quot;Brand and category values must not be empty&quot;);</span>

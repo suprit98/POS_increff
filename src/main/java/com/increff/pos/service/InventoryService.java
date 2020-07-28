@@ -15,8 +15,7 @@ public class InventoryService {
 	@Autowired
 	private InventoryDao inventory_dao;
 
-
-	//Adding Inventory
+	/* Adding Inventory */
 	@Transactional
 	public void add(InventoryPojo p) throws ApiException {
 		validate(p);
@@ -24,20 +23,20 @@ public class InventoryService {
 		inventory_dao.insert(p);
 	}
 
-	//Deletion of inventory by id
+	/* Deletion of inventory by id */
 	@Transactional
 	public void delete(int id) {
 		inventory_dao.delete(id);
 	}
 
-	//Fetch inventory by id
+	/* Fetch inventory by id */
 	@Transactional
 	public InventoryPojo get(int id) throws ApiException {
 		InventoryPojo p = checkIfExists(id);
 		return p;
 	}
 
-	//Fetch inventory by product id
+	/* Fetch inventory by product id */
 	@Transactional
 	public InventoryPojo getByProductId(int product_id) throws ApiException {
 		List<InventoryPojo> lis = getAll();
@@ -49,13 +48,13 @@ public class InventoryService {
 		return null;
 	}
 
-	//Fetch all inventory pojos
+	/* Fetch all inventory pojos */
 	@Transactional
 	public List<InventoryPojo> getAll() {
 		return inventory_dao.selectAll();
 	}
 
-	//Updation of inventory
+	/* Updation of inventory */
 	@Transactional(rollbackFor = ApiException.class)
 	public void update(int id, InventoryPojo p) throws ApiException {
 		validate(p);
@@ -64,7 +63,7 @@ public class InventoryService {
 		inventory_dao.update(p);
 	}
 
-	//Checking if particular inventory pojo exists
+	/* Checking if particular inventory pojo exists */
 	@Transactional(rollbackFor = ApiException.class)
 	public InventoryPojo checkIfExists(int id) throws ApiException {
 		InventoryPojo p = inventory_dao.select(id);
@@ -74,21 +73,22 @@ public class InventoryService {
 		return p;
 	}
 
-	//Validate
+	/* Validate */
 	protected void validate(InventoryPojo p) throws ApiException {
-		if (p.getQuantity() <= 0) {
+		if (p.getQuantity() < 0) {
 			throw new ApiException("Inventory quantity should be positive");
 		}
 
 	}
 
-	//Check if inventory exists or not by barcode
+	/* Check if inventory exists or not by barcode */
 	protected void checkIfBarcodePresent(InventoryPojo p) throws ApiException {
 		List<InventoryPojo> lis = inventory_dao.selectByProduct(p.getProductPojo());
-		if(lis.size()>0) {
-			throw new ApiException("Inventory for this product already exists. You can edit the inventory details if you want to");
+		if (lis.size() > 0) {
+			throw new ApiException(
+					"Inventory for this product already exists. You can edit the inventory details if you want to");
 		}
-		
+
 	}
 
 }
